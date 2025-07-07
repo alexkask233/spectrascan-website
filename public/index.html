@@ -148,15 +148,15 @@
     resultsEl.innerHTML = `<div class="loader-wrapper"><div class="scanner-circle"></div><p class="scanner-text">ANALYZING SIGNATURE...</p></div>`;
 
     const detectionPromise = (async () => {
-        // --- NEW: Get Fingerprint from Broprint.js library ---
+        // --- Get Fingerprint from Broprint.js library ---
         let browserFingerprint = 'N/A';
         try {
-            // Use dynamic import with the CDN URL
-            const broprintModule = await import('https://cdn.jsdelivr.net/npm/@rajesh896/broprint.js/index.js');
+            // FIXED: Corrected the package name in the CDN URL
+            const broprintModule = await import('https://cdn.jsdelivr.net/npm/broprint.js/index.js');
             browserFingerprint = await broprintModule.getCurrentBrowserFingerPrint();
         } catch (err) {
             console.error("Could not load fingerprinting library:", err);
-            browserFingerprint = 'Error loading library';
+            browserFingerprint = '<span class="danger">Error loading library</span>';
         }
 
         // --- Existing Detection Logic ---
@@ -178,7 +178,6 @@
         let ipData = null;
         let ipError = false;
         try {
-            // NOTE: You need to have your '/api/ip-check' endpoint running for this to work.
             const resp = await fetch('/api/ip-check'); 
             ipData = await resp.json();
             if (ipData.error) { ipError = true; } 
@@ -228,10 +227,59 @@
       document.getElementById('run-btn').style.display = 'block';
   }
 
-  /* --- FINGERPRINTING HELPERS (Unchanged) --- */
+  /* --- FINGERPRINTING HELPERS --- */
   function getCanvasEntropy() {try {const canvas=document.createElement('canvas');const ctx=canvas.getContext('2d');ctx.textBaseline="top";ctx.font="14px 'Arial'";ctx.fillText("BrowserFingerprinting",2,2);return hashString(canvas.toDataURL())}catch{return null}}
   function hashString(str){let hash=0;for(let i=0;i<str.length;i++){hash=((hash<<5)-hash)+str.charCodeAt(i);hash|=0}return hash}
-  async function getAudioFingerprint(){try{const AudioContext=window.AudioContext||window.webkitAudioContext;if(!AudioContext)return null;const ctx=new AudioContext;const osc=ctx.createOscillator();const analyser=ctx.createAnalyser();const gain=ctx.createGain();const script=ctx.createScriptProcessor(4096,1,1);return new Promise(resolve=>{script.onaudioprocess=e=>{const output=e.outputBuffer.getChannelData(0);const hash=Math.abs(output.slice(4500,5000).reduce((a,b)=>a+b,0));resolve(parseFloat(hash.toFixed(12)));script.disconnect();osc.disconnect();gain.disconnect();analyser.disconnect();ctx.close()};osc.connect(analyser);analyser.connect(script);script.connect(gain);gain.connect(ctx.destination);osc.start(0)})}catch{return null}}
+  
+  // FIXED: Upgraded to AudioWorklet to avoid deprecation warning
+  async function getAudioFingerprint() {
+    try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return null;
+        const ctx = new AudioContext();
+
+        // The JS for the worklet is created as a string
+        const processorName = 'audio-processor';
+        const workletCode = `
+            class AudioProcessor extends AudioWorkletProcessor {
+                constructor() { super(); }
+                process(inputs) {
+                    const input = inputs[0];
+                    if (input.length > 0) {
+                        const channelData = input[0];
+                        const sum = channelData.slice(4500, 5000).reduce((a, b) => a + b, 0);
+                        this.port.postMessage(sum);
+                    }
+                    return false; // Keep processor alive
+                }
+            }
+            registerProcessor('${processorName}', AudioProcessor);
+        `;
+        const blob = new Blob([workletCode], { type: 'application/javascript' });
+        const workletURL = URL.createObjectURL(blob);
+
+        await ctx.audioWorklet.addModule(workletURL);
+        const workletNode = new AudioWorkletNode(ctx, processorName);
+        
+        const osc = ctx.createOscillator();
+        const analyser = ctx.createAnalyser();
+        osc.connect(analyser);
+        analyser.connect(workletNode);
+        workletNode.connect(ctx.destination);
+        
+        return new Promise(resolve => {
+            workletNode.port.onmessage = event => {
+                const hash = Math.abs(event.data);
+                resolve(parseFloat(hash.toFixed(12)));
+                ctx.close();
+            };
+            osc.start(0);
+        });
+    } catch {
+        return null;
+    }
+  }
+
   function getWebGLInfo(){try{const canvas=document.createElement('canvas');const gl=canvas.getContext('webgl')||canvas.getContext('experimental-webgl');const dbg=gl.getExtension('WEBGL_debug_renderer_info');return{vendor:gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL),renderer:gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)}}catch{return{vendor:"unknown",renderer:"unknown"}}}
 </script>
 
