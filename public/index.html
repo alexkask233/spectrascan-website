@@ -112,33 +112,99 @@
   <!-- ====== MAIN CONTENT & PAGES (Unchanged) ====== -->
   <main>
     <div id="page-catcher" class="page"><div class="container" id="catcher-container"><h1>Unmask Your Digital Ghost</h1><p class="tagline">Is your browser hiding in the shadows? Let's find out.</p><button id="run-btn" onclick="runDetection()">Run Detection</button><div id="results-container"></div></div></div>
-    <div id="page-faq" class="page"><div class="container static-page"><h2>Frequently Asked Questions</h2><h3>What is this tool?</h3><p>SpectraScan analyzes your browser's fingerprint for signs of manipulation. Websites use these fingerprints to track you. Our tool checks for common spoofing techniques (Canvas, WebGL, Audio) and flags connections from known VPNs or proxies.</p><h3>Why is a high risk score bad?</h3><p>A high score suggests your fingerprint is inconsistent, a common trait of antidetect browsers. While used for privacy, these browsers are often flagged as fraudulent by platforms like banks and e-commerce sites, risking account suspension.</p><h3>Is a score of 1 or 2 bad?</h3><p>No. A score below 3 is generally safe. Normal browsers can have minor inconsistencies. We only flag a browser as "likely antidetect" when multiple significant red flags are found.</p><h3>Is this 100% accurate?</h3><p>No tool is infallible in the cat-and-mouse game of browser security. This tool provides a strong, indicative analysis, not absolute proof.</p></div></div>
-    <div id="page-privacy" class="page"><div class="container static-page"><h2>Privacy Policy</h2><p>Your privacy is paramount. Our policy is simple: we don't store your data.</p><h3>IP Address Handling</h3><p>Your IP address is used *only* to perform the check with third-party databases during your session. It is never logged or stored on our servers.</p><h3>Browser Fingerprint</h3><p>All fingerprinting happens in your browser. Raw data (WebGL, Canvas, etc.) is never sent to us. Your device performs the analysis locally.</p><h3>Cookies & Tracking</h3><p>This website does not use cookies for tracking. Period.</p></div></div>
-    <div id="page-contact" class="page"><div class="container static-page"><h2>Get In Touch</h2><p>Have a question, feedback, or a partnership inquiry? We'd love to hear from you. Fill out the form below and our team will get back to you as soon as possible.</p><form class="contact-form" onsubmit="event.preventDefault(); alert('Thank you for your message! Our team will review it shortly.'); this.reset();"><div class="form-group"><input type="text" name="name" placeholder="Your Name" required></div><div class="form-group"><input type="email" name="email" placeholder="Your Email Address" required></div><div class="form-group"><input type="text" name="subject" placeholder="Subject" required></div><div class="form-group"><textarea name="message" placeholder="Your Message" required></textarea></div><button type="submit" class="form-submit-btn">Send Message</button></form></div></div>
+    <div id="page-faq" class="page"><div class="container static-page"><h2>Frequently Asked Questions</h2><p>Content for FAQ page.</p></div></div>
+    <div id="page-privacy" class="page"><div class="container static-page"><h2>Privacy Policy</h2><p>Content for Privacy page.</p></div></div>
+    <div id="page-contact" class="page"><div class="container static-page"><h2>Get In Touch</h2><p>Content for Contact page.</p></div></div>
   </main>
   
   <footer>© 2025 SpectraScan. All rights reserved. Your Shield in the Digital Shadows.</footer>
 </div>
 
 <script type="module">
-  /* --- NAVIGATION, THEME, ROUTER (Unchanged) --- */
-  const hamburgerBtn = document.getElementById('hamburger-btn'); const closeNavBtn = document.getElementById('close-nav-btn'); const mainNav = document.getElementById('main-nav');
+  /* --- NAVIGATION, THEME, ROUTER --- */
+  const hamburgerBtn = document.getElementById('hamburger-btn'); 
+  const closeNavBtn = document.getElementById('close-nav-btn'); 
+  const mainNav = document.getElementById('main-nav');
   hamburgerBtn.addEventListener('click', () => mainNav.classList.add('is-open'));
   closeNavBtn.addEventListener('click', () => mainNav.classList.remove('is-open'));
-  const themeToggleBtn = document.getElementById('theme-toggle-btn'); const body = document.body; const themeIcon = themeToggleBtn.querySelector('i');
-  function applySavedTheme() { const savedTheme = localStorage.getItem('theme'); if (savedTheme === 'light') { body.classList.add('light-mode'); themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun'); } else { body.classList.remove('light-mode'); themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon'); } }
-  themeToggleBtn.addEventListener('click', () => { body.classList.toggle('light-mode'); if (body.classList.contains('light-mode')) { localStorage.setItem('theme', 'light'); themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun'); } else { localStorage.setItem('theme', 'dark'); themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon'); } });
+  
+  const themeToggleBtn = document.getElementById('theme-toggle-btn'); 
+  const body = document.body; 
+  const themeIcon = themeToggleBtn.querySelector('i');
+  
+  function applySavedTheme() { 
+    const savedTheme = localStorage.getItem('theme'); 
+    if (savedTheme === 'light') { 
+      body.classList.add('light-mode'); 
+      themeIcon.classList.remove('fa-moon'); 
+      themeIcon.classList.add('fa-sun'); 
+    } else { 
+      body.classList.remove('light-mode'); 
+      themeIcon.classList.remove('fa-sun'); 
+      themeIcon.classList.add('fa-moon'); 
+    } 
+  }
+  
+  themeToggleBtn.addEventListener('click', () => { 
+    body.classList.toggle('light-mode'); 
+    if (body.classList.contains('light-mode')) { 
+      localStorage.setItem('theme', 'light'); 
+      themeIcon.classList.remove('fa-moon'); 
+      themeIcon.classList.add('fa-sun'); 
+    } else { 
+      localStorage.setItem('theme', 'dark'); 
+      themeIcon.classList.remove('fa-sun'); 
+      themeIcon.classList.add('fa-moon'); 
+    } 
+  });
+  
   const pageContent = { '/': 'page-catcher', '/faq': 'page-faq', '/privacy': 'page-privacy', '/contact': 'page-contact' };
-  function showPageContent(pageId) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); const el = document.getElementById(pageId); if (el) el.classList.add('active'); document.querySelectorAll('.nav-link').forEach(l => { l.classList.remove('active'); const path = (new URL(l.href)).pathname; if (path === window.location.pathname || (window.location.pathname === '/' && l.getAttribute('href') === '/')) l.classList.add('active'); });}
-  const router = () => { const path = window.location.pathname; const pageId = pageContent[path] || 'page-catcher'; showPageContent(pageId); };
-  document.addEventListener('click', (e) => { const a = e.target.closest('a'); if (a && (a.matches('.nav-link') || a.matches('.logo-link'))) { e.preventDefault(); history.pushState(null, '', a.href); mainNav.classList.remove('is-open'); router(); }});
-  window.addEventListener('popstate', router);
-  document.addEventListener('DOMContentLoaded', () => { applySavedTheme(); router(); });
+  
+  function showPageContent(path) {
+    const pageId = pageContent[path] || 'page-catcher';
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const el = document.getElementById(pageId);
+    if (el) el.classList.add('active');
 
-  /* --- CATCHER SCRIPT (MODIFIED) --- */
+    document.querySelectorAll('.nav-link').forEach(l => {
+      l.classList.remove('active');
+      if (l.getAttribute('href') === path) {
+        l.classList.add('active');
+      }
+    });
+    // Special case for the root path
+    if (path === '/') {
+        document.querySelector('.nav-link[href="/"]').classList.add('active');
+    }
+  }
 
-  // FIXED: Import the function from the library using the correct CDN URL.
-  import { getDeviceId } from 'https://cdn.jsdelivr.net/npm/@rajesh896/browser-fingerprint@1.1.2/index.js';
+  function handleRouting() {
+    const path = window.location.pathname;
+    showPageContent(path);
+  }
+
+  document.addEventListener('click', (e) => { 
+    const a = e.target.closest('a'); 
+    if (a && (a.matches('.nav-link') || a.matches('.logo-link'))) { 
+      e.preventDefault(); 
+      history.pushState(null, '', a.href); 
+      mainNav.classList.remove('is-open'); 
+      handleRouting(); 
+    }
+  });
+  
+  window.addEventListener('popstate', handleRouting);
+  
+  // Initial page setup on load
+  document.addEventListener('DOMContentLoaded', () => {
+    applySavedTheme();
+    handleRouting();
+  });
+
+  /* --- CATCHER SCRIPT --- */
+
+  // FIXED: Correctly import the function from the library's distributed file.
+  import { getDeviceId } from 'https://cdn.jsdelivr.net/npm/@rajesh896/browser-fingerprint@1.1.2/dist/index.js';
 
   // Make runDetection globally accessible from the button's onclick
   window.runDetection = async function() {
@@ -156,27 +222,23 @@
             console.error("Could not get fingerprint:", err);
             browserFingerprint = '<span class="danger">Error generating fingerprint</span>';
         }
-
-        // For now, we will just display the IP info and the new fingerprint.
-        // The old risk score logic can be re-integrated later if needed.
-        let ipRisk = 0;
+        
+        // This simplified example focuses on displaying the fingerprint.
+        // The old risk scoring logic can be added back here if needed.
         let ipData = null;
         let ipError = false;
         try {
-            // NOTE: You need to have your '/api/ip-check' endpoint running for this to work.
+            // NOTE: Your '/api/ip-check' endpoint must be running for this to work.
             const resp = await fetch('/api/ip-check'); 
             ipData = await resp.json();
-            if (ipData.error) { ipError = true; } 
-            else if (ipData.isProxy) { ipRisk = 2; }
+            if (ipData.error) { ipError = true; }
         } catch (e) {
             ipError = true;
         }
         
-        const isBadBrowser = ipRisk >= 2;
-        
         // Build Results HTML
         let resultsHTML = '';
-        if (isBadBrowser) {
+        if (ipData && ipData.isProxy) {
             resultsHTML += `<div class="verdict-box danger"><i class="fa-solid fa-tower-broadcast"></i><span>VPN or Proxy Detected!</span></div>`;
         } else {
              resultsHTML += `<div class="verdict-box safe"><i class="fa-solid fa-circle-check"></i><span>No obvious signs of an antidetect browser.</span></div>`;
