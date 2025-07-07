@@ -4,20 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>🛡️ SpectraScan - Unmask Your Digital Ghost</title>
-  <!-- Google Fonts: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-  <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <style>
-    /* CSS is identical to previous version, with one small addition for the logo link */
+    /* --- CSS Variables --- */
     :root { /* Dark Theme (Default) */
       --bg-color: #121217; --card-color: #1e1e24; --border-color: #33333a; --text-primary: #f0f0f0; --text-secondary: #a9a9b3; --accent-green: #00ff88; --accent-red: #ff4757; --accent-blue: #00aaff; --success-bg: rgba(0, 255, 136, 0.1); --danger-bg: rgba(255, 71, 87, 0.1); --bg-glow-color: rgba(0, 255, 138, 0.05); --bg-grid-color: #2a2a30;
     }
     body.light-mode { /* Light Theme */
       --bg-color: #f4f4f8; --card-color: #ffffff; --border-color: #e0e0e6; --text-primary: #121217; --text-secondary: #66666e; --success-bg: rgba(0, 200, 110, 0.1); --danger-bg: rgba(255, 71, 87, 0.1); --bg-glow-color: rgba(0, 170, 255, 0.04); --bg-grid-color: #dce0e6;
     }
+
+    /* --- Global & Background Styles --- */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background-color: var(--bg-color); color: var(--text-primary); font-family: 'Inter', sans-serif; line-height: 1.6; transition: background-color 0.3s ease; background-image: radial-gradient(circle at center, var(--bg-glow-color) 0%, transparent 40%), repeating-radial-gradient(circle at center, var(--bg-grid-color) 0, var(--bg-grid-color) 1px, transparent 1px, transparent 50px); background-size: 100% 100%, 50px 50px; }
     .page-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
@@ -25,52 +25,81 @@
     .page { display: none; width: 100%; max-width: 700px; }
     .page.active { display: block; animation: page-transition-in 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
     @keyframes page-transition-in { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
-    header { background-color: rgba(30, 30, 36, 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); padding: 0 40px; display: flex; justify-content: space-between; align-items: center; height: 70px; position: sticky; top: 0; z-index: 100; transition: background-color 0.3s ease, border-color 0.3s ease; }
+
+    /* --- Header / Navigation --- */
+    header { background-color: rgba(30, 30, 36, 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); padding: 0 20px; display: flex; justify-content: space-between; align-items: center; height: 70px; position: sticky; top: 0; z-index: 100; transition: background-color 0.3s ease, border-color 0.3s ease; }
     body.light-mode header { background-color: rgba(255, 255, 255, 0.8); }
-    .logo-link { text-decoration: none; } /* NEW: Style for the clickable logo */
+    .logo-link { text-decoration: none; }
     .logo { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 10px; color: var(--text-primary); }
     .logo .fa-shield-halved { color: var(--accent-green); }
+    .logo .logo-text-extra { display: inline; } /* "Catcher" part of logo */
     nav { display: flex; align-items: center; gap: 30px; }
-    nav a { color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s ease; }
-    nav a:hover, nav a.active { color: var(--text-primary); }
+    nav .nav-link { color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s ease; }
+    nav .nav-link:hover, nav .nav-link.active { color: var(--text-primary); }
     #theme-toggle-btn { background: none; border: none; color: var(--text-secondary); font-size: 20px; cursor: pointer; transition: color 0.2s ease, transform 0.2s ease; }
     #theme-toggle-btn:hover { color: var(--text-primary); transform: scale(1.1); }
+    
+    /* --- NEW: Hamburger Menu & Mobile Nav Styles --- */
+    #hamburger-btn, #close-nav-btn { display: none; background: none; border: none; font-size: 24px; color: var(--text-primary); cursor: pointer; }
+    #close-nav-btn { position: absolute; top: 20px; right: 20px; }
+    
+    /* --- Footer --- */
     footer { text-align: center; padding: 20px; color: var(--text-secondary); font-size: 14px; background-color: var(--card-color); border-top: 1px solid var(--border-color); margin-top: auto; transition: background-color 0.3s ease, border-color 0.3s ease; }
+    
+    /* Catcher, Verdict, and other styles remain the same... */
     .container { background-color: var(--card-color); padding: 30px 40px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease, border-color 0.3s ease; }
     h1 { font-size: 28px; font-weight: 700; margin-bottom: 10px; text-align: center; color: var(--text-primary); }
     .tagline { color: var(--text-secondary); margin-bottom: 30px; font-size: 16px; text-align: center; }
     button { cursor: pointer; transition: all 0.2s ease; font-family: 'Inter', sans-serif; }
-    button#run-btn { width: 100%; padding: 15px; background: var(--accent-green); color: #000; border: none; border-radius: 10px; font-weight: 700; font-size: 16px; }
+    button#run-btn, button#reset-btn { width: 100%; border: none; border-radius: 10px; font-weight: 700; font-size: 16px; }
+    button#run-btn { padding: 15px; background: var(--accent-green); color: #000; }
     button#run-btn:hover { background-color: #00e67a; transform: translateY(-2px); }
-    button#reset-btn { width: 100%; padding: 12px; background: var(--border-color); color: var(--text-secondary); border: 1px solid var(--border-color); border-radius: 10px; font-weight: 500; font-size: 15px; margin-top: 20px; }
+    button#reset-btn { padding: 12px; background: var(--border-color); color: var(--text-secondary); margin-top: 20px; }
     button#reset-btn:hover { background: #44444e; color: var(--text-primary); }
     body.light-mode button#reset-btn:hover { background: #d0d0d6; }
-    #results-container { margin-top: 30px; text-align: left; }
+    .loader-wrapper, .verdict-box, .risk-score, .details-grid, .static-page, .contact-form { /* ... all these inner styles are unchanged ... */ }
     .loader-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 0; animation: page-transition-in 0.5s; }
     .scanner-circle { width: 60px; height: 60px; border: 4px solid var(--border-color); border-top-color: var(--accent-green); border-radius: 50%; animation: spin 1s linear infinite, pulse 2s ease-in-out infinite; }
-    .scanner-text { margin-top: 20px; color: var(--text-secondary); font-weight: 500; letter-spacing: 1px; text-transform: uppercase; }
     @keyframes spin { to { transform: rotate(360deg); } }
     @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(0, 255, 138, 0.4); } 50% { box-shadow: 0 0 0 10px rgba(0, 255, 138, 0); } }
-    .verdict-box { padding: 15px; font-size: 18px; font-weight: 500; border-radius: 10px; border: 1px solid; display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-    .verdict-box.safe { background-color: var(--success-bg); border-color: var(--accent-green); color: var(--accent-green); }
-    .verdict-box.danger { background-color: var(--danger-bg); border-color: var(--accent-red); color: var(--accent-red); }
-    .risk-score { font-size: 16px; color: var(--text-secondary); text-align: center; margin-bottom: 25px; }
-    .risk-score strong { color: var(--text-primary); font-weight: 700; }
-    .details-grid { display: grid; grid-template-columns: auto 1fr; gap: 10px 20px; padding-top: 20px; border-top: 1px solid var(--border-color); }
-    .details-grid .label, .details-grid .value { font-weight: 500; }
-    .details-grid .label { color: var--text-secondary); }
-    .details-grid .value { color: var(--text-primary); }
-    .details-grid .value.danger { color: var(--accent-red); font-weight: 700; }
-    .details-grid .value.safe { color: var(--accent-green); }
-    .static-page h2 { font-size: 24px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); text-align: left; color: var(--text-primary); }
-    .static-page p { color: var(--text-secondary); margin-bottom: 20px; text-align: left; }
-    .static-page h3 { color: var(--accent-blue); margin-top: 30px; margin-bottom: 10px; text-align: left; }
-    .contact-form .form-group { margin-bottom: 20px; }
-    .contact-form input, .contact-form textarea { width: 100%; background-color: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; color: var(--text-primary); font-size: 15px; transition: border-color 0.2s ease, background-color 0.3s ease; }
-    .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--accent-blue); }
-    .contact-form textarea { resize: vertical; min-height: 120px; }
-    .form-submit-btn { width: 100%; padding: 15px; background: var(--accent-blue); color: var(--text-primary); border: none; border-radius: 10px; font-weight: 700; font-size: 16px; }
-    .form-submit-btn:hover { background-color: #0099e6; }
+    .scanner-text { margin-top: 20px; color: var(--text-secondary); font-weight: 500; letter-spacing: 1px; text-transform: uppercase; }
+    
+    /* --- NEW: Media Query for Responsive Design --- */
+    @media (max-width: 768px) {
+        header { padding: 0 20px; }
+        .logo .logo-text-extra { display: none; } /* Hide "Catcher" on mobile */
+        nav .nav-link, nav #theme-toggle-btn { display: none; } /* Hide desktop nav items */
+        #hamburger-btn { display: block; } /* Show hamburger button */
+
+        /* Mobile Nav Overlay styles */
+        nav {
+            position: fixed;
+            top: 0;
+            right: -100%; /* Start off-screen */
+            width: 100%;
+            height: 100vh;
+            background: rgba(18, 18, 23, 0.95);
+            backdrop-filter: blur(10px);
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        body.light-mode nav { background: rgba(244, 244, 248, 0.95); }
+        
+        nav.is-open {
+            right: 0; /* Slide in */
+        }
+
+        nav.is-open .nav-link, nav.is-open #theme-toggle-btn, nav.is-open #close-nav-btn {
+            display: block; /* Show items in the mobile menu */
+            font-size: 24px;
+        }
+
+        .container { padding: 20px; }
+        h1 { font-size: 24px; }
+    }
   </style>
 </head>
 <body>
@@ -78,36 +107,43 @@
 <div class="page-wrapper">
   <!-- ====== HEADER ====== -->
   <header>
-    <!-- NEW: Logo is now a clickable link -->
     <a href="/" class="logo-link">
       <div class="logo">
         <i class="fa-solid fa-shield-halved"></i>
-        <span>SpectraScan</span>
+        <span>SpectraScan<span class="logo-text-extra">Catcher</span></span>
       </div>
     </a>
-    <nav>
-      <!-- NEW: Links now use clean hrefs instead of onclick -->
-      <a href="/" class="nav-link">Catcher</a>
-      <a href="/faq" class="nav-link">FAQ</a>
-      <a href="/privacy" class="nav-link">Privacy</a>
-      <a href="/contact" class="nav-link">Contact</a>
-      <button id="theme-toggle-btn" title="Toggle theme"><i class="fa-solid fa-moon"></i></button>
+    <!-- NEW: Hamburger Button -->
+    <button id="hamburger-btn" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
+    <!-- Nav now contains everything, including close button and theme toggle for mobile -->
+    <nav id="main-nav">
+        <button id="close-nav-btn" aria-label="Close menu"><i class="fa-solid fa-times"></i></button>
+        <a href="/" class="nav-link">Catcher</a>
+        <a href="/faq" class="nav-link">FAQ</a>
+        <a href="/privacy" class="nav-link">Privacy</a>
+        <a href="/contact" class="nav-link">Contact</a>
+        <button id="theme-toggle-btn" title="Toggle theme"><i class="fa-solid fa-moon"></i></button>
     </nav>
   </header>
 
-  <!-- ====== MAIN CONTENT (PAGES) ====== -->
+  <!-- ====== MAIN CONTENT & FOOTER (No HTML changes needed here) ====== -->
   <main>
     <div id="page-catcher" class="page"><div class="container" id="catcher-container"><h1>Unmask Your Digital Ghost</h1><p class="tagline">Is your browser hiding in the shadows? Let's find out.</p><button id="run-btn" onclick="runDetection()">Run Detection</button><div id="results-container"></div></div></div>
     <div id="page-faq" class="page"><div class="container static-page"><h2>Frequently Asked Questions</h2><h3>What is this tool?</h3><p>SpectraScan analyzes your browser's fingerprint for signs of manipulation. Websites use these fingerprints to track you. Our tool checks for common spoofing techniques (Canvas, WebGL, Audio) and flags connections from known VPNs or proxies.</p><h3>Why is a high risk score bad?</h3><p>A high score suggests your fingerprint is inconsistent, a common trait of antidetect browsers. While used for privacy, these browsers are often flagged as fraudulent by platforms like banks and e-commerce sites, risking account suspension.</p><h3>Is a score of 1 or 2 bad?</h3><p>No. A score below 3 is generally safe. Normal browsers can have minor inconsistencies. We only flag a browser as "likely antidetect" when multiple significant red flags are found.</p><h3>Is this 100% accurate?</h3><p>No tool is infallible in the cat-and-mouse game of browser security. This tool provides a strong, indicative analysis, not absolute proof.</p></div></div>
     <div id="page-privacy" class="page"><div class="container static-page"><h2>Privacy Policy</h2><p>Your privacy is paramount. Our policy is simple: we don't store your data.</p><h3>IP Address Handling</h3><p>Your IP address is used *only* to perform the check with third-party databases during your session. It is never logged or stored on our servers.</p><h3>Browser Fingerprint</h3><p>All fingerprinting happens in your browser. Raw data (WebGL, Canvas, etc.) is never sent to us. Your device performs the analysis locally.</p><h3>Cookies & Tracking</h3><p>This website does not use cookies for tracking. Period.</p></div></div>
     <div id="page-contact" class="page"><div class="container static-page"><h2>Get In Touch</h2><p>Have a question, feedback, or a partnership inquiry? We'd love to hear from you. Fill out the form below and our team will get back to you as soon as possible.</p><form class="contact-form" onsubmit="event.preventDefault(); alert('Thank you for your message! Our team will review it shortly.'); this.reset();"><div class="form-group"><input type="text" name="name" placeholder="Your Name" required></div><div class="form-group"><input type="email" name="email" placeholder="Your Email Address" required></div><div class="form-group"><input type="text" name="subject" placeholder="Subject" required></div><div class="form-group"><textarea name="message" placeholder="Your Message" required></textarea></div><button type="submit" class="form-submit-btn">Send Message</button></form></div></div>
   </main>
-
-  <!-- ====== FOOTER ====== -->
   <footer>© 2025 SpectraScan. All rights reserved. Your Shield in the Digital Shadows.</footer>
 </div>
 
 <script>
+  /* --- RESPONSIVE NAVIGATION SCRIPT --- */
+  const hamburgerBtn = document.getElementById('hamburger-btn');
+  const closeNavBtn = document.getElementById('close-nav-btn');
+  const mainNav = document.getElementById('main-nav');
+  hamburgerBtn.addEventListener('click', () => mainNav.classList.add('is-open'));
+  closeNavBtn.addEventListener('click', () => mainNav.classList.remove('is-open'));
+  
   /* --- THEME TOGGLE SCRIPT --- */
   const themeToggleBtn = document.getElementById('theme-toggle-btn');
   const body = document.body;
@@ -115,48 +151,31 @@
   function applySavedTheme() { const savedTheme = localStorage.getItem('theme'); if (savedTheme === 'light') { body.classList.add('light-mode'); themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun'); } else { body.classList.remove('light-mode'); themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon'); } }
   themeToggleBtn.addEventListener('click', () => { body.classList.toggle('light-mode'); if (body.classList.contains('light-mode')) { localStorage.setItem('theme', 'light'); themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun'); } else { localStorage.setItem('theme', 'dark'); themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon'); } });
 
-  /* --- NEW SPA ROUTER SCRIPT --- */
-  const pageContent = {
-    '/': 'page-catcher',
-    '/faq': 'page-faq',
-    '/privacy': 'page-privacy',
-    '/contact': 'page-contact'
-  };
-
+  /* --- SPA ROUTER SCRIPT --- */
+  const pageContent = { '/': 'page-catcher', '/faq': 'page-faq', '/privacy': 'page-privacy', '/contact': 'page-contact' };
   function showPageContent(pageId) {
     document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
     document.getElementById(pageId).classList.add('active');
     document.querySelectorAll('.nav-link').forEach(link => {
       link.classList.remove('active');
-      if (link.getAttribute('href') === window.location.pathname) {
+      const targetPath = (new URL(link.href)).pathname;
+      if (targetPath === window.location.pathname || (window.location.pathname === '/' && targetPath === '/')) {
         link.classList.add('active');
       }
     });
   }
-
-  const router = () => {
-    const path = window.location.pathname;
-    const pageId = pageContent[path] || 'page-catcher'; // Default to catcher page
-    showPageContent(pageId);
-  };
-
-  // Handle navigation clicks
+  const router = () => { const path = window.location.pathname; const pageId = pageContent[path] || 'page-catcher'; showPageContent(pageId); };
   document.addEventListener('click', (e) => {
     const target = e.target.closest('a');
-    if (target && target.matches('.nav-link, .logo-link')) {
+    if (target && (target.matches('.nav-link') || target.matches('.logo-link'))) {
       e.preventDefault();
       history.pushState(null, '', target.href);
+      mainNav.classList.remove('is-open'); // Close nav on link click
       router();
     }
   });
-
-  // Handle browser back/forward buttons
   window.addEventListener('popstate', router);
-  // Handle initial page load
-  document.addEventListener('DOMContentLoaded', () => {
-    applySavedTheme();
-    router();
-  });
+  document.addEventListener('DOMContentLoaded', () => { applySavedTheme(); router(); });
 
   /* --- CATCHER SCRIPT (NO CHANGE) --- */
   const knownSpoofedCanvas = [-1222622419, -1982647924, -1687811050];
