@@ -6,7 +6,7 @@
   <title>🛡️ SpectraScan - Unmask Your Digital Ghost</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   
   <!-- ThumbmarkJS Fingerprinting Library -->
@@ -47,32 +47,93 @@
     footer { text-align: center; padding: 20px; color: var(--text-secondary); font-size: 14px; background-color: var(--card-color); border-top: 1px solid var(--border-color); margin-top: auto; transition: background-color 0.3s ease, border-color 0.3s ease; }
     
     .container { background-color: var(--card-color); padding: 30px 40px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease, border-color 0.3s ease; }
-    h1 { font-size: 28px; font-weight: 700; margin-bottom: 10px; text-align: center; color: var(--text-primary); }
-    .tagline { color: var(--text-secondary); margin-bottom: 30px; font-size: 16px; text-align: center; }
-    button { cursor: pointer; transition: all 0.2s ease; font-family: 'Inter', sans-serif; }
-    button#run-btn, button#reset-btn { width: 100%; border: none; border-radius: 10px; font-weight: 700; font-size: 16px; }
-    button#run-btn { padding: 15px; background: var(--accent-green); color: #000; }
-    button#run-btn:hover { background-color: #00e67a; transform: translateY(-2px); }
+
+    /* --- SEXY UI & ANIMATIONS --- */
+    h1 {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        text-align: center;
+        color: var(--text-primary);
+        position: relative;
+        animation: glitch-anim 3s infinite linear alternate-reverse;
+    }
+    h1::before, h1::after {
+        content: "Unmask Your Digital Ghost";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--card-color);
+        overflow: hidden;
+    }
+    h1::before {
+        left: 2px;
+        text-shadow: -2px 0 var(--accent-red);
+        clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+        animation: glitch-anim-2 3s infinite linear alternate-reverse;
+    }
+    h1::after {
+        left: -2px;
+        text-shadow: -2px 0 var(--accent-blue), 2px 2px var(--accent-green);
+        clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+        animation: glitch-anim 3s infinite linear alternate-reverse;
+    }
+
+    @keyframes glitch-anim { 0% { clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%); } 10% { clip-path: polygon(0 40%, 100% 40%, 100% 80%, 0 80%); } 20%, 100% { clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%); } }
+    @keyframes glitch-anim-2 { 0% { clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%); } 15% { clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%); } 25%, 100% { clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%); } }
+    
+    .tagline { 
+      color: var(--text-secondary); 
+      margin-bottom: 30px; 
+      font-size: 16px; 
+      text-align: center;
+      font-family: 'Roboto Mono', monospace;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 100%; /* Start with full width to avoid layout shift */
+      border-right: .15em solid var(--accent-green); /* The typwriter cursor */
+      animation: typing 3.5s steps(38, end), blink-caret .75s step-end infinite;
+    }
+    @keyframes typing { from { width: 0 } to { width: 100% } }
+    @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--accent-green); } }
+
+    button#run-btn { padding: 15px; background: var(--accent-green); color: #000; font-size: 18px; font-weight: 700; border: none; border-radius: 10px; box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); transition: all 0.3s ease; }
+    button#run-btn:hover { background-color: #00e67a; transform: translateY(-3px) scale(1.02); box-shadow: 0 0 25px rgba(0, 255, 136, 0.6); }
     button#reset-btn { padding: 12px; background: var(--border-color); color: var(--text-secondary); margin-top: 20px; }
     button#reset-btn:hover { background: #44444e; color: var(--text-primary); }
     body.light-mode button#reset-btn:hover { background: #d0d0d6; }
+
     #results-container { margin-top: 30px; text-align: left; }
     .loader-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 0; animation: page-transition-in 0.5s; }
     .scanner-circle { width: 60px; height: 60px; border: 4px solid var(--border-color); border-top-color: var(--accent-green); border-radius: 50%; animation: spin 1s linear infinite, pulse 2s ease-in-out infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
     @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(0, 255, 138, 0.4); } 50% { box-shadow: 0 0 0 10px rgba(0, 255, 138, 0); } }
     .scanner-text { margin-top: 20px; color: var(--text-secondary); font-weight: 500; letter-spacing: 1px; text-transform: uppercase; }
-    .verdict-box { padding: 15px; font-size: 18px; font-weight: 500; border-radius: 10px; border: 1px solid; display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-    .verdict-box.safe { background-color: var(--success-bg); border-color: var(--accent-green); color: var(--accent-green); }
-    .verdict-box.danger { background-color: var(--danger-bg); border-color: var(--accent-red); color: var(--accent-red); }
+    
+    .verdict-box { padding: 20px; font-size: 22px; font-weight: 700; border-radius: 12px; border: 2px solid; display: flex; align-items: center; gap: 15px; margin-bottom: 25px; animation: pulse-border 2s infinite; }
+    .verdict-box.safe { background-color: var(--success-bg); border-color: var(--accent-green); color: var(--accent-green); box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); }
+    .verdict-box.danger { background-color: var(--danger-bg); border-color: var(--accent-red); color: var(--accent-red); box-shadow: 0 0 20px rgba(255, 71, 87, 0.4); }
+    @keyframes pulse-border { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.01); } }
+    
     .risk-score { font-size: 16px; color: var(--text-secondary); text-align: center; margin-bottom: 25px; }
-    .risk-score strong { color: var(--text-primary); font-weight: 700; }
-    .details-grid { display: grid; grid-template-columns: auto 1fr; gap: 10px 20px; padding-top: 20px; border-top: 1px solid var(--border-color); }
-    .details-grid .label, .details-grid .value { font-weight: 500; word-break: break-all; }
-    .details-grid .label { color: var(--text-secondary); }
-    .details-grid .value { color: var(--text-primary); font-size: 12px; }
+    .risk-score strong { color: var(--text-primary); font-weight: 700; font-size: 18px; }
+    
+    .details-grid { display: grid; grid-template-columns: 180px 1fr; gap: 12px 20px; padding-top: 20px; border-top: 1px solid var(--border-color); font-family: 'Roboto Mono', monospace; }
+    .details-grid > * { opacity: 0; animation: fade-in-up 0.5s ease forwards; }
+    .details-grid .label:nth-child(1), .details-grid .value:nth-child(2) { animation-delay: 0.1s; }
+    .details-grid .label:nth-child(3), .details-grid .value:nth-child(4) { animation-delay: 0.2s; }
+    .details-grid .label:nth-child(5), .details-grid .value:nth-child(6) { animation-delay: 0.3s; }
+    
+    @keyframes fade-in-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .details-grid .label { color: var(--text-secondary); text-align: right; } /* FIXED alignment */
+    .details-grid .value { color: var(--text-primary); font-size: 13px; word-break: break-all; }
     .details-grid .value.danger { color: var(--accent-red); font-weight: 700; }
     .details-grid .value.safe { color: var(--accent-green); }
+    .details-grid .value.fingerprint-hash { color: var(--accent-blue); }
+
     .static-page h2 { font-size: 24px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); color: var(--text-primary); }
     .static-page p { color: var(--text-secondary); margin-bottom: 20px; line-height: 1.7; }
     .static-page h3 { color: var(--accent-blue); margin-top: 30px; margin-bottom: 10px; }
@@ -93,7 +154,8 @@
         nav.is-open .nav-link, nav.is-open #theme-toggle-btn, nav.is-open #close-nav-btn { display: block; font-size: 24px; }
         .container { padding: 20px; }
         h1 { font-size: 24px; }
-        .details-grid { grid-template-columns: 1fr; text-align: center; gap: 4px; }
+        .details-grid { grid-template-columns: 1fr; text-align: center; }
+        .details-grid .label { text-align: center; }
         .details-grid .value { margin-bottom: 16px; }
     }
   </style>
@@ -176,7 +238,10 @@
   
   function showPageContent(pageId) {
     document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-    document.getElementById(pageId).classList.add('active');
+    const pageEl = document.getElementById(pageId);
+    if (pageEl) {
+        pageEl.classList.add('active');
+    }
     document.querySelectorAll('.nav-link').forEach(link => {
       link.classList.remove('active');
       const linkPath = link.getAttribute('href');
@@ -227,7 +292,6 @@
     resultsEl.innerHTML = `<div class="loader-wrapper"><div class="scanner-circle"></div><p class="scanner-text">ANALYZING SIGNATURE...</p></div>`;
     
     const detectionPromise = (async () => {
-        // 1. Get ThumbmarkJS Fingerprint
         let thumbmarkFingerprint = 'N/A';
         try {
             if (typeof ThumbmarkJS !== 'undefined') {
@@ -240,7 +304,6 @@
             thumbmarkFingerprint = '<span class="danger">Error generating fingerprint</span>';
         }
 
-        // 2. Run Existing Detection Logic
         let browserRiskScore = 0; 
         const gl = getWebGLInfo(); 
         const language = navigator.language; 
@@ -259,7 +322,6 @@
         let ipData = null; 
         let ipError = false;
         try { 
-            // FIXED: Added { cache: 'no-store' } to prevent browser from caching the IP check
             const resp = await fetch('/api/ip-check', { cache: 'no-store' }); 
             ipData = await resp.json(); 
             if (ipData.error) { ipError = true; } 
@@ -269,9 +331,8 @@
         const totalRiskScore = browserRiskScore + ipRisk; 
         const isBadBrowser = browserRiskScore >= 3; 
         
-        // 3. Build Results HTML
         let resultsHTML = '';
-        resultsHTML += `<div class="verdict-box ${isBadBrowser ? 'danger' : 'safe'}"><i class="fa-solid ${isBadBrowser ? 'fa-triangle-exclamation' : 'fa-circle-check'}"></i><span>${isBadBrowser ? "This is likely an Antidetect Browser!" : "This appears to be a Normal Browser."}</span></div>`;
+        resultsHTML += `<div class="verdict-box ${isBadBrowser ? 'danger' : 'safe'}"><i class="fa-solid ${isBadBrowser ? 'fa-bomb' : 'fa-shield-check'} fa-lg"></i><span>${isBadBrowser ? "High Risk Profile Detected!" : "Profile Appears Normal"}</span></div>`;
         resultsHTML += `<div class="risk-score">Total Risk Score: <strong>${totalRiskScore}/5</strong></div>`;
         
         let detailsGridHTML = '';
@@ -285,7 +346,7 @@
             detailsGridHTML += `<div class="label">IP Status:</div><div class="value ${ipData.isProxy ? 'danger' : 'safe'}" style="font-size: 14px;">${ipData.status}</div>`;
         }
         
-        detailsGridHTML += `<div class="label">Browser Fingerprint:</div><div class="value" style="color: var(--accent-blue);">${thumbmarkFingerprint}</div>`;
+        detailsGridHTML += `<div class="label">Browser Fingerprint:</div><div class="value fingerprint-hash">${thumbmarkFingerprint}</div>`;
         
         resultsHTML += `<div class="details-grid">${detailsGridHTML}</div>`;
         resultsHTML += `<button id="reset-btn" onclick="resetCatcher()">Run Another Test</button>`;
