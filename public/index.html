@@ -103,7 +103,7 @@
     .risk-score { font-size: 16px; color: var(--text-secondary); text-align: center; margin-bottom: 25px; }
     .risk-score strong { color: var(--text-primary); font-weight: 700; font-size: 18px; }
     
-    .details-grid { display: grid; grid-template-columns: 180px 1fr; gap: 12px 20px; padding: 20px 0; border-top: 1px solid var(--border-color); font-family: 'Roboto Mono', monospace; }
+    .details-grid { display: grid; grid-template-columns: auto 1fr; gap: 12px 20px; padding: 20px 0; border-top: 1px solid var(--border-color); font-family: 'Roboto Mono', monospace; }
     .details-grid > * { opacity: 0; animation: fade-in-up 0.5s ease forwards; }
     .details-grid .label:nth-child(1), .details-grid .value:nth-child(2) { animation-delay: 0.1s; }
     .details-grid .label:nth-child(3), .details-grid .value:nth-child(4) { animation-delay: 0.2s; }
@@ -116,18 +116,23 @@
     .details-grid .value.safe { color: var(--accent-green); }
     .details-grid .value.fingerprint-hash { color: var(--accent-blue); font-size: 13px;}
 
-    .results-footer { text-align: center; padding-top: 30px; }
+    .results-footer { text-align: center; padding-top: 30px; animation: fade-in-up 0.5s 0.5s ease forwards; opacity: 0; }
     .results-separator {
-        width: 60%; margin: 0 auto 20px auto; height: 1px; background: var(--border-color);
+        width: 60%; margin: 0 auto 25px auto; height: 1px; 
+        background-image: linear-gradient(to right, transparent, var(--border-color), transparent);
         display: flex; align-items: center; justify-content: center;
-        opacity: 0; animation: fade-in-up 0.5s 0.5s ease forwards;
     }
     .results-separator::after {
-        content: '<//>'; font-family: 'Roboto Mono', monospace; font-size: 14px;
-        color: var(--accent-green); background: var(--card-color); padding: 0 10px;
-        animation: text-flicker 2s infinite;
+        content: ''; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+        content: '\f1e2'; /* fa-skull-crossbones */
+        font-size: 16px; color: var(--accent-green);
+        background: var(--card-color); padding: 0 15px;
+        animation: pulse-icon 2s infinite ease-in-out;
     }
-
+    .results-separator.danger::after { color: var(--accent-red); }
+    @keyframes pulse-icon { 0%, 100% { transform: scale(1); text-shadow: 0 0 5px var(--accent-green); } 50% { transform: scale(1.1); text-shadow: 0 0 15px var(--accent-green); } }
+    .results-separator.danger @keyframes pulse-icon { 0%, 100% { text-shadow: 0 0 5px var(--accent-red); } 50% { text-shadow: 0 0 15px var(--accent-red); } }
+    
     .static-page p { color: var(--text-secondary); margin-bottom: 20px; line-height: 1.7; font-family: 'Roboto Mono', monospace; }
     .static-page h3 { color: var(--accent-blue); margin-top: 30px; margin-bottom: 10px; font-family: 'Roboto Mono', monospace; }
     .contact-form .form-group { margin-bottom: 20px; }
@@ -354,10 +359,10 @@
             detailsGridHTML += `<div class="label">IP Status:</div><div class="value ${ipData.isProxy ? 'danger' : 'safe'}">${ipData.status}</div>`;
         }
         
-        detailsGridHTML += `<div class="label">Browser Fingerprint:</div><div class="value fingerprint-hash">${thumbmarkFingerprint}</div>`;
+        detailsGridHTML += `<div class="label">FP Hash:</div><div class="value fingerprint-hash">${thumbmarkFingerprint}</div>`;
         
         resultsHTML += `<div class="details-grid">${detailsGridHTML}</div>`;
-        resultsHTML += `<div class="results-footer"><div class="results-separator"></div><button id="reset-btn" onclick="resetCatcher()">Run Another Test</button></div>`;
+        resultsHTML += `<div class="results-footer"><div class="results-separator ${isBadBrowser ? 'danger' : 'safe'}"></div><button id="reset-btn" onclick="resetCatcher()">Run Another Test</button></div>`;
         
         return {html: resultsHTML, bad: isBadBrowser};
     })();
