@@ -9,28 +9,38 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   
-  <!-- ThumbmarkJS Fingerprinting Library -->
   <script src="https://cdn.jsdelivr.net/npm/@thumbmarkjs/thumbmarkjs/dist/thumbmark.umd.js"></script>
 
   <style>
-    /* --- CSS Variables --- */
-    :root { /* Dark Theme (Default) */
+    :root {
       --bg-color: #121217; --card-color: #1e1e24; --border-color: #33333a; --text-primary: #f0f0f0; --text-secondary: #a9a9b3; --accent-green: #00ff88; --accent-red: #ff4757; --accent-blue: #00aaff; --success-bg: rgba(0, 255, 136, 0.1); --danger-bg: rgba(255, 71, 87, 0.1); --bg-glow-color: rgba(0, 255, 138, 0.05); --bg-grid-color: #2a2a30;
     }
-    body.light-mode { /* Light Theme */
+    body.light-mode {
       --bg-color: #f4f4f8; --card-color: #ffffff; --border-color: #e0e0e6; --text-primary: #121217; --text-secondary: #66666e; --success-bg: rgba(0, 200, 110, 0.1); --danger-bg: rgba(255, 71, 87, 0.1); --bg-glow-color: rgba(0, 170, 255, 0.04); --bg-grid-color: #dce0e6;
     }
 
-    /* --- Global & Background Styles --- */
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background-color: var(--bg-color); color: var(--text-primary); font-family: 'Inter', sans-serif; line-height: 1.6; transition: background-color 0.3s ease; background-image: radial-gradient(circle at center, var(--bg-glow-color) 0%, transparent 40%), repeating-radial-gradient(circle at center, var(--bg-grid-color) 0, var(--bg-grid-color) 1px, transparent 1px, transparent 50px); background-size: 100% 100%, 50px 50px; }
-    .page-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
+    
+    body {
+        background-color: var(--bg-color); color: var(--text-primary); font-family: 'Inter', sans-serif; line-height: 1.6; overflow: hidden; position: relative;
+    }
+    /* --- NEW SEXY BACKGROUND --- */
+    body::before {
+        content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+        background-image: 
+            linear-gradient(to right, var(--bg-grid-color) 1px, transparent 1px),
+            linear-gradient(to bottom, var(--bg-grid-color) 1px, transparent 1px);
+        background-size: 40px 40px;
+        animation: pan-grid 60s linear infinite;
+    }
+    @keyframes pan-grid { from { background-position: 0 0; } to { background-position: 400px 400px; } }
+
+    .page-wrapper { display: flex; flex-direction: column; min-height: 100vh; overflow-y: auto; }
     main { flex-grow: 1; display: flex; justify-content: center; align-items: center; padding: 40px 20px; }
     .page { display: none; width: 100%; max-width: 700px; }
     .page.active { display: block; animation: page-transition-in 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
     @keyframes page-transition-in { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-    /* --- Header / Navigation --- */
     header { background-color: rgba(30, 30, 36, 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); padding: 0 40px; display: flex; justify-content: space-between; align-items: center; height: 70px; position: sticky; top: 0; z-index: 100; transition: background-color 0.3s ease, border-color 0.3s ease; }
     body.light-mode header { background-color: rgba(255, 255, 255, 0.8); }
     .logo-link { text-decoration: none; }
@@ -47,64 +57,44 @@
     footer { text-align: center; padding: 20px; color: var(--text-secondary); font-size: 14px; background-color: var(--card-color); border-top: 1px solid var(--border-color); margin-top: auto; transition: background-color 0.3s ease, border-color 0.3s ease; }
     
     .container { background-color: var(--card-color); padding: 30px 40px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease, border-color 0.3s ease; }
-
-    /* --- SEXY UI & ANIMATIONS --- */
-    h1 {
-        font-size: 2.2rem;
-        font-weight: 700;
-        margin-bottom: 10px;
-        text-align: center;
-        color: var(--text-primary);
-        position: relative;
-        animation: glitch-anim 3s infinite linear alternate-reverse;
-    }
-    h1::before, h1::after {
-        content: "Unmask Your Digital Ghost";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: var(--card-color);
-        overflow: hidden;
-    }
-    h1::before {
-        left: 2px;
-        text-shadow: -2px 0 var(--accent-red);
-        clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
-        animation: glitch-anim-2 3s infinite linear alternate-reverse;
-    }
-    h1::after {
-        left: -2px;
-        text-shadow: -2px 0 var(--accent-blue), 2px 2px var(--accent-green);
-        clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
-        animation: glitch-anim 3s infinite linear alternate-reverse;
-    }
-
-    @keyframes glitch-anim { 0% { clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%); } 10% { clip-path: polygon(0 40%, 100% 40%, 100% 80%, 0 80%); } 20%, 100% { clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%); } }
-    @keyframes glitch-anim-2 { 0% { clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%); } 15% { clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%); } 25%, 100% { clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%); } }
     
+    /* --- SEXY UI & ANIMATIONS --- */
+    h1, .static-page h2 {
+        font-size: 2.2rem; font-weight: 700; margin-bottom: 10px; text-align: center; color: var(--text-primary);
+        position: relative; animation: text-flicker 3s linear infinite;
+    }
+    h1::before, h1::after, .static-page h2::before, .static-page h2::after {
+        content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        background: var(--card-color); overflow: hidden;
+    }
+    h1::before, .static-page h2::before {
+        left: 3px; text-shadow: -2px 0 var(--accent-red); animation: glitch-anim-2 3s infinite linear alternate-reverse;
+    }
+    h1::after, .static-page h2::after {
+        left: -3px; text-shadow: -2px 0 var(--accent-blue); animation: glitch-anim 3s infinite linear alternate-reverse;
+    }
+    @keyframes text-flicker { 0%, 19.9%, 22%, 62.9%, 64%, 64.9%, 70%, 100% { opacity: 0.99; } 20%, 21.9%, 63%, 63.9%, 65%, 69.9% { opacity: 0.4; } }
+    @keyframes glitch-anim { 0% { clip-path: inset(40% 0 60% 0); } 10% { clip-path: inset(60% 0 10% 0); } 20%, 100% { clip-path: inset(50% 0 30% 0); } }
+    @keyframes glitch-anim-2 { 0% { clip-path: inset(0 0 90% 0); } 15% { clip-path: inset(80% 0 5% 0); } 25%, 100% { clip-path: inset(40% 0 45% 0); } }
+
     .tagline { 
-      color: var(--text-secondary); 
-      margin-bottom: 30px; 
-      font-size: 16px; 
-      text-align: center;
-      font-family: 'Roboto Mono', monospace;
-      white-space: nowrap;
-      overflow: hidden;
-      width: 100%; /* Start with full width to avoid layout shift */
-      border-right: .15em solid var(--accent-green); /* The typwriter cursor */
-      animation: typing 3.5s steps(38, end), blink-caret .75s step-end infinite;
+      color: var(--text-secondary); margin-bottom: 30px; font-size: 16px; text-align: center;
+      font-family: 'Roboto Mono', monospace; white-space: nowrap; overflow: hidden;
+      border-right: .15em solid var(--accent-green); animation: typing 3s steps(38, end), blink-caret .75s step-end infinite;
     }
     @keyframes typing { from { width: 0 } to { width: 100% } }
     @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--accent-green); } }
 
-    button#run-btn { padding: 15px; background: var(--accent-green); color: #000; font-size: 18px; font-weight: 700; border: none; border-radius: 10px; box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); transition: all 0.3s ease; }
+    .run-btn-wrapper { display: flex; justify-content: center; }
+    button#run-btn { padding: 15px 30px; background: var(--accent-green); color: #000; font-size: 18px; font-weight: 700; border: none; border-radius: 10px; box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); transition: all 0.3s ease; }
     button#run-btn:hover { background-color: #00e67a; transform: translateY(-3px) scale(1.02); box-shadow: 0 0 25px rgba(0, 255, 136, 0.6); }
-    button#reset-btn { padding: 12px; background: var(--border-color); color: var(--text-secondary); margin-top: 20px; }
-    button#reset-btn:hover { background: #44444e; color: var(--text-primary); }
-    body.light-mode button#reset-btn:hover { background: #d0d0d6; }
-
+    
+    button#reset-btn { padding: 12px; background: var(--border-color); color: var(--text-secondary); margin-top: 20px; transition: all 0.3s ease; }
+    button#reset-btn.safe-button { background-color: var(--accent-green); color: #000; box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); }
+    button#reset-btn.safe-button:hover { background-color: #00e67a; transform: translateY(-2px); box-shadow: 0 0 25px rgba(0, 255, 136, 0.6); }
+    button#reset-btn.danger-button { background-color: var(--accent-red); color: #fff; box-shadow: 0 0 15px rgba(255, 71, 87, 0.4); }
+    button#reset-btn.danger-button:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(255, 71, 87, 0.7); }
+    
     #results-container { margin-top: 30px; text-align: left; }
     .loader-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 0; animation: page-transition-in 0.5s; }
     .scanner-circle { width: 60px; height: 60px; border: 4px solid var(--border-color); border-top-color: var(--accent-green); border-radius: 50%; animation: spin 1s linear infinite, pulse 2s ease-in-out infinite; }
@@ -128,21 +118,20 @@
     
     @keyframes fade-in-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    .details-grid .label { color: var(--text-secondary); text-align: right; } /* FIXED alignment */
+    .details-grid .label { color: var(--text-secondary); text-align: right; }
     .details-grid .value { color: var(--text-primary); font-size: 13px; word-break: break-all; }
     .details-grid .value.danger { color: var(--accent-red); font-weight: 700; }
     .details-grid .value.safe { color: var(--accent-green); }
     .details-grid .value.fingerprint-hash { color: var(--accent-blue); }
 
-    .static-page h2 { font-size: 24px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); color: var(--text-primary); }
-    .static-page p { color: var(--text-secondary); margin-bottom: 20px; line-height: 1.7; }
-    .static-page h3 { color: var(--accent-blue); margin-top: 30px; margin-bottom: 10px; }
+    .static-page p { color: var(--text-secondary); margin-bottom: 20px; line-height: 1.7; font-family: 'Roboto Mono', monospace; }
+    .static-page h3 { color: var(--accent-blue); margin-top: 30px; margin-bottom: 10px; font-family: 'Roboto Mono', monospace; }
     .contact-form .form-group { margin-bottom: 20px; }
-    .contact-form input, .contact-form textarea { width: 100%; background-color: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; color: var(--text-primary); font-size: 15px; transition: border-color 0.2s ease, background-color 0.3s ease; }
-    .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--accent-blue); }
+    .contact-form input, .contact-form textarea { width: 100%; background-color: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; color: var(--text-primary); font-size: 15px; transition: all 0.2s ease; font-family: 'Roboto Mono', monospace; }
+    .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--accent-blue); box-shadow: 0 0 10px rgba(0,170,255,0.5); }
     .contact-form textarea { resize: vertical; min-height: 120px; }
-    .form-submit-btn { width: 100%; padding: 15px; background: var(--accent-blue); color: var(--text-primary); border: none; border-radius: 10px; font-weight: 700; font-size: 16px; }
-    .form-submit-btn:hover { background-color: #0099e6; }
+    .form-submit-btn { width: 100%; padding: 15px; background: var(--accent-blue); color: #fff; border: none; border-radius: 10px; font-weight: 700; font-size: 16px; box-shadow: 0 0 15px rgba(0,170,255, 0.3); }
+    .form-submit-btn:hover { background-color: #0099e6; transform: translateY(-2px); box-shadow: 0 0 25px rgba(0,170,255, 0.6); }
     
     @media (max-width: 768px) {
         header { padding: 0 20px; }
@@ -153,7 +142,7 @@
         nav.is-open { right: 0; }
         nav.is-open .nav-link, nav.is-open #theme-toggle-btn, nav.is-open #close-nav-btn { display: block; font-size: 24px; }
         .container { padding: 20px; }
-        h1 { font-size: 24px; }
+        h1, .static-page h2 { font-size: 24px; }
         .details-grid { grid-template-columns: 1fr; text-align: center; }
         .details-grid .label { text-align: center; }
         .details-grid .value { margin-bottom: 16px; }
@@ -184,13 +173,54 @@
 
   <!-- ====== MAIN CONTENT & PAGES ====== -->
   <main>
-    <div id="page-catcher" class="page"><div class="container" id="catcher-container"><h1>Unmask Your Digital Ghost</h1><p class="tagline">Is your browser hiding in the shadows? Let's find out.</p><button id="run-btn" onclick="runDetection()">Run Detection</button><div id="results-container"></div></div></div>
+    <div id="page-catcher" class="page">
+      <div class="container" id="catcher-container">
+        <div id="intro-content">
+          <h1 data-text="Unmask Your Digital Ghost">Unmask Your Digital Ghost</h1>
+          <p class="tagline">Is your browser hiding in the shadows? Let's find out.</p>
+          <div class="run-btn-wrapper">
+            <button id="run-btn" onclick="runDetection()">Run Detection</button>
+          </div>
+        </div>
+        <div id="results-container"></div>
+      </div>
+    </div>
     
-    <div id="page-faq" class="page"><div class="container static-page"><h2>Frequently Asked Questions</h2><h3>What is this tool?</h3><p>SpectraScan analyzes your browser's fingerprint for signs of manipulation. Websites use these fingerprints to track you. Our tool checks for common spoofing techniques (Canvas, WebGL, Audio) and flags connections from known VPNs or proxies.</p><h3>Why is a high risk score bad?</h3><p>A high score suggests your fingerprint is inconsistent, a common trait of antidetect browsers. While used for privacy, these browsers are often flagged as fraudulent by platforms like banks and e-commerce sites, risking account suspension.</p><h3>Is a score of 1 or 2 bad?</h3><p>No. A score below 3 is generally safe. Normal browsers can have minor inconsistencies. We only flag a browser as "likely antidetect" when multiple significant red flags are found.</p><h3>Is this 100% accurate?</h3><p>No tool is infallible in the cat-and-mouse game of browser security. This tool provides a strong, indicative analysis, not absolute proof.</p></div></div>
+    <div id="page-faq" class="page">
+      <div class="container static-page">
+        <h2 data-text="Frequently Asked Questions">Frequently Asked Questions</h2>
+        <h3>What is this tool?</h3>
+        <p>SpectraScan analyzes your browser's fingerprint for signs of manipulation. Websites use these fingerprints to track you. Our tool checks for common spoofing techniques (Canvas, WebGL, Audio) and flags connections from known VPNs or proxies.</p>
+        <h3>Why is a high risk score bad?</h3>
+        <p>A high score suggests your fingerprint is inconsistent, a common trait of antidetect browsers. While used for privacy, these browsers are often flagged as fraudulent by platforms like banks and e-commerce sites, risking account suspension.</p>
+        <h3>Is this 100% accurate?</h3>
+        <p>No tool is infallible in the cat-and-mouse game of browser security. This tool provides a strong, indicative analysis, not absolute proof.</p>
+      </div>
+    </div>
     
-    <div id="page-privacy" class="page"><div class="container static-page"><h2>Privacy Policy</h2><p>Your privacy is paramount. Our policy is simple: we don't store your data.</p><h3>IP Address Handling</h3><p>Your IP address is used *only* to perform the check with third-party databases during your session. It is never logged or stored on our servers.</p><h3>Browser Fingerprint</h3><p>All fingerprinting happens in your browser. Raw data (WebGL, Canvas, etc.) is never sent to us. Your device performs the analysis locally.</p><h3>Cookies & Tracking</h3><p>This website does not use cookies for tracking. Period.</p></div></div>
+    <div id="page-privacy" class="page">
+        <div class="container static-page">
+            <h2 data-text="Privacy Policy">Privacy Policy</h2>
+            <p>Your privacy is paramount. Our policy is simple: we don't store your data.</p>
+            <h3>IP Address Handling</h3><p>Your IP address is used *only* to perform the check with third-party databases during your session. It is never logged or stored on our servers.</p>
+            <h3>Browser Fingerprint</h3><p>All fingerprinting happens in your browser. Raw data (WebGL, Canvas, etc.) is never sent to us. Your device performs the analysis locally.</p>
+            <h3>Cookies & Tracking</h3><p>This website does not use cookies for tracking. Period.</p>
+        </div>
+    </div>
     
-    <div id="page-contact" class="page"><div class="container static-page"><h2>Get In Touch</h2><p>Have a question, feedback, or a partnership inquiry? We'd love to hear from you. Fill out the form below and our team will get back to you as soon as possible.</p><form class="contact-form" onsubmit="event.preventDefault(); alert('Thank you for your message! Our team will review it shortly.'); this.reset();"><div class="form-group"><input type="text" name="name" placeholder="Your Name" required></div><div class="form-group"><input type="email" name="email" placeholder="Your Email Address" required></div><div class="form-group"><input type="text" name="subject" placeholder="Subject" required></div><div class="form-group"><textarea name="message" placeholder="Your Message" required></textarea></div><button type="submit" class="form-submit-btn">Send Message</button></form></div></div>
+    <div id="page-contact" class="page">
+        <div class="container static-page">
+            <h2 data-text="Get In Touch">Get In Touch</h2>
+            <p>Have a question, feedback, or a partnership inquiry? We'd love to hear from you. Fill out the form below and our team will get back to you as soon as possible.</p>
+            <form class="contact-form" onsubmit="event.preventDefault(); alert('Thank you for your message! Our team will review it shortly.'); this.reset();">
+                <div class="form-group"><input type="text" name="name" placeholder="Your Name" required></div>
+                <div class="form-group"><input type="email" name="email" placeholder="Your Email Address" required></div>
+                <div class="form-group"><input type="text" name="subject" placeholder="Subject" required></div>
+                <div class="form-group"><textarea name="message" placeholder="Your Message" required></textarea></div>
+                <button type="submit" class="form-submit-btn">Send Message</button>
+            </form>
+        </div>
+    </div>
   </main>
   
   <footer>© 2025 SpectraScan. All rights reserved. Your Shield in the Digital Shadows.</footer>
@@ -238,10 +268,7 @@
   
   function showPageContent(pageId) {
     document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-    const pageEl = document.getElementById(pageId);
-    if (pageEl) {
-        pageEl.classList.add('active');
-    }
+    document.getElementById(pageId).classList.add('active');
     document.querySelectorAll('.nav-link').forEach(link => {
       link.classList.remove('active');
       const linkPath = link.getAttribute('href');
@@ -276,19 +303,17 @@
   });
 
   /* --- CATCHER SCRIPT --- */
-  const knownSpoofedCanvas = [-1222622419, -1982647924, -1687811050]; 
-  const knownSpoofedAudio = [18028.99390631693, 48000.276471651436]; 
-  const knownRealGPUs = ["NVIDIA GeForce RTX", "NVIDIA GeForce GTX", "AMD Radeon RX", "Apple M1", "Apple M2", "Apple M3"];
-  
   function resetCatcher() { 
+      const intro = document.getElementById('intro-content');
+      if (intro) intro.style.display = 'block';
       document.getElementById('results-container').innerHTML = ''; 
-      document.getElementById('run-btn').style.display = 'block'; 
   }
 
   window.runDetection = async function() {
-    const runBtn = document.getElementById('run-btn'); 
+    const intro = document.getElementById('intro-content');
+    if (intro) intro.style.display = 'none';
+
     const resultsEl = document.getElementById('results-container');
-    runBtn.style.display = 'none'; 
     resultsEl.innerHTML = `<div class="loader-wrapper"><div class="scanner-circle"></div><p class="scanner-text">ANALYZING SIGNATURE...</p></div>`;
     
     const detectionPromise = (async () => {
@@ -304,65 +329,49 @@
             thumbmarkFingerprint = '<span class="danger">Error generating fingerprint</span>';
         }
 
-        let browserRiskScore = 0; 
-        const gl = getWebGLInfo(); 
-        const language = navigator.language; 
-        const platform = navigator.platform; 
-        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone; 
-        const canvasEntropy = getCanvasEntropy(); 
-        const audioFingerprint = await getAudioFingerprint();
-        
-        if (!timezone.toLowerCase().includes(language.slice(0, 2))) browserRiskScore += 1;
-        const isWinSpoofed = platform === "Win32" && gl.vendor.includes("Google Inc.") && gl.renderer.includes("ANGLE") && !knownRealGPUs.some(gpu => gl.renderer.includes(gpu));
-        if (isWinSpoofed) browserRiskScore += 2; 
-        if (knownSpoofedCanvas.includes(canvasEntropy)) browserRiskScore += 1; 
-        if (audioFingerprint && knownSpoofedAudio.includes(audioFingerprint)) browserRiskScore += 1;
-        
-        let ipRisk = 0; 
+        let totalRiskScore = 0;
         let ipData = null; 
         let ipError = false;
         try { 
             const resp = await fetch('/api/ip-check', { cache: 'no-store' }); 
             ipData = await resp.json(); 
             if (ipData.error) { ipError = true; } 
-            else if (ipData.isProxy) { ipRisk = 2; }
+            else if (ipData.isProxy) { totalRiskScore += 2; }
         } catch (e) { ipError = true; }
         
-        const totalRiskScore = browserRiskScore + ipRisk; 
-        const isBadBrowser = browserRiskScore >= 3; 
+        const isBadBrowser = totalRiskScore >= 2; 
         
         let resultsHTML = '';
         resultsHTML += `<div class="verdict-box ${isBadBrowser ? 'danger' : 'safe'}"><i class="fa-solid ${isBadBrowser ? 'fa-bomb' : 'fa-shield-check'} fa-lg"></i><span>${isBadBrowser ? "High Risk Profile Detected!" : "Profile Appears Normal"}</span></div>`;
-        resultsHTML += `<div class="risk-score">Total Risk Score: <strong>${totalRiskScore}/5</strong></div>`;
+        resultsHTML += `<div class="risk-score">Threat Score: <strong>${totalRiskScore}/5</strong></div>`;
         
         let detailsGridHTML = '';
         if (ipError) { 
             detailsGridHTML += `<div class="label">IP Status:</div><div class="value danger">Error fetching IP details</div>`;
         } else { 
-            if (ipData.isProxy) { 
-                resultsHTML += `<div class="verdict-box danger" style="margin-bottom: 20px;"><i class="fa-solid fa-tower-broadcast"></i><span>VPN / Proxy Detected!</span></div>`; 
-            }
-            detailsGridHTML += `<div class="label">IP Address:</div><div class="value" style="font-size: 14px;">${ipData.ip}</div>`;
-            detailsGridHTML += `<div class="label">IP Status:</div><div class="value ${ipData.isProxy ? 'danger' : 'safe'}" style="font-size: 14px;">${ipData.status}</div>`;
+            detailsGridHTML += `<div class="label">IP Address:</div><div class="value">${ipData.ip}</div>`;
+            detailsGridHTML += `<div class="label">IP Status:</div><div class="value ${ipData.isProxy ? 'danger' : 'safe'}">${ipData.status}</div>`;
         }
         
-        detailsGridHTML += `<div class="label">Browser Fingerprint:</div><div class="value fingerprint-hash">${thumbmarkFingerprint}</div>`;
+        detailsGridHTML += `<div class="label">Browser<br>Fingerprint:</div><div class="value fingerprint-hash">${thumbmarkFingerprint}</div>`;
         
         resultsHTML += `<div class="details-grid">${detailsGridHTML}</div>`;
-        resultsHTML += `<button id="reset-btn" onclick="resetCatcher()">Run Another Test</button>`;
-        return resultsHTML;
+        resultsHTML += `<div class="run-btn-wrapper"><button id="reset-btn" onclick="resetCatcher()">Run Another Test</button></div>`;
+        
+        return {html: resultsHTML, bad: isBadBrowser};
     })();
     
     const minDelay = new Promise(resolve => setTimeout(resolve, 2000));
-    const [finalHTML] = await Promise.all([detectionPromise, minDelay]);
-    resultsEl.innerHTML = finalHTML;
+    const [result] = await Promise.all([detectionPromise, minDelay]);
+    
+    resultsEl.innerHTML = result.html;
+    
+    // Add dynamic class to the reset button
+    const resetButton = document.getElementById('reset-btn');
+    if (resetButton) {
+        resetButton.classList.add(result.bad ? 'danger-button' : 'safe-button');
+    }
   }
-  
-  // --- HELPER FUNCTIONS ---
-  function getCanvasEntropy() {try {const canvas=document.createElement('canvas');const ctx=canvas.getContext('2d');ctx.textBaseline="top";ctx.font="14px 'Arial'";ctx.fillText("BrowserFingerprinting",2,2);return hashString(canvas.toDataURL())}catch{return null}}
-  function hashString(str){let hash=0;for(let i=0;i<str.length;i++){hash=((hash<<5)-hash)+str.charCodeAt(i);hash|=0}return hash}
-  async function getAudioFingerprint(){try{const AudioContext=window.AudioContext||window.webkitAudioContext;if(!AudioContext)return null;const ctx=new AudioContext;const osc=ctx.createOscillator();const analyser=ctx.createAnalyser();const gain=ctx.createGain();const script=ctx.createScriptProcessor(4096,1,1);return new Promise(resolve=>{script.onaudioprocess=e=>{const output=e.outputBuffer.getChannelData(0);const hash=Math.abs(output.slice(4500,5000).reduce((a,b)=>a+b,0));resolve(parseFloat(hash.toFixed(12)));script.disconnect();osc.disconnect();gain.disconnect();analyser.disconnect();ctx.close()};osc.connect(analyser);analyser.connect(script);script.connect(gain);gain.connect(ctx.destination);osc.start(0)})}catch{return null}}
-  function getWebGLInfo(){try{const canvas=document.createElement('canvas');const gl=canvas.getContext('webgl')||canvas.getContext('experimental-webgl');const dbg=gl.getExtension('WEBGL_debug_renderer_info');return{vendor:gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL),renderer:gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)}}catch{return{vendor:"unknown",renderer:"unknown"}}}
 </script>
 
 </body>
