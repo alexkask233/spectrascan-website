@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>🛡️ SpectraScan - Unmask Your Digital Ghost</title>
-  <!-- NEW: Custom Favicon -->
   <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20448%20512'%3E%3Cpath%20fill='%2300ff88'%20d='M224%20256A128%20128%200%201%200%20224%200a128%20128%200%201%200%200%20256zm-45.7%2048C79.8%20304%200%20383.8%200%20482.3C0%20498.7%2013.3%20512%2029.7%20512H418.3c16.4%200%2029.7-13.3%2029.7-29.7C448%20383.8%20368.2%20304%20269.7%20304H178.3z'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,7 +14,7 @@
 
   <style>
     :root {
-      --bg-color: #0d0d12; --card-color: rgba(30, 30, 36, 0.9); --border-color: #33333a; --text-primary: #f0f0f0; --text-secondary: #a9a9b3; --accent-green: #00ff88; --accent-red: #ff4757; --accent-blue: #00aaff; --success-bg: rgba(0, 255, 136, 0.1); --danger-bg: rgba(255, 71, 87, 0.1);
+      --bg-color: #0d0d12; --card-color: rgba(30, 30, 36, 0.9); --border-color: #33333a; --text-primary: #f0f0f0; --text-secondary: #a9a9b3; --accent-green: #00ff88; --accent-red: #ff4757; --accent-blue: #00aaff; --success-bg: rgba(0, 255, 136, 0.1); --danger-bg: rgba(255, 71, 87, 0.1); --bg-grid-color: #2a2a30;
     }
     
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -24,10 +23,27 @@
     body {
         height: 100%; background-color: var(--bg-color); color: var(--text-primary); font-family: 'Inter', sans-serif; line-height: 1.6; position: relative; overflow: hidden;
     }
-    /* --- NEW SEXY BACKGROUND --- */
-    #matrix-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-
+    /* --- DYNAMIC BACKGROUND --- */
+    #matrix-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; transition: opacity 0.5s ease-in-out; }
+    
     .page-wrapper { display: flex; flex-direction: column; height: 100%; overflow-y: auto; }
+    .page-wrapper::after { /* For ACCESS DENIED watermark */
+        content: 'ACCESS DENIED'; position: fixed; top: 50%; left: 50%;
+        transform: translate(-50%, -50%) rotate(-15deg);
+        font-size: 15vw; font-family: 'Roboto Mono', monospace; font-weight: 700;
+        color: var(--accent-red); opacity: 0;
+        pointer-events: none; z-index: -1; transition: opacity 0.5s ease;
+        text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    }
+    body.danger-mode .page-wrapper::after { opacity: 0.1; animation: watermark-flicker 2s infinite alternate; }
+    @keyframes watermark-flicker { 0%, 90% { opacity: 0.1; } 95% { opacity: 0.05; } 100% { opacity: 0.12; } }
+
+    body.safe-mode::before {
+        content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
+        background-image: radial-gradient(circle at center, rgba(0, 170, 255, 0.1) 0%, transparent 40%);
+        animation: pan-grid 60s linear infinite;
+    }
+
     main { flex-grow: 1; display: flex; justify-content: center; align-items: center; padding: 40px 20px; }
     .page { display: none; width: 100%; max-width: 700px; }
     .page.active { display: block; animation: page-transition-in 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
@@ -49,7 +65,6 @@
     
     .container { background-color: var(--card-color); padding: 30px 40px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease, border-color 0.3s ease; position: relative; overflow: hidden; }
     
-    /* --- CLASSIFIED STAMP --- */
     .classified-stamp {
         position: absolute; top: 25px; right: 25px;
         transform: rotate(10deg); color: var(--accent-red);
@@ -259,26 +274,14 @@
     const savedTheme = localStorage.getItem('theme'); 
     if (savedTheme === 'light') { 
       body.classList.add('light-mode'); 
-      themeIcon.classList.remove('fa-moon'); 
-      themeIcon.classList.add('fa-sun'); 
     } else { 
       body.classList.remove('light-mode'); 
-      themeIcon.classList.remove('fa-sun'); 
-      themeIcon.classList.add('fa-moon'); 
     } 
   }
   
   themeToggleBtn.addEventListener('click', () => { 
     body.classList.toggle('light-mode'); 
-    if (body.classList.contains('light-mode')) { 
-      localStorage.setItem('theme', 'light'); 
-      themeIcon.classList.remove('fa-moon'); 
-      themeIcon.classList.add('fa-sun'); 
-    } else { 
-      localStorage.setItem('theme', 'dark'); 
-      themeIcon.classList.remove('fa-sun'); 
-      themeIcon.classList.add('fa-moon'); 
-    } 
+    localStorage.setItem('theme', body.classList.contains('light-mode') ? 'light' : 'dark');
   });
   
   const pageContent = { '/': 'page-catcher', '/faq': 'page-faq', '/privacy': 'page-privacy', '/contact': 'page-contact' };
@@ -324,6 +327,7 @@
       const intro = document.getElementById('intro-content');
       if (intro) intro.style.display = 'block';
       document.getElementById('results-container').innerHTML = ''; 
+      startMatrix(); // Restart default matrix
   }
 
   window.runDetection = async function() {
@@ -358,6 +362,18 @@
         
         const isBadBrowser = totalRiskScore >= 2;
         
+        // --- DYNAMIC BACKGROUND CHANGE ---
+        if(isBadBrowser) {
+          startMatrix('#ff4757'); // Red for danger
+          document.body.classList.add('danger-mode');
+        } else {
+          document.body.classList.add('safe-mode');
+          clearInterval(matrixInterval);
+          const canvas = document.getElementById('matrix-bg');
+          const ctx = canvas.getContext('2d');
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
         let resultsHTML = '';
         resultsHTML += `<div class="verdict-box ${isBadBrowser ? 'danger' : 'safe'}"><i class="fa-solid ${isBadBrowser ? 'fa-bomb' : 'fa-shield-check'} fa-lg"></i><span>${isBadBrowser ? "High Risk Profile Detected!" : "Profile Appears Normal"}</span></div>`;
         resultsHTML += `<div class="risk-score">Threat Score: <strong>${totalRiskScore}/5</strong></div>`;
@@ -392,42 +408,45 @@
   /* --- MATRIX BACKGROUND SCRIPT --- */
   const canvas = document.getElementById('matrix-bg');
   const ctx = canvas.getContext('2d');
+  let matrixInterval;
 
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  const charArray = characters.split('');
-  const fontSize = 14;
-  const columns = canvas.width / fontSize;
-  const drops = Array(Math.floor(columns)).fill(1);
-
-  function drawMatrix() {
-    ctx.fillStyle = 'rgba(18, 18, 23, 0.05)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
-    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent-green');
-    ctx.font = fontSize + 'px Roboto Mono';
-
-    for (let i = 0; i < drops.length; i++) {
-        const text = charArray[Math.floor(Math.random() * charArray.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-            drops[i] = 0;
-        }
-        drops[i]++;
-    }
-  }
-  
-  setInterval(drawMatrix, 40);
-
-  window.addEventListener('resize', () => {
+  const setupMatrix = () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    drops.length = Math.floor(canvas.width / fontSize);
-    drops.fill(1);
-  });
+    startMatrix();
+  };
+
+  const startMatrix = (color = getComputedStyle(document.documentElement).getPropertyValue('--accent-green')) => {
+    clearInterval(matrixInterval);
+    document.body.classList.remove('safe-mode', 'danger-mode');
+
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const charArray = characters.split('');
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
+
+    matrixInterval = setInterval(() => {
+        ctx.fillStyle = 'rgba(18, 18, 23, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.fillStyle = color;
+        ctx.font = fontSize + 'px Roboto Mono';
+
+        for (let i = 0; i < drops.length; i++) {
+            const text = charArray[Math.floor(Math.random() * charArray.length)];
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+            drops[i]++;
+        }
+    }, 40);
+  }
+  
+  window.addEventListener('resize', setupMatrix);
+  setupMatrix();
 </script>
 
 </body>
