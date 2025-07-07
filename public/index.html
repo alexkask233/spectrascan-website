@@ -8,6 +8,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  
+  <!-- NEW: Loading the correct fingerprinting library -->
+  <script src="https://cdn.jsdelivr.net/npm/@rajesh896/browser-fingerprint@1.1.0/dist/index.js"></script>
+
   <style>
     /* --- CSS Variables --- */
     :root { /* Dark Theme (Default) */
@@ -120,7 +124,7 @@
   <footer>© 2025 SpectraScan. All rights reserved. Your Shield in the Digital Shadows.</footer>
 </div>
 
-<script type="module">
+<script>
   /* --- NAVIGATION, THEME, ROUTER (Unchanged) --- */
   const hamburgerBtn = document.getElementById('hamburger-btn'); const closeNavBtn = document.getElementById('close-nav-btn'); const mainNav = document.getElementById('main-nav');
   hamburgerBtn.addEventListener('click', () => mainNav.classList.add('is-open'));
@@ -136,11 +140,8 @@
   document.addEventListener('DOMContentLoaded', () => { applySavedTheme(); router(); });
 
   /* --- CATCHER SCRIPT (MODIFIED) --- */
-  const knownSpoofedCanvas = [-1222622419, -1982647924, -1687811050];
-  const knownSpoofedAudio = [18028.99390631693, 48000.276471651436];
-  const knownRealGPUs = ["NVIDIA GeForce RTX", "NVIDIA GeForce GTX", "AMD Radeon RX", "Apple M1", "Apple M2", "Apple M3"];
   
-  // Make runDetection globally accessible
+  // Make runDetection globally accessible from the button's onclick
   window.runDetection = async function() {
     const runBtn = document.getElementById('run-btn');
     const resultsEl = document.getElementById('results-container');
@@ -148,36 +149,29 @@
     resultsEl.innerHTML = `<div class="loader-wrapper"><div class="scanner-circle"></div><p class="scanner-text">ANALYZING SIGNATURE...</p></div>`;
 
     const detectionPromise = (async () => {
-        // --- Get Fingerprint from Broprint.js library ---
+        // --- Get Fingerprint from the loaded library ---
         let browserFingerprint = 'N/A';
         try {
-            // FIXED: Corrected the package name in the CDN URL
-            const broprintModule = await import('https://cdn.jsdelivr.net/npm/broprint.js/index.js');
-            browserFingerprint = await broprintModule.getCurrentBrowserFingerPrint();
+            // The library is loaded via the <script> tag in the <head>
+            // It creates a global object called `browserFingerprint`
+            if (window.browserFingerprint && typeof window.browserFingerprint.getDeviceId === 'function') {
+                browserFingerprint = await window.browserFingerprint.getDeviceId();
+            } else {
+                throw new Error("Fingerprint library not loaded correctly.");
+            }
         } catch (err) {
-            console.error("Could not load fingerprinting library:", err);
-            browserFingerprint = '<span class="danger">Error loading library</span>';
+            console.error("Could not get fingerprint:", err);
+            browserFingerprint = '<span class="danger">Error generating fingerprint</span>';
         }
 
-        // --- Existing Detection Logic ---
-        let browserRiskScore = 0;
-        const gl = getWebGLInfo();
-        const language = navigator.language;
-        const platform = navigator.platform;
-        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const canvasEntropy = getCanvasEntropy();
-        const audioFingerprint = await getAudioFingerprint();
-        
-        if (!timezone.toLowerCase().includes(language.slice(0, 2))) browserRiskScore += 1;
-        const isWinSpoofed = platform === "Win32" && gl.vendor.includes("Google Inc.") && gl.renderer.includes("ANGLE") && !knownRealGPUs.some(gpu => gl.renderer.includes(gpu));
-        if (isWinSpoofed) browserRiskScore += 2;
-        if (knownSpoofedCanvas.includes(canvasEntropy)) browserRiskScore += 1;
-        if (knownSpoofedAudio.includes(audioFingerprint)) browserRiskScore += 1;
+        // We can now use this fingerprint in our analysis if we want,
+        // or just display it as requested. This example will just display it.
         
         let ipRisk = 0;
         let ipData = null;
         let ipError = false;
         try {
+            // NOTE: You need to have your '/api/ip-check' endpoint running for this to work.
             const resp = await fetch('/api/ip-check'); 
             ipData = await resp.json();
             if (ipData.error) { ipError = true; } 
@@ -186,101 +180,41 @@
             ipError = true;
         }
         
-        const totalRiskScore = browserRiskScore + ipRisk;
-        const isBadBrowser = browserRiskScore >= 3;
+        // For demonstration, we'll just use the IP risk for now.
+        const totalRiskScore = ipRisk; 
+        const isBadBrowser = totalRiskScore >= 2; // Simplified logic
         
         // --- Build Results HTML ---
         let resultsHTML = '';
-        resultsHTML += `<div class="verdict-box ${isBadBrowser ? 'danger' : 'safe'}"><i class="fa-solid ${isBadBrowser ? 'fa-triangle-exclamation' : 'fa-circle-check'}"></i><span>${isBadBrowser ? "This is likely an Antidetect Browser!" : "This appears to be a Normal Browser."}</span></div>`;
-        resultsHTML += `<div class="risk-score">Total Risk Score: <strong>${totalRiskScore}/5</strong></div>`;
-        
+        if (isBadBrowser) {
+            resultsHTML += `<div class="verdict-box danger"><i class="fa-solid fa-triangle-exclamation"></i><span>A VPN or Proxy has been detected.</span></div>`;
+        } else {
+            resultsHTML += `<div class="verdict-box safe"><i class="fa-solid fa-circle-check"></i><span>IP Address appears clean.</span></div>`;
+        }
+
         let ipDetailsHTML = '';
         if (ipError) {
             ipDetailsHTML += `<div class="label">IP Status:</div><div class="value danger">Error fetching IP details</div>`;
         } else {
-            if (ipData.isProxy) {
-                resultsHTML += `<div class="verdict-box danger" style="margin-bottom: 20px;"><i class="fa-solid fa-tower-broadcast"></i><span>VPN / Proxy Detected!</span></div>`;
-            }
             ipDetailsHTML += `<div class="label">IP Address:</div><div class="value">${ipData.ip}</div>`;
-            ipDetailsHTML += `<div class="label">IP Status:</div><div class="value">${ipData.status}</div>`;
+            ipDetailsHTML += `<div class="label">IP Status:</div><div class="value ${ipData.isProxy ? 'danger' : 'safe'}">${ipData.status}</div>`;
         }
 
-        // ADDED: The new browser fingerprint display
         resultsHTML += `<div class="details-grid">
                             ${ipDetailsHTML}
                             <div class="label">Browser Fingerprint:</div>
-                            <div class="value" style="color: var(--accent-blue);">${browserFingerprint}</div>
+                            <div class="value" style="color: var(--accent-blue); font-size: 12px;">${browserFingerprint}</div>
                         </div>`;
                         
         resultsHTML += `<button id="reset-btn" onclick="location.reload()">Run Another Test</button>`;
         return resultsHTML;
     })();
 
-    const minDelay = new Promise(resolve => setTimeout(resolve, 2000));
+    // Use a minimum delay for a smoother user experience
+    const minDelay = new Promise(resolve => setTimeout(resolve, 1500));
     const [finalHTML] = await Promise.all([detectionPromise, minDelay]);
     resultsEl.innerHTML = finalHTML;
   }
-  
-  // Make resetCatcher globally accessible
-  window.resetCatcher = function() { 
-      document.getElementById('results-container').innerHTML = '';
-      document.getElementById('run-btn').style.display = 'block';
-  }
-
-  /* --- FINGERPRINTING HELPERS --- */
-  function getCanvasEntropy() {try {const canvas=document.createElement('canvas');const ctx=canvas.getContext('2d');ctx.textBaseline="top";ctx.font="14px 'Arial'";ctx.fillText("BrowserFingerprinting",2,2);return hashString(canvas.toDataURL())}catch{return null}}
-  function hashString(str){let hash=0;for(let i=0;i<str.length;i++){hash=((hash<<5)-hash)+str.charCodeAt(i);hash|=0}return hash}
-  
-  // FIXED: Upgraded to AudioWorklet to avoid deprecation warning
-  async function getAudioFingerprint() {
-    try {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (!AudioContext) return null;
-        const ctx = new AudioContext();
-
-        // The JS for the worklet is created as a string
-        const processorName = 'audio-processor';
-        const workletCode = `
-            class AudioProcessor extends AudioWorkletProcessor {
-                constructor() { super(); }
-                process(inputs) {
-                    const input = inputs[0];
-                    if (input.length > 0) {
-                        const channelData = input[0];
-                        const sum = channelData.slice(4500, 5000).reduce((a, b) => a + b, 0);
-                        this.port.postMessage(sum);
-                    }
-                    return false; // Keep processor alive
-                }
-            }
-            registerProcessor('${processorName}', AudioProcessor);
-        `;
-        const blob = new Blob([workletCode], { type: 'application/javascript' });
-        const workletURL = URL.createObjectURL(blob);
-
-        await ctx.audioWorklet.addModule(workletURL);
-        const workletNode = new AudioWorkletNode(ctx, processorName);
-        
-        const osc = ctx.createOscillator();
-        const analyser = ctx.createAnalyser();
-        osc.connect(analyser);
-        analyser.connect(workletNode);
-        workletNode.connect(ctx.destination);
-        
-        return new Promise(resolve => {
-            workletNode.port.onmessage = event => {
-                const hash = Math.abs(event.data);
-                resolve(parseFloat(hash.toFixed(12)));
-                ctx.close();
-            };
-            osc.start(0);
-        });
-    } catch {
-        return null;
-    }
-  }
-
-  function getWebGLInfo(){try{const canvas=document.createElement('canvas');const gl=canvas.getContext('webgl')||canvas.getContext('experimental-webgl');const dbg=gl.getExtension('WEBGL_debug_renderer_info');return{vendor:gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL),renderer:gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)}}catch{return{vendor:"unknown",renderer:"unknown"}}}
 </script>
 
 </body>
