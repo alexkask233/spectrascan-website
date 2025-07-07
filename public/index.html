@@ -21,28 +21,28 @@
     
     html { height: 100%; }
     body {
-        height: 100%; background-color: var(--bg-color); color: var(--text-primary); font-family: 'Inter', sans-serif; line-height: 1.6; position: relative; overflow: hidden;
+        height: 100%; background-color: var(--bg-color); color: var(--text-primary); font-family: 'Inter', sans-serif; line-height: 1.6; position: relative;
     }
-    /* --- DYNAMIC BACKGROUND --- */
     #matrix-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; transition: opacity 0.5s ease-in-out; }
     
     .page-wrapper { display: flex; flex-direction: column; height: 100%; overflow-y: auto; }
-    .page-wrapper::after { /* For ACCESS DENIED watermark */
-        content: 'ACCESS DENIED'; position: fixed; top: 50%; left: 50%;
+    
+    #background-watermark {
+        content: ''; position: fixed; top: 50%; left: 50%;
         transform: translate(-50%, -50%) rotate(-15deg);
         font-size: 15vw; font-family: 'Roboto Mono', monospace; font-weight: 700;
         color: var(--accent-red); opacity: 0;
         pointer-events: none; z-index: -1; transition: opacity 0.5s ease;
         text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
     }
-    body.danger-mode .page-wrapper::after { opacity: 0.1; animation: watermark-flicker 2s infinite alternate; }
-    @keyframes watermark-flicker { 0%, 90% { opacity: 0.1; } 95% { opacity: 0.05; } 100% { opacity: 0.12; } }
-
-    body.safe-mode::before {
-        content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
-        background-image: radial-gradient(circle at center, rgba(0, 170, 255, 0.1) 0%, transparent 40%);
-        animation: pan-grid 60s linear infinite;
+    body.danger-mode #background-watermark {
+        content: 'ACCESS DENIED'; opacity: 0.1; animation: watermark-flicker 2s infinite alternate;
     }
+    body.safe-mode #background-watermark {
+        content: 'SYSTEMS NOMINAL'; opacity: 0.05; color: var(--accent-blue);
+        text-shadow: 0 0 10px rgba(0, 170, 255, 0.5);
+    }
+    @keyframes watermark-flicker { 0%, 90% { opacity: 0.1; } 95% { opacity: 0.05; } 100% { opacity: 0.12; } }
 
     main { flex-grow: 1; display: flex; justify-content: center; align-items: center; padding: 40px 20px; }
     .page { display: none; width: 100%; max-width: 700px; }
@@ -73,7 +73,10 @@
         font-size: 18px; opacity: 0.7; user-select: none;
         animation: stamp-flicker 4s infinite alternate;
     }
-    @keyframes stamp-flicker { 0%, 95% { opacity: 0.7; } 97% { opacity: 0.3; } 99%, 100% { opacity: 0.8; } }
+    .classified-stamp.safe { animation-name: stamp-pulse-safe; }
+    .classified-stamp.danger { animation-name: stamp-pulse-danger; }
+    @keyframes stamp-pulse-safe { 0%, 100% { opacity: 0.7; border-color: var(--accent-green); color: var(--accent-green); } 50% { opacity: 0.9; } }
+    @keyframes stamp-pulse-danger { 0%, 100% { opacity: 0.7; border-color: var(--accent-red); color: var(--accent-red); } 50% { opacity: 0.9; } }
 
     h1, .static-page h2 {
         font-size: 2.2rem; font-weight: 700; margin-bottom: 10px; text-align: center; color: var(--text-primary);
@@ -122,7 +125,7 @@
     .risk-score { font-size: 16px; color: var(--text-secondary); text-align: center; margin-bottom: 25px; }
     .risk-score strong { color: var(--text-primary); font-weight: 700; font-size: 18px; }
     
-    .details-grid { display: grid; grid-template-columns: 180px 1fr; gap: 12px 20px; padding: 20px 0; border-top: 1px solid var(--border-color); font-family: 'Roboto Mono', monospace; align-items: baseline; }
+    .details-grid { display: grid; grid-template-columns: auto 1fr; gap: 12px 20px; padding: 20px 0; border-top: 1px solid var(--border-color); font-family: 'Roboto Mono', monospace; align-items: baseline; }
     .details-grid > * { opacity: 0; animation: fade-in-up 0.5s ease forwards; }
     .details-grid .label:nth-child(1), .details-grid .value:nth-child(2) { animation-delay: 0.1s; }
     .details-grid .label:nth-child(3), .details-grid .value:nth-child(4) { animation-delay: 0.2s; }
@@ -178,6 +181,8 @@
 </head>
 <body>
 <canvas id="matrix-bg"></canvas>
+<div id="background-watermark"></div>
+
 <div class="page-wrapper">
   <!-- ====== HEADER ====== -->
   <header>
@@ -268,7 +273,6 @@
   
   const themeToggleBtn = document.getElementById('theme-toggle-btn'); 
   const body = document.body; 
-  const themeIcon = themeToggleBtn.querySelector('i');
   
   function applySavedTheme() { 
     const savedTheme = localStorage.getItem('theme'); 
@@ -327,7 +331,7 @@
       const intro = document.getElementById('intro-content');
       if (intro) intro.style.display = 'block';
       document.getElementById('results-container').innerHTML = ''; 
-      startMatrix(); // Restart default matrix
+      setBackgroundState('default'); // Reset background
   }
 
   window.runDetection = async function() {
@@ -342,38 +346,46 @@
         try {
             if (typeof ThumbmarkJS !== 'undefined') {
                 thumbmarkFingerprint = await ThumbmarkJS.getFingerprint();
-            } else {
-                throw new Error("ThumbmarkJS library not found.");
-            }
+            } else { throw new Error("ThumbmarkJS library not found."); }
         } catch (err) {
             console.error("Could not get fingerprint:", err);
             thumbmarkFingerprint = '<span class="danger">Error generating fingerprint</span>';
         }
 
-        let totalRiskScore = 0;
+        const knownSpoofedCanvas = [-1222622419, -1982647924, -1687811050]; 
+        const knownSpoofedAudio = [18028.99390631693, 48000.276471651436]; 
+        const knownRealGPUs = ["NVIDIA GeForce RTX", "NVIDIA GeForce GTX", "AMD Radeon RX", "Apple M1", "Apple M2", "Apple M3"];
+        
+        let browserRiskScore = 0; 
+        const gl = getWebGLInfo(); 
+        const language = navigator.language; 
+        const platform = navigator.platform; 
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone; 
+        const canvasEntropy = getCanvasEntropy(); 
+        const audioFingerprint = await getAudioFingerprint();
+        
+        if (!timezone.toLowerCase().includes(language.slice(0, 2))) browserRiskScore += 1;
+        const isWinSpoofed = platform === "Win32" && gl.vendor.includes("Google Inc.") && gl.renderer.includes("ANGLE") && !knownRealGPUs.some(gpu => gl.renderer.includes(gpu));
+        if (isWinSpoofed) browserRiskScore += 2; 
+        if (knownSpoofedCanvas.includes(canvasEntropy)) browserRiskScore += 1; 
+        if (audioFingerprint && knownSpoofedAudio.includes(audioFingerprint)) browserRiskScore += 1;
+        
+        let ipRisk = 0; 
         let ipData = null; 
         let ipError = false;
         try { 
             const resp = await fetch('/api/ip-check', { cache: 'no-store' }); 
             ipData = await resp.json(); 
             if (ipData.error) { ipError = true; } 
-            else if (ipData.isProxy) { totalRiskScore += 2; }
+            else if (ipData.isProxy) { ipRisk = 2; }
         } catch (e) { ipError = true; }
         
-        const isBadBrowser = totalRiskScore >= 2;
+        const totalRiskScore = browserRiskScore + ipRisk; 
+        const isBadBrowser = totalRiskScore >= 3; 
         
-        // --- DYNAMIC BACKGROUND CHANGE ---
-        if(isBadBrowser) {
-          startMatrix('#ff4757'); // Red for danger
-          document.body.classList.add('danger-mode');
-        } else {
-          document.body.classList.add('safe-mode');
-          clearInterval(matrixInterval);
-          const canvas = document.getElementById('matrix-bg');
-          const ctx = canvas.getContext('2d');
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
-
+        // DYNAMIC BACKGROUND CHANGE
+        setBackgroundState(isBadBrowser ? 'danger' : 'safe');
+        
         let resultsHTML = '';
         resultsHTML += `<div class="verdict-box ${isBadBrowser ? 'danger' : 'safe'}"><i class="fa-solid ${isBadBrowser ? 'fa-bomb' : 'fa-shield-check'} fa-lg"></i><span>${isBadBrowser ? "High Risk Profile Detected!" : "Profile Appears Normal"}</span></div>`;
         resultsHTML += `<div class="risk-score">Threat Score: <strong>${totalRiskScore}/5</strong></div>`;
@@ -404,6 +416,11 @@
         resetButton.classList.add(result.bad ? 'danger-button' : 'safe-button');
     }
   }
+  
+  function getCanvasEntropy() {try {const canvas=document.createElement('canvas');const ctx=canvas.getContext('2d');ctx.textBaseline="top";ctx.font="14px 'Arial'";ctx.fillText("BrowserFingerprinting",2,2);return hashString(canvas.toDataURL())}catch{return null}}
+  function hashString(str){let hash=0;for(let i=0;i<str.length;i++){hash=((hash<<5)-hash)+str.charCodeAt(i);hash|=0}return hash}
+  async function getAudioFingerprint(){try{const AudioContext=window.AudioContext||window.webkitAudioContext;if(!AudioContext)return null;const ctx=new AudioContext;const osc=ctx.createOscillator();const analyser=ctx.createAnalyser();const gain=ctx.createGain();const script=ctx.createScriptProcessor(4096,1,1);return new Promise(resolve=>{script.onaudioprocess=e=>{const output=e.outputBuffer.getChannelData(0);const hash=Math.abs(output.slice(4500,5000).reduce((a,b)=>a+b,0));resolve(parseFloat(hash.toFixed(12)));script.disconnect();osc.disconnect();gain.disconnect();analyser.disconnect();ctx.close()};osc.connect(analyser);analyser.connect(script);script.connect(gain);gain.connect(ctx.destination);osc.start(0)})}catch{return null}}
+  function getWebGLInfo(){try{const canvas=document.createElement('canvas');const gl=canvas.getContext('webgl')||canvas.getContext('experimental-webgl');const dbg=gl.getExtension('WEBGL_debug_renderer_info');return{vendor:gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL),renderer:gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)}}catch{return{vendor:"unknown",renderer:"unknown"}}}
 
   /* --- MATRIX BACKGROUND SCRIPT --- */
   const canvas = document.getElementById('matrix-bg');
@@ -416,10 +433,8 @@
     startMatrix();
   };
 
-  const startMatrix = (color = getComputedStyle(document.documentElement).getPropertyValue('--accent-green')) => {
+  const startMatrix = (color = 'rgba(0, 255, 136, 0.7)', speed = 40) => {
     clearInterval(matrixInterval);
-    document.body.classList.remove('safe-mode', 'danger-mode');
-
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     const charArray = characters.split('');
     const fontSize = 14;
@@ -427,26 +442,44 @@
     const drops = Array(Math.floor(columns)).fill(1);
 
     matrixInterval = setInterval(() => {
-        ctx.fillStyle = 'rgba(18, 18, 23, 0.05)';
+        ctx.fillStyle = 'rgba(13, 13, 18, 0.05)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
         ctx.fillStyle = color;
         ctx.font = fontSize + 'px Roboto Mono';
-
         for (let i = 0; i < drops.length; i++) {
             const text = charArray[Math.floor(Math.random() * charArray.length)];
             ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-            
             if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
                 drops[i] = 0;
             }
             drops[i]++;
         }
-    }, 40);
+    }, speed);
   }
-  
+
+  function setBackgroundState(state) {
+      const watermark = document.getElementById('background-watermark');
+      const body = document.body;
+      clearInterval(matrixInterval);
+      body.classList.remove('safe-mode', 'danger-mode');
+      
+      if (state === 'danger') {
+          startMatrix('rgba(255, 71, 87, 0.7)', 25); // Faster, red rain
+          watermark.setAttribute('data-text', 'ACCESS DENIED');
+          body.classList.add('danger-mode');
+      } else if (state === 'safe') {
+          // Blue grid for safe state
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          watermark.setAttribute('data-text', 'SYSTEMS NOMINAL');
+          body.classList.add('safe-mode');
+      } else { // default
+          startMatrix();
+          watermark.setAttribute('data-text', '');
+      }
+  }
+
   window.addEventListener('resize', setupMatrix);
-  setupMatrix();
+  document.addEventListener('DOMContentLoaded', setupMatrix);
 </script>
 
 </body>
