@@ -174,7 +174,6 @@
   
   const pageContent = { '/': 'page-catcher', '/faq': 'page-faq', '/privacy': 'page-privacy', '/contact': 'page-contact' };
   
-  // Using the original, robust routing logic
   function showPageContent(pageId) {
     document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
     document.getElementById(pageId).classList.add('active');
@@ -241,7 +240,7 @@
             thumbmarkFingerprint = '<span class="danger">Error generating fingerprint</span>';
         }
 
-        // 2. Run Your Existing Detection Logic
+        // 2. Run Existing Detection Logic
         let browserRiskScore = 0; 
         const gl = getWebGLInfo(); 
         const language = navigator.language; 
@@ -260,7 +259,8 @@
         let ipData = null; 
         let ipError = false;
         try { 
-            const resp = await fetch('/api/ip-check'); 
+            // FIXED: Added { cache: 'no-store' } to prevent browser from caching the IP check
+            const resp = await fetch('/api/ip-check', { cache: 'no-store' }); 
             ipData = await resp.json(); 
             if (ipData.error) { ipError = true; } 
             else if (ipData.isProxy) { ipRisk = 2; }
