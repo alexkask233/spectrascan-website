@@ -12,36 +12,49 @@ module.exports = async (req, res) => {
     // Fetch the context page for the IP from Spur.us
     const spurRes = await fetch(`https://spur.us/context/${ip}`);
     if (!spurRes.ok) {
-      // If Spur.us fails, we can't determine the status, so return a neutral/error state.
       throw new Error(`Failed to fetch data from Spur.us, status: ${spurRes.status}`);
     }
     const html = await spurRes.text();
     const lowerCaseHtml = html.toLowerCase();
 
     let isFraud = false;
-    let status = 'Clean IP'; // Default status
+    let status = 'Clean IP'; // Default to clean
 
-    // --- REFINED LOGIC ---
-    // 1. FIRST, check for an explicit "not anonymous" signal. This is the most reliable way to avoid false positives.
+    // --- REVISED & IMPROVED LOGIC ---
+
+    // 1. First, perform a high-confidence check for a CLEAN IP to avoid false positives.
     if (lowerCaseHtml.includes('not anonymous')) {
       isFraud = false;
       status = 'Clean IP';
     } else {
-      // 2. ONLY if the IP is not explicitly marked as clean, we check for specific fraud indicators.
-      const fraudIndicators = {
-        'Proxy Detected': ['probable proxy', 'proxy detected', 'unwittingly participating'],
-        'VPN Detected': ['probable vpn', 'vpn detected', 'anonymizing vpn'],
-        'TOR Exit Node Detected': ['tor exit node']
-      };
+      // 2. If the IP is not explicitly marked as clean, THEN we look for risk indicators.
+      // This is the list from your original, more effective script.
+      const fraudIndicators = [
+          'vpn', 
+          'proxy', 
+          'tor', 
+          'anonymization', 
+          'unwittingly', // Catches call-back proxies
+          'oxylabs', 
+          'bright data',
+          'luminati'
+      ];
+      
+      const foundIndicator = fraudIndicators.find(indicator => lowerCaseHtml.includes(indicator));
 
-      // Loop through the indicators to find a specific match.
-      for (const [key, values] of Object.entries(fraudIndicators)) {
-        if (values.some(indicator => lowerCaseHtml.includes(indicator))) {
-          isFraud = true;
-          status = key;
-          break; // Exit the loop as soon as a match is found
+      if (foundIndicator) {
+        isFraud = true;
+        // Provide a more specific status based on what was found
+        if (['proxy', 'unwittingly', 'oxylabs', 'bright data', 'luminati'].includes(foundIndicator)) {
+            status = 'Proxy Detected';
+        } else if (['vpn', 'anonymization'].includes(foundIndicator)) {
+            status = 'VPN Detected';
+        } else if (foundIndicator === 'tor') {
+            status = 'TOR Exit Node Detected';
         }
       }
+      // If no indicators are found after failing the 'not anonymous' check,
+      // it remains 'Clean IP' by default, which is a safe fallback.
     }
     
     const responseData = {
