@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "rewrites": [
+    { 
+      "source": "/api/ip-check", 
+      "destination": "/api/ip-check.js" 
+    },
+    {
+      "source": "/((?!api/|_next/|.*\\..*).*)",
+      "destination": "/index.html"
+    }
+  ]
+}
