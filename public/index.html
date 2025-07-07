@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>🛡️ SpectraScan - Unmask Your Digital Ghost</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20512%20512'%3E%3Cpath%20fill='%23000000'%20d='M256%200C114.6%200%200%20114.6%200%20256s114.6%20512%20256%20512s256-114.6%20256-256S397.4%200%20256%200zM192%20160a32%2032%200%201%201-64%200%2032%2032%200%201%201%2064%200zm128%200a32%2032%200%201%201-64%200%2032%2032%200%201%201%2064%200zM160%20336H352c8.8%200%2016%207.2%2016%2016s-7.2%2016-16%2016H160c-8.8%200-16-7.2-16-16s7.2-16%2016-16z'/%3E%3C/svg%3E">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20384%20512'%3E%3Cpath%20fill='%23000000'%20d='M256%200C114.6%200%200%20114.6%200%20256s114.6%20256%20256%20256s256-114.6%20256-256S397.4%200%20256%200zM192%20160a32%2032%200%201%201-64%200%2032%2032%200%201%201%2064%200zm128%200a32%2032%200%201%201-64%200%2032%2032%200%201%201%2064%200zM160%20336H352c8.8%200%2016%207.2%2016%2016s-7.2%2016-16%2016H160c-8.8%200-16-7.2-16-16s7.2-16%2016-16z'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -23,13 +23,14 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     
     html { height: 100%; }
-    body {
-        height: 100%; background-color: var(--bg-color); color: var(--text-primary); font-family: 'Inter', sans-serif; line-height: 1.6; position: relative;
-    }
-    #matrix-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; transition: opacity 0.5s ease-in-out; }
+    body { height: 100%; background-color: var(--bg-color); color: var(--text-primary); font-family: 'Inter', sans-serif; line-height: 1.6; position: relative; }
     
-    .page-wrapper { display: flex; flex-direction: column; height: 100%; overflow-y: auto; }
+    #matrix-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; transition: opacity 0.5s ease-in-out; }
     
+    /* --- STICKY FOOTER FIX --- */
+    .page-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
+    main { flex-grow: 1; display: flex; justify-content: center; align-items: center; padding: 40px 20px; }
+
     #background-watermark {
         content: attr(data-text); position: fixed; top: 50%; left: 50%;
         transform: translate(-50%, -50%) rotate(-15deg);
@@ -46,7 +47,6 @@
     }
     @keyframes watermark-flicker { 0%, 90% { opacity: 0.1; } 95% { opacity: 0.05; } 100% { opacity: 0.12; } }
 
-    main { flex-grow: 1; display: flex; justify-content: center; align-items: center; padding: 40px 20px; }
     .page { display: none; width: 100%; max-width: 700px; }
     .page.active { display: block; animation: page-transition-in 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
     @keyframes page-transition-in { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
@@ -62,7 +62,7 @@
     #hamburger-btn, #close-nav-btn { display: none; background: none; border: none; font-size: 24px; color: var(--text-primary); cursor: pointer; }
     #close-nav-btn { position: absolute; top: 20px; right: 20px; }
     
-    footer { text-align: center; padding: 20px; color: var(--text-secondary); font-size: 14px; background-color: var(--card-color); border-top: 1px solid var(--border-color); margin-top: auto; transition: background-color 0.3s ease, border-color 0.3s ease; font-family: 'Roboto Mono', monospace; }
+    footer { text-align: center; padding: 20px; color: var(--text-secondary); font-size: 14px; background-color: var(--card-color); border-top: 1px solid var(--border-color); transition: background-color 0.3s ease, border-color 0.3s ease; font-family: 'Roboto Mono', monospace; }
     footer .footer-icons { margin-top: 10px; display: flex; justify-content: center; gap: 20px; font-size: 18px; color: var(--accent-green); }
     
     .container { background-color: var(--card-color); padding: 30px 40px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease, border-color 0.3s ease; position: relative; overflow: hidden; }
@@ -72,10 +72,9 @@
         transform: rotate(10deg); color: var(--accent-red);
         border: 3px solid var(--accent-red); padding: 5px 10px;
         font-family: 'Roboto Mono', monospace; font-weight: 700;
-        font-size: 18px; opacity: 0; user-select: none;
-        transition: opacity 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+        font-size: 18px; opacity: 0.7; user-select: none;
+        transition: all 0.4s ease;
     }
-    .classified-stamp.visible { opacity: 0.7; }
     .classified-stamp.safe { border-color: var(--accent-blue); color: var(--accent-blue); }
     .classified-stamp.danger { border-color: var(--accent-red); color: var(--accent-red); }
 
@@ -335,6 +334,11 @@
       if (intro) intro.style.display = 'block';
       document.getElementById('results-container').innerHTML = ''; 
       setBackgroundState('default');
+      const stamp = document.querySelector('.classified-stamp');
+      if(stamp) {
+        stamp.classList.remove('safe', 'danger');
+        stamp.textContent = "CLASSIFIED";
+      }
   }
 
   window.runDetection = async function() {
@@ -478,26 +482,34 @@
       body.classList.remove('safe-mode', 'danger-mode');
       clearInterval(backgroundInterval);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      classifiedStamp.classList.remove('safe', 'danger', 'visible');
       
       const isLight = body.classList.contains('light-mode');
 
       if (state === 'danger') {
           backgroundInterval = drawMatrix(isLight ? 'rgba(255, 71, 87, 0.4)' : 'rgba(255, 71, 87, 0.7)', 25, '01');
-          watermark.dataset.text = 'ACCESS DENIED';
+          watermark.setAttribute('data-text', 'ACCESS DENIED');
           body.classList.add('danger-mode');
-          classifiedStamp.textContent = "CLASSIFIED";
-          classifiedStamp.classList.add('danger', 'visible');
+          if (classifiedStamp) {
+              classifiedStamp.textContent = "CLASSIFIED";
+              classifiedStamp.classList.add('danger');
+              classifiedStamp.classList.remove('safe');
+          }
       } else if (state === 'safe') {
           backgroundInterval = isLight ? drawMatrix('rgba(0, 0, 0, 0.1)', 50, '01') : drawBlueGrid();
-          watermark.dataset.text = 'UNCLASSIFIED';
+          watermark.setAttribute('data-text', 'UNCLASSIFIED');
           body.classList.add('safe-mode');
-          classifiedStamp.textContent = "UNCLASSIFIED";
-          classifiedStamp.classList.add('safe', 'visible');
+          if (classifiedStamp) {
+              classifiedStamp.textContent = "UNCLASSIFIED";
+              classifiedStamp.classList.add('safe');
+              classifiedStamp.classList.remove('danger');
+          }
       } else { // default
           backgroundInterval = isLight ? drawMatrix('rgba(0, 0, 0, 0.1)', 50, '01') : drawMatrix('rgba(0, 255, 136, 0.7)', 40, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
-          watermark.dataset.text = '';
-          classifiedStamp.textContent = "CLASSIFIED";
+          watermark.setAttribute('data-text', '');
+          if(classifiedStamp) {
+              classifiedStamp.textContent = "CLASSIFIED";
+              classifiedStamp.classList.remove('safe', 'danger');
+          }
       }
   }
 
