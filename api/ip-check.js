@@ -2,25 +2,22 @@
 
 const fetch = require('node-fetch');
 
-// This is the main serverless function.
 module.exports = async (req, res) => {
   try {
-    // --- THIS IS THE CRUCIAL FIX ---
-    // Instead of fetching from ipify, we get the user's IP directly from the request headers.
-    // Vercel automatically provides the real visitor IP in the 'x-forwarded-for' header.
-    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    // --- THIS IS THE FINAL, CRUCIAL FIX ---
+    // When using Cloudflare, the true visitor IP is in the 'cf-connecting-ip' header.
+    // We prioritize it, then fall back to 'x-forwarded-for' for other environments.
+    const ip = req.headers['cf-connecting-ip'] || req.headers['x-forwarded-for'] || req.socket.remoteAddress;
 
-    // If we couldn't find an IP for some reason, return an error.
     if (!ip) {
-      throw new Error("Could not determine user's IP address.");
+      throw new Error("Could not determine user's IP address from headers.");
     }
 
-    // 2. Fetch the public context page from Spur for the *CORRECT* IP
+    // The rest of the logic remains exactly the same...
     const spurRes = await fetch(`https://spur.us/context/${ip}`);
     if (!spurRes.ok) throw new Error(`Failed to fetch data from Spur.us`);
     const html = await spurRes.text();
 
-    // 3. Check the HTML content for keywords (This logic remains the same)
     const lowerCaseHtml = html.toLowerCase();
     const fraudIndicators = [
       'is a known vpn', 'is a known proxy', 'is a tor exit node',
@@ -39,7 +36,6 @@ module.exports = async (req, res) => {
       }
     }
     
-    // 4. Send the successful JSON response
     const responseData = {
       ip: ip,
       status: status,
