@@ -62,17 +62,20 @@
     @keyframes spin { to { transform: rotate(360deg); } }
     @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(0, 255, 138, 0.4); } 50% { box-shadow: 0 0 0 10px rgba(0, 255, 138, 0); } }
     .scanner-text { margin-top: 20px; color: var(--text-secondary); font-weight: 500; letter-spacing: 1px; text-transform: uppercase; }
+
+    /* --- CreepJS UI Styles --- */
     .verdict-box { padding: 15px; font-size: 18px; font-weight: 500; border-radius: 10px; border: 1px solid; display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
     .verdict-box.safe { background-color: var(--success-bg); border-color: var(--accent-green); color: var(--accent-green); }
     .verdict-box.danger { background-color: var(--danger-bg); border-color: var(--accent-red); color: var(--accent-red); }
     .risk-score { font-size: 16px; color: var(--text-secondary); text-align: center; margin-bottom: 25px; }
     .risk-score strong { color: var(--text-primary); font-weight: 700; }
     .details-grid { display: grid; grid-template-columns: auto 1fr; gap: 10px 20px; padding-top: 20px; border-top: 1px solid var(--border-color); }
-    .details-grid .label, .details-grid .value { font-weight: 500; word-break: break-all; }
-    .details-grid .label { color: var(--text-secondary); }
-    .details-grid .value { color: var(--text-primary); font-size: 12px; }
+    .details-grid .label { color: var(--text-secondary); font-weight: 500; word-break: break-all; }
+    .details-grid .value { color: var(--text-primary); font-size: 12px; word-break: break-all; }
     .details-grid .value .safe { color: var(--accent-green); }
     .details-grid .value .danger { color: var(--accent-red); font-weight: 700; }
+
+    /* --- Static Page Styles (Unchanged) --- */
     .static-page h2 { font-size: 24px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); color: var(--text-primary); }
     .static-page p { color: var(--text-secondary); margin-bottom: 20px; line-height: 1.7; }
     .static-page h3 { color: var(--accent-blue); margin-top: 30px; margin-bottom: 10px; }
@@ -83,6 +86,7 @@
     .form-submit-btn { width: 100%; padding: 15px; background: var(--accent-blue); color: var(--text-primary); border: none; border-radius: 10px; font-weight: 700; font-size: 16px; }
     .form-submit-btn:hover { background-color: #0099e6; }
     
+    /* --- Responsive Styles (Unchanged) --- */
     @media (max-width: 768px) {
         header { padding: 0 20px; }
         nav .nav-link, nav #theme-toggle-btn { display: none; }
@@ -210,7 +214,7 @@
     router(); 
   });
 
-  /* --- CATCHER SCRIPT --- */
+  /* --- CATCHER SCRIPT with CreepJS --- */
   
   function resetCatcher() { 
       document.getElementById('results-container').innerHTML = ''; 
@@ -221,18 +225,17 @@
     const runBtn = document.getElementById('run-btn'); 
     const resultsEl = document.getElementById('results-container');
     runBtn.style.display = 'none'; 
-    resultsEl.innerHTML = `<div class="loader-wrapper"><div class="scanner-circle"></div><p class="scanner-text">ANALYZING SIGNATURE...</p></div>`;
+    resultsEl.innerHTML = `<div class="loader-wrapper"><div class="scanner-circle"></div><p class="scanner-text">PERFORMING DEEP ANALYSIS...</p></div>`;
     
     const detectionPromise = (async () => {
         // 1. Get CreepJS Fingerprint Data
         let creepData = null;
         let creepError = false;
         try {
-            if (typeof Creep !== 'undefined') {
-                creepData = await Creep.get();
-            } else {
-                throw new Error("CreepJS library not found.");
+            if (typeof Creep === 'undefined') {
+                 throw new Error("CreepJS library not found.");
             }
+            creepData = await Creep.get();
         } catch (err) {
             console.error("Could not get fingerprint from CreepJS:", err);
             creepError = true;
@@ -257,7 +260,9 @@
             resultsHTML += `<div class="verdict-box danger"><i class="fa-solid fa-triangle-exclamation"></i><span>Could not run detection suite.</span></div>`;
         } else {
             const trustScore = creepData.trustScore * 100;
-            const isBadBrowser = trustScore < 80; // Verdict based on CreepJS trust score
+            const isBadBrowser = trustScore < 75; // More stringent threshold
+            const lies = creepData.lies;
+            const lieCount = Object.keys(lies).length;
 
             resultsHTML += `<div class="verdict-box ${isBadBrowser ? 'danger' : 'safe'}"><i class="fa-solid ${isBadBrowser ? 'fa-triangle-exclamation' : 'fa-circle-check'}"></i><span>${isBadBrowser ? "This is likely an Antidetect Browser!" : "This appears to be a Normal Browser."}</span></div>`;
             resultsHTML += `<div class="risk-score">Trust Score: <strong>${trustScore.toFixed(0)}/100</strong></div>`;
@@ -266,24 +271,23 @@
                 resultsHTML += `<div class="verdict-box danger" style="margin-bottom: 20px;"><i class="fa-solid fa-tower-broadcast"></i><span>VPN / Proxy Detected!</span></div>`; 
             }
             
-            // Lies detected
-            const lies = creepData.lies;
-            const lieCount = Object.keys(lies).length;
             let liesHTML = lieCount > 0 
-                ? `<span class="danger">Yes (${lieCount} found: ${Object.keys(lies).join(', ')})</span>` 
+                ? `<span class="danger">Yes (${lieCount} found)</span>` 
                 : '<span class="safe">No</span>';
 
-            // Bot detection
-            const botLevel = creepData.bot || "N/A";
-
             detailsGridHTML += `<div class="label">Lies Detected:</div><div class="value">${liesHTML}</div>`;
-            detailsGridHTML += `<div class="label">Bot Detection Level:</div><div class="value">${botLevel}</div>`;
+            detailsGridHTML += `<div class="label">Bot Detection:</div><div class="value">${creepData.bot || 'N/A'}</div>`;
+            
+            // Display lies if any
+            if(lieCount > 0){
+                detailsGridHTML += `<div class="label">Spoofed Areas:</div><div class="value">${Object.keys(lies).join(', ')}</div>`;
+            }
         }
 
         if (ipError) { 
             detailsGridHTML += `<div class="label">IP Status:</div><div class="value danger">Error fetching IP details</div>`;
         } else if (ipData) {
-            detailsGridHTML += `<div class="label">IP Address:</div><div class="value">${ipData.ip}</div>`;
+            detailsGridHTML += `<div class="label">IP Address:</div><div class="value" style="font-size: 14px;">${ipData.ip}</div>`;
         }
 
         detailsGridHTML += `<div class="label">CreepJS Fingerprint:</div><div class="value" style="color: var(--accent-blue);">${creepError ? 'Error' : creepData.fingerprint}</div>`;
@@ -293,7 +297,7 @@
         return resultsHTML;
     })();
     
-    const minDelay = new Promise(resolve => setTimeout(resolve, 2000));
+    const minDelay = new Promise(resolve => setTimeout(resolve, 2500)); // Longer delay for CreepJS
     const [finalHTML] = await Promise.all([detectionPromise, minDelay]);
     resultsEl.innerHTML = finalHTML;
   }
