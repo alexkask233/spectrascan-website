@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>🛡️ SpectraScan - Unmask Your Digital Ghost</title>
+  <!-- NEW: Custom Favicon -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20448%20512'%3E%3Cpath%20fill='%2300ff88'%20d='M224%20256A128%20128%200%201%200%20224%200a128%20128%200%201%200%200%20256zm-45.7%2048C79.8%20304%200%20383.8%200%20482.3C0%20498.7%2013.3%20512%2029.7%20512H418.3c16.4%200%2029.7-13.3%2029.7-29.7C448%20383.8%20368.2%20304%20269.7%20304H178.3z'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -13,28 +15,17 @@
 
   <style>
     :root {
-      --bg-color: #121217; --card-color: #1e1e24; --border-color: #33333a; --text-primary: #f0f0f0; --text-secondary: #a9a9b3; --accent-green: #00ff88; --accent-red: #ff4757; --accent-blue: #00aaff; --success-bg: rgba(0, 255, 136, 0.1); --danger-bg: rgba(255, 71, 87, 0.1); --bg-glow-color: rgba(0, 255, 138, 0.05); --bg-grid-color: #2a2a30;
+      --bg-color: #0d0d12; --card-color: rgba(30, 30, 36, 0.9); --border-color: #33333a; --text-primary: #f0f0f0; --text-secondary: #a9a9b3; --accent-green: #00ff88; --accent-red: #ff4757; --accent-blue: #00aaff; --success-bg: rgba(0, 255, 136, 0.1); --danger-bg: rgba(255, 71, 87, 0.1);
     }
-    body.light-mode {
-      --bg-color: #f4f4f8; --card-color: #ffffff; --border-color: #e0e0e6; --text-primary: #121217; --text-secondary: #66666e; --success-bg: rgba(0, 200, 110, 0.1); --danger-bg: rgba(255, 71, 87, 0.1); --bg-glow-color: rgba(0, 170, 255, 0.04); --bg-grid-color: #dce0e6;
-    }
-
+    
     * { box-sizing: border-box; margin: 0; padding: 0; }
     
     html { height: 100%; }
     body {
-        height: 100%;
-        background-color: var(--bg-color); color: var(--text-primary); font-family: 'Inter', sans-serif; line-height: 1.6; position: relative;
+        height: 100%; background-color: var(--bg-color); color: var(--text-primary); font-family: 'Inter', sans-serif; line-height: 1.6; position: relative; overflow: hidden;
     }
-    body::before {
-        content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-        background-image: 
-            linear-gradient(to right, var(--bg-grid-color) 1px, transparent 1px),
-            linear-gradient(to bottom, var(--bg-grid-color) 1px, transparent 1px);
-        background-size: 40px 40px;
-        animation: pan-grid 60s linear infinite;
-    }
-    @keyframes pan-grid { from { background-position: 0 0; } to { background-position: 400px 400px; } }
+    /* --- NEW SEXY BACKGROUND --- */
+    #matrix-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
 
     .page-wrapper { display: flex; flex-direction: column; height: 100%; overflow-y: auto; }
     main { flex-grow: 1; display: flex; justify-content: center; align-items: center; padding: 40px 20px; }
@@ -42,7 +33,7 @@
     .page.active { display: block; animation: page-transition-in 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
     @keyframes page-transition-in { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-    header { background-color: rgba(30, 30, 36, 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); padding: 0 40px; display: flex; justify-content: space-between; align-items: center; height: 70px; position: sticky; top: 0; z-index: 100; transition: background-color 0.3s ease, border-color 0.3s ease; }
+    header { background-color: rgba(18, 18, 23, 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); padding: 0 40px; display: flex; justify-content: space-between; align-items: center; height: 70px; position: sticky; top: 0; z-index: 100; transition: background-color 0.3s ease, border-color 0.3s ease; }
     .logo-link { text-decoration: none; }
     .logo { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 10px; color: var(--text-primary); }
     .logo .fa-shield-halved { color: var(--accent-green); }
@@ -53,10 +44,22 @@
     #hamburger-btn, #close-nav-btn { display: none; background: none; border: none; font-size: 24px; color: var(--text-primary); cursor: pointer; }
     #close-nav-btn { position: absolute; top: 20px; right: 20px; }
     
-    footer { text-align: center; padding: 20px; color: var(--text-secondary); font-size: 14px; background-color: var(--card-color); border-top: 1px solid var(--border-color); margin-top: auto; transition: background-color 0.3s ease, border-color 0.3s ease; }
+    footer { text-align: center; padding: 20px; color: var(--text-secondary); font-size: 14px; background-color: var(--card-color); border-top: 1px solid var(--border-color); margin-top: auto; transition: background-color 0.3s ease, border-color 0.3s ease; font-family: 'Roboto Mono', monospace; }
+    footer .footer-icons { margin-top: 10px; display: flex; justify-content: center; gap: 20px; font-size: 18px; color: var(--accent-green); }
     
-    .container { background-color: var(--card-color); padding: 30px 40px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease, border-color 0.3s ease; }
+    .container { background-color: var(--card-color); padding: 30px 40px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease, border-color 0.3s ease; position: relative; overflow: hidden; }
     
+    /* --- CLASSIFIED STAMP --- */
+    .classified-stamp {
+        position: absolute; top: 25px; right: 25px;
+        transform: rotate(10deg); color: var(--accent-red);
+        border: 3px solid var(--accent-red); padding: 5px 10px;
+        font-family: 'Roboto Mono', monospace; font-weight: 700;
+        font-size: 18px; opacity: 0.7; user-select: none;
+        animation: stamp-flicker 4s infinite alternate;
+    }
+    @keyframes stamp-flicker { 0%, 95% { opacity: 0.7; } 97% { opacity: 0.3; } 99%, 100% { opacity: 0.8; } }
+
     h1, .static-page h2 {
         font-size: 2.2rem; font-weight: 700; margin-bottom: 10px; text-align: center; color: var(--text-primary);
         position: relative; animation: text-flicker 3s linear infinite;
@@ -104,7 +107,7 @@
     .risk-score { font-size: 16px; color: var(--text-secondary); text-align: center; margin-bottom: 25px; }
     .risk-score strong { color: var(--text-primary); font-weight: 700; font-size: 18px; }
     
-    .details-grid { display: grid; grid-template-columns: auto 1fr; gap: 12px 20px; padding: 20px 0; border-top: 1px solid var(--border-color); font-family: 'Roboto Mono', monospace; align-items: baseline; }
+    .details-grid { display: grid; grid-template-columns: 180px 1fr; gap: 12px 20px; padding: 20px 0; border-top: 1px solid var(--border-color); font-family: 'Roboto Mono', monospace; align-items: baseline; }
     .details-grid > * { opacity: 0; animation: fade-in-up 0.5s ease forwards; }
     .details-grid .label:nth-child(1), .details-grid .value:nth-child(2) { animation-delay: 0.1s; }
     .details-grid .label:nth-child(3), .details-grid .value:nth-child(4) { animation-delay: 0.2s; }
@@ -128,10 +131,10 @@
         content: '\f1e2'; /* fa-skull-crossbones */
         font-size: 16px; color: var(--accent-green);
         background: var(--card-color); padding: 0 15px;
-        animation: pulse-icon 2s infinite ease-in-out;
+        animation: pulse-icon-safe 2s infinite ease-in-out;
     }
     .results-separator.danger::after { color: var(--accent-red); animation-name: pulse-icon-danger; }
-    @keyframes pulse-icon { 0%, 100% { transform: scale(1); text-shadow: 0 0 5px var(--accent-green); } 50% { transform: scale(1.1); text-shadow: 0 0 15px var(--accent-green); } }
+    @keyframes pulse-icon-safe { 0%, 100% { transform: scale(1); text-shadow: 0 0 5px var(--accent-green); } 50% { transform: scale(1.1); text-shadow: 0 0 15px var(--accent-green); } }
     @keyframes pulse-icon-danger { 0%, 100% { transform: scale(1); text-shadow: 0 0 5px var(--accent-red); } 50% { transform: scale(1.1); text-shadow: 0 0 15px var(--accent-red); } }
     
     .static-page p { color: var(--text-secondary); margin-bottom: 20px; line-height: 1.7; font-family: 'Roboto Mono', monospace; }
@@ -148,7 +151,6 @@
         nav .nav-link, nav #theme-toggle-btn { display: none; }
         #hamburger-btn { display: block; }
         nav { position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; background: rgba(18, 18, 23, 0.95); backdrop-filter: blur(10px); flex-direction: column; justify-content: center; align-items: center; gap: 40px; transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-        body.light-mode nav { background: rgba(244, 244, 248, 0.95); }
         nav.is-open { right: 0; }
         nav.is-open .nav-link, nav.is-open #theme-toggle-btn, nav.is-open #close-nav-btn { display: block; font-size: 24px; }
         .container { padding: 20px; }
@@ -160,7 +162,7 @@
   </style>
 </head>
 <body>
-
+<canvas id="matrix-bg"></canvas>
 <div class="page-wrapper">
   <!-- ====== HEADER ====== -->
   <header>
@@ -185,6 +187,7 @@
   <main>
     <div id="page-catcher" class="page">
       <div class="container" id="catcher-container">
+        <div class="classified-stamp">CLASSIFIED</div>
         <div id="intro-content">
           <h1 data-text="Unmask Your Digital Ghost">Unmask Your Digital Ghost</h1>
           <p class="tagline">Is your browser hiding in the shadows? Let's find out.</p>
@@ -230,7 +233,14 @@
     </div>
   </main>
   
-  <footer>© 2025 SpectraScan. All rights reserved. Your Shield in the Digital Shadows.</footer>
+  <footer>
+    CLASSIFIED // FOR ANALYTICAL PURPOSES ONLY
+    <div class="footer-icons">
+      <i class="fa-solid fa-fingerprint"></i>
+      <i class="fa-solid fa-bug"></i>
+      <i class="fa-solid fa-user-secret"></i>
+    </div>
+  </footer>
 </div>
 
 <script>
@@ -363,7 +373,7 @@
         detailsGridHTML += `<div class="label">FP Hash:</div><div class="value fingerprint-hash">${thumbmarkFingerprint}</div>`;
         
         resultsHTML += `<div class="details-grid">${detailsGridHTML}</div>`;
-        resultsHTML += `<div class="results-footer"><div class="results-separator ${isBadBrowser ? 'danger' : 'safe'}"></div><div class="run-btn-wrapper"><button id="reset-btn" onclick="resetCatcher()">Run Another Test</button></div></div>`;
+        resultsHTML += `<div class="results-footer"><div class="results-separator ${isBadBrowser ? 'danger' : ''}"></div><div class="run-btn-wrapper"><button id="reset-btn" onclick="resetCatcher()">Run Another Test</button></div></div>`;
         
         return {html: resultsHTML, bad: isBadBrowser};
     })();
@@ -378,6 +388,46 @@
         resetButton.classList.add(result.bad ? 'danger-button' : 'safe-button');
     }
   }
+
+  /* --- MATRIX BACKGROUND SCRIPT --- */
+  const canvas = document.getElementById('matrix-bg');
+  const ctx = canvas.getContext('2d');
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const charArray = characters.split('');
+  const fontSize = 14;
+  const columns = canvas.width / fontSize;
+  const drops = Array(Math.floor(columns)).fill(1);
+
+  function drawMatrix() {
+    ctx.fillStyle = 'rgba(18, 18, 23, 0.05)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--accent-green');
+    ctx.font = fontSize + 'px Roboto Mono';
+
+    for (let i = 0; i < drops.length; i++) {
+        const text = charArray[Math.floor(Math.random() * charArray.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+        }
+        drops[i]++;
+    }
+  }
+  
+  setInterval(drawMatrix, 40);
+
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    drops.length = Math.floor(canvas.width / fontSize);
+    drops.fill(1);
+  });
 </script>
 
 </body>
