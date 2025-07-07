@@ -41,7 +41,6 @@
     @keyframes page-transition-in { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
     header { background-color: rgba(30, 30, 36, 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); padding: 0 40px; display: flex; justify-content: space-between; align-items: center; height: 70px; position: sticky; top: 0; z-index: 100; transition: background-color 0.3s ease, border-color 0.3s ease; }
-    body.light-mode header { background-color: rgba(255, 255, 255, 0.8); }
     .logo-link { text-decoration: none; }
     .logo { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 10px; color: var(--text-primary); }
     .logo .fa-shield-halved { color: var(--accent-green); }
@@ -49,7 +48,6 @@
     nav .nav-link { color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s ease; }
     nav .nav-link:hover, nav .nav-link.active { color: var(--text-primary); }
     #theme-toggle-btn { background: none; border: none; color: var(--text-secondary); font-size: 20px; cursor: pointer; transition: color 0.2s ease, transform 0.2s ease; }
-    #theme-toggle-btn:hover { color: var(--text-primary); transform: scale(1.1); }
     #hamburger-btn, #close-nav-btn { display: none; background: none; border: none; font-size: 24px; color: var(--text-primary); cursor: pointer; }
     #close-nav-btn { position: absolute; top: 20px; right: 20px; }
     
@@ -57,7 +55,6 @@
     
     .container { background-color: var(--card-color); padding: 30px 40px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease, border-color 0.3s ease; }
     
-    /* --- SEXY UI & ANIMATIONS --- */
     h1, .static-page h2 {
         font-size: 2.2rem; font-weight: 700; margin-bottom: 10px; text-align: center; color: var(--text-primary);
         position: relative; animation: text-flicker 3s linear infinite;
@@ -75,7 +72,7 @@
     .tagline { 
       color: var(--text-secondary); margin-bottom: 30px; font-size: 16px; text-align: center;
       font-family: 'Roboto Mono', monospace; white-space: nowrap; overflow: hidden;
-      border-right: .15em solid var(--accent-green); animation: typing 2s steps(38, end) forwards, blink-caret .75s step-end infinite;
+      border-right: .15em solid var(--accent-green); animation: typing 2s steps(38, end), blink-caret .75s step-end infinite;
     }
     @keyframes typing { from { width: 0 } to { width: 100% } }
     @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--accent-green); } }
@@ -85,11 +82,11 @@
     button#run-btn { background: var(--accent-green); color: #000; box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); }
     button#run-btn:hover { background-color: #00e67a; transform: translateY(-3px) scale(1.02); box-shadow: 0 0 25px rgba(0, 255, 136, 0.6); }
     
-    button#reset-btn { font-family: 'Roboto Mono', monospace; font-size: 16px; }
-    button#reset-btn.safe-button { background-color: var(--accent-green); color: #000; box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); }
-    button#reset-btn.safe-button:hover { background-color: #00e67a; transform: translateY(-2px); box-shadow: 0 0 25px rgba(0, 255, 136, 0.6); }
-    button#reset-btn.danger-button { background-color: var(--accent-red); color: #fff; box-shadow: 0 0 15px rgba(255, 71, 87, 0.4); }
-    button#reset-btn.danger-button:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(255, 71, 87, 0.7); }
+    button#reset-btn { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 16px; border-radius: 10px; }
+    button#reset-btn.safe-button { background-image: linear-gradient(45deg, #00ff88, #00e67a); color: #000; box-shadow: 0 0 20px rgba(0, 255, 136, 0.4); }
+    button#reset-btn.safe-button:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(0, 255, 136, 0.7); }
+    button#reset-btn.danger-button { background-image: linear-gradient(45deg, #ff4757, #e03f4f); color: #fff; box-shadow: 0 0 20px rgba(255, 71, 87, 0.5); }
+    button#reset-btn.danger-button:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(255, 71, 87, 0.8); }
     
     #results-container { margin-top: 30px; text-align: left; }
     .loader-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 0; animation: page-transition-in 0.5s; }
@@ -106,19 +103,30 @@
     .risk-score { font-size: 16px; color: var(--text-secondary); text-align: center; margin-bottom: 25px; }
     .risk-score strong { color: var(--text-primary); font-weight: 700; font-size: 18px; }
     
-    .details-grid { display: grid; grid-template-columns: 200px 1fr; gap: 12px 20px; padding-top: 20px; border-top: 1px solid var(--border-color); font-family: 'Roboto Mono', monospace; }
+    .details-grid { display: grid; grid-template-columns: 180px 1fr; gap: 12px 20px; padding: 20px 0; border-top: 1px solid var(--border-color); font-family: 'Roboto Mono', monospace; }
     .details-grid > * { opacity: 0; animation: fade-in-up 0.5s ease forwards; }
     .details-grid .label:nth-child(1), .details-grid .value:nth-child(2) { animation-delay: 0.1s; }
     .details-grid .label:nth-child(3), .details-grid .value:nth-child(4) { animation-delay: 0.2s; }
     .details-grid .label:nth-child(5), .details-grid .value:nth-child(6) { animation-delay: 0.3s; }
-    
     @keyframes fade-in-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    .details-grid .label { color: var(--text-secondary); text-align: right; }
+    .details-grid .label { color: var(--text-secondary); text-align: right; white-space: pre; }
     .details-grid .value { color: var(--text-primary); font-size: 14px; word-break: break-all; }
     .details-grid .value.danger { color: var(--accent-red); font-weight: 700; }
     .details-grid .value.safe { color: var(--accent-green); }
     .details-grid .value.fingerprint-hash { color: var(--accent-blue); font-size: 13px;}
+
+    .results-footer { text-align: center; padding-top: 30px; }
+    .results-separator {
+        width: 60%; margin: 0 auto 20px auto; height: 1px; background: var(--border-color);
+        display: flex; align-items: center; justify-content: center;
+        opacity: 0; animation: fade-in-up 0.5s 0.5s ease forwards;
+    }
+    .results-separator::after {
+        content: '<//>'; font-family: 'Roboto Mono', monospace; font-size: 14px;
+        color: var(--accent-green); background: var(--card-color); padding: 0 10px;
+        animation: text-flicker 2s infinite;
+    }
 
     .static-page p { color: var(--text-secondary); margin-bottom: 20px; line-height: 1.7; font-family: 'Roboto Mono', monospace; }
     .static-page h3 { color: var(--accent-blue); margin-top: 30px; margin-bottom: 10px; font-family: 'Roboto Mono', monospace; }
@@ -185,8 +193,8 @@
     <div id="page-faq" class="page">
       <div class="container static-page">
         <h2 data-text="Frequently Asked Questions">Frequently Asked Questions</h2>
-        <h3>What is this tool?</h3><p>SpectraScan analyzes your browser's fingerprint for signs of manipulation. Websites use these fingerprints to track you. Our tool checks for common spoofing techniques (Canvas, WebGL, Audio) and flags connections from known VPNs or proxies.</p>
-        <h3>Why is a high risk score bad?</h3><p>A high score suggests your fingerprint is inconsistent, a common trait of antidetect browsers. While used for privacy, these browsers are often flagged as fraudulent by platforms like banks and e-commerce sites, risking account suspension.</p>
+        <h3>What is this tool?</h3><p>SpectraScan analyzes your browser's fingerprint for signs of manipulation. Websites use these fingerprints to track you. Our tool checks for common spoofing techniques and flags connections from known VPNs or proxies.</p>
+        <h3>Why is a high risk score bad?</h3><p>A high score suggests your fingerprint is inconsistent, a common trait of antidetect browsers. While used for privacy, these browsers are often flagged as fraudulent by platforms like banks and e-commerce sites.</p>
         <h3>Is this 100% accurate?</h3><p>No tool is infallible in the cat-and-mouse game of browser security. This tool provides a strong, indicative analysis, not absolute proof.</p>
       </div>
     </div>
@@ -204,7 +212,7 @@
     <div id="page-contact" class="page">
         <div class="container static-page">
             <h2 data-text="Get In Touch">Get In Touch</h2>
-            <p>Have a question, feedback, or a partnership inquiry? We'd love to hear from you. Fill out the form below and our team will get back to you as soon as possible.</p>
+            <p>Have a question or feedback? We'd love to hear from you. Fill out the form below and our team will get back to you as soon as possible.</p>
             <form class="contact-form" onsubmit="event.preventDefault(); alert('Thank you for your message! Our team will review it shortly.'); this.reset();">
                 <div class="form-group"><input type="text" name="name" placeholder="Your Name" required></div>
                 <div class="form-group"><input type="email" name="email" placeholder="Your Email Address" required></div>
@@ -340,7 +348,7 @@
         
         let detailsGridHTML = '';
         if (ipError) { 
-            detailsGridHTML += `<div class="label">IP Status:</div><div class="value danger">Error fetching IP details</div>`;
+            detailsGridHTML += `<div class="label">IP Status:</div><div class="value danger">Error</div>`;
         } else { 
             detailsGridHTML += `<div class="label">IP Address:</div><div class="value">${ipData.ip}</div>`;
             detailsGridHTML += `<div class="label">IP Status:</div><div class="value ${ipData.isProxy ? 'danger' : 'safe'}">${ipData.status}</div>`;
@@ -349,7 +357,7 @@
         detailsGridHTML += `<div class="label">Browser Fingerprint:</div><div class="value fingerprint-hash">${thumbmarkFingerprint}</div>`;
         
         resultsHTML += `<div class="details-grid">${detailsGridHTML}</div>`;
-        resultsHTML += `<div class="run-btn-wrapper"><button id="reset-btn" onclick="resetCatcher()">Run Another Test</button></div>`;
+        resultsHTML += `<div class="results-footer"><div class="results-separator"></div><button id="reset-btn" onclick="resetCatcher()">Run Another Test</button></div>`;
         
         return {html: resultsHTML, bad: isBadBrowser};
     })();
