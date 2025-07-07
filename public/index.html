@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>🛡️ SpectraScan - Unmask Your Digital Ghost</title>
-  <!-- NEW: Themed Black Skull Favicon -->
   <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20512%20512'%3E%3Cpath%20fill='%23000000'%20d='M256%200C114.6%200%200%20114.6%200%20256s114.6%20512%20256%20512s256-114.6%20256-256S397.4%200%20256%200zM192%20160a32%2032%200%201%201-64%200%2032%2032%200%201%201%2064%200zm128%200a32%2032%200%201%201-64%200%2032%2032%200%201%201%2064%200zM160%20336H352c8.8%200%2016%207.2%2016%2016s-7.2%2016-16%2016H160c-8.8%200-16-7.2-16-16s7.2-16%2016-16z'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,7 +52,6 @@
     @keyframes page-transition-in { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
     header { background-color: rgba(18, 18, 23, 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); padding: 0 40px; display: flex; justify-content: space-between; align-items: center; height: 70px; position: sticky; top: 0; z-index: 100; transition: background-color 0.3s ease, border-color 0.3s ease; }
-    body.light-mode header { background-color: rgba(255, 255, 255, 0.8); }
     .logo-link { text-decoration: none; }
     .logo { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 10px; color: var(--text-primary); }
     .logo .fa-shield-halved { color: var(--accent-green); }
@@ -74,24 +72,24 @@
         transform: rotate(10deg); color: var(--accent-red);
         border: 3px solid var(--accent-red); padding: 5px 10px;
         font-family: 'Roboto Mono', monospace; font-weight: 700;
-        font-size: 18px; opacity: 0.7; user-select: none;
-        animation: stamp-flicker 4s infinite alternate;
+        font-size: 18px; opacity: 0; user-select: none;
+        transition: opacity 0.5s ease, color 0.5s ease, border-color 0.5s ease;
     }
-    
+    .classified-stamp.visible { opacity: 0.7; }
+    .classified-stamp.safe { border-color: var(--accent-blue); color: var(--accent-blue); }
+    .classified-stamp.danger { border-color: var(--accent-red); color: var(--accent-red); }
+
     h1, .static-page h2 {
         font-size: 2.2rem; font-weight: 700; margin-bottom: 10px; text-align: center; color: var(--text-primary);
-        position: relative; animation: text-flicker 3s linear infinite;
+        position: relative; animation: text-shadow-flicker 4s linear infinite;
     }
-    h1[data-text]::before, h1[data-text]::after, .static-page h2[data-text]::before, .static-page h2[data-text]::after {
-        content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        background: var(--card-color); overflow: hidden;
+    @keyframes text-shadow-flicker {
+        0%, 100% { text-shadow: 2px 2px 0 var(--accent-green), -2px -2px 0 var(--accent-red); }
+        25% { text-shadow: -2px 2px 0 var(--accent-green), 2px -2px 0 var(--accent-red); }
+        50% { text-shadow: 2px -2px 0 var(--accent-green), -2px 2px 0 var(--accent-red); }
+        75% { text-shadow: -2px -2px 0 var(--accent-green), 2px 2px 0 var(--accent-red); }
     }
-    h1::before, .static-page h2::before { left: 3px; text-shadow: -2px 0 var(--accent-red); animation: glitch-anim-2 3s infinite linear alternate-reverse; }
-    h1::after, .static-page h2::after { left: -3px; text-shadow: -2px 0 var(--accent-blue); animation: glitch-anim 3s infinite linear alternate-reverse; }
-    @keyframes text-flicker { 0%, 19.9%, 22%, 62.9%, 64%, 64.9%, 70%, 100% { opacity: 0.99; } 20%, 21.9%, 63%, 63.9%, 65%, 69.9% { opacity: 0.4; } }
-    @keyframes glitch-anim { 0% { clip-path: inset(40% 0 60% 0); } 10% { clip-path: inset(60% 0 10% 0); } 20%, 100% { clip-path: inset(50% 0 30% 0); } }
-    @keyframes glitch-anim-2 { 0% { clip-path: inset(0 0 90% 0); } 15% { clip-path: inset(80% 0 5% 0); } 25%, 100% { clip-path: inset(40% 0 45% 0); } }
-
+    
     .tagline { 
       color: var(--text-secondary); margin-bottom: 30px; font-size: 16px; text-align: center;
       font-family: 'Roboto Mono', monospace; white-space: nowrap; overflow: hidden;
@@ -290,7 +288,7 @@
     const isLight = body.classList.contains('light-mode');
     localStorage.setItem('theme', isLight ? 'light' : 'dark');
     themeToggleBtn.innerHTML = isLight ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
-    setBackgroundState('default'); // Refresh background on theme change
+    setBackgroundState('default');
   });
   
   const pageContent = { '/': 'page-catcher', '/faq': 'page-faq', '/privacy': 'page-privacy', '/contact': 'page-contact' };
@@ -459,9 +457,10 @@
   
   let gridOffset = 0;
   const drawBlueGrid = () => {
+    const gridColor = body.classList.contains('light-mode') ? 'rgba(0, 170, 255, 0.2)' : 'rgba(0, 170, 255, 0.15)';
     return setInterval(() => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.strokeStyle = 'rgba(0, 170, 255, 0.15)';
+        ctx.strokeStyle = gridColor;
         ctx.lineWidth = 1;
         gridOffset = (gridOffset + 0.3) % 40;
         for (let x = -gridOffset; x < canvas.width; x += 40) {
@@ -475,27 +474,30 @@
 
   function setBackgroundState(state) {
       const watermark = document.getElementById('background-watermark');
+      const classifiedStamp = document.querySelector('.classified-stamp');
       body.classList.remove('safe-mode', 'danger-mode');
       clearInterval(backgroundInterval);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      classifiedStamp.classList.remove('safe', 'danger', 'visible');
       
       const isLight = body.classList.contains('light-mode');
 
       if (state === 'danger') {
-          backgroundInterval = drawMatrix(isLight ? 'rgba(255, 71, 87, 0.5)' : 'rgba(255, 71, 87, 0.7)', 25, '01');
+          backgroundInterval = drawMatrix(isLight ? 'rgba(255, 71, 87, 0.4)' : 'rgba(255, 71, 87, 0.7)', 25, '01');
           watermark.dataset.text = 'ACCESS DENIED';
           body.classList.add('danger-mode');
+          classifiedStamp.textContent = "CLASSIFIED";
+          classifiedStamp.classList.add('danger', 'visible');
       } else if (state === 'safe') {
-          if (isLight) {
-              backgroundInterval = drawMatrix('rgba(220, 224, 230, 0.9)', 50, '01');
-          } else {
-              backgroundInterval = drawBlueGrid();
-          }
+          backgroundInterval = isLight ? drawMatrix('rgba(0, 0, 0, 0.1)', 50, '01') : drawBlueGrid();
           watermark.dataset.text = 'UNCLASSIFIED';
           body.classList.add('safe-mode');
+          classifiedStamp.textContent = "UNCLASSIFIED";
+          classifiedStamp.classList.add('safe', 'visible');
       } else { // default
-          backgroundInterval = isLight ? drawMatrix('rgba(220, 224, 230, 0.9)', 50, '01') : drawMatrix('rgba(0, 255, 136, 0.7)', 40, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
+          backgroundInterval = isLight ? drawMatrix('rgba(0, 0, 0, 0.1)', 50, '01') : drawMatrix('rgba(0, 255, 136, 0.7)', 40, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
           watermark.dataset.text = '';
+          classifiedStamp.textContent = "CLASSIFIED";
       }
   }
 
