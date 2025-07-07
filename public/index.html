@@ -8,6 +8,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  
+  <!-- NEW: Loading the correct and reliable ThumbmarkJS library -->
+  <script src="https://cdn.jsdelivr.net/npm/@thumbmarkjs/thumbmarkjs/dist/thumbmark.umd.js"></script>
+
   <style>
     /* --- CSS Variables --- */
     :root { /* Dark Theme (Default) */
@@ -120,7 +124,7 @@
   <footer>© 2025 SpectraScan. All rights reserved. Your Shield in the Digital Shadows.</footer>
 </div>
 
-<script type="module">
+<script>
   /* --- NAVIGATION, THEME, ROUTER --- */
   const hamburgerBtn = document.getElementById('hamburger-btn'); 
   const closeNavBtn = document.getElementById('close-nav-btn'); 
@@ -174,7 +178,8 @@
     });
     // Special case for the root path
     if (path === '/') {
-        document.querySelector('.nav-link[href="/"]').classList.add('active');
+        const homeLink = document.querySelector('.nav-link[href="/"]');
+        if (homeLink) homeLink.classList.add('active');
     }
   }
 
@@ -202,10 +207,7 @@
   });
 
   /* --- CATCHER SCRIPT --- */
-
-  // FIXED: Correctly import the function from the library's distributed file.
-  import { getDeviceId } from 'https://cdn.jsdelivr.net/npm/@rajesh896/browser-fingerprint@1.1.2/dist/index.js';
-
+  
   // Make runDetection globally accessible from the button's onclick
   window.runDetection = async function() {
     const runBtn = document.getElementById('run-btn');
@@ -214,17 +216,21 @@
     resultsEl.innerHTML = `<div class="loader-wrapper"><div class="scanner-circle"></div><p class="scanner-text">ANALYZING SIGNATURE...</p></div>`;
 
     const detectionPromise = (async () => {
-        // Get Fingerprint from the imported library
+        // Get Fingerprint from ThumbmarkJS library
         let browserFingerprint = 'N/A';
         try {
-            browserFingerprint = await getDeviceId();
+            // The library is loaded via the <script> tag in <head> and creates a global ThumbmarkJS object
+            if (typeof ThumbmarkJS !== 'undefined') {
+                browserFingerprint = await ThumbmarkJS.getFingerprint();
+            } else {
+                throw new Error("ThumbmarkJS library not found.");
+            }
         } catch (err) {
             console.error("Could not get fingerprint:", err);
             browserFingerprint = '<span class="danger">Error generating fingerprint</span>';
         }
-        
-        // This simplified example focuses on displaying the fingerprint.
-        // The old risk scoring logic can be added back here if needed.
+
+        // Fetch IP details
         let ipData = null;
         let ipError = false;
         try {
@@ -236,12 +242,12 @@
             ipError = true;
         }
         
-        // Build Results HTML
+        // --- Build Results HTML ---
         let resultsHTML = '';
         if (ipData && ipData.isProxy) {
             resultsHTML += `<div class="verdict-box danger"><i class="fa-solid fa-tower-broadcast"></i><span>VPN or Proxy Detected!</span></div>`;
         } else {
-             resultsHTML += `<div class="verdict-box safe"><i class="fa-solid fa-circle-check"></i><span>No obvious signs of an antidetect browser.</span></div>`;
+             resultsHTML += `<div class="verdict-box safe"><i class="fa-solid fa-circle-check"></i><span>No major risk factors detected.</span></div>`;
         }
         
         let ipDetailsHTML = '';
