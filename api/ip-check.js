@@ -1,17 +1,11 @@
-const express = require('express');
+// /api/ip-check.js
+
+// We only need the 'node-fetch' library for this file.
 const fetch = require('node-fetch');
-const cors = require('cors');
-const path = require('path');
-const app = express();
-// PORT is not needed for Vercel deployment, but can be kept for local testing
-const PORT = 3001; 
 
-// Serve static files (like index.html) from the 'public' folder
-app.use(cors());
-app.use(express.static('public'));
-
-// The API route that your frontend calls to check the IP
-app.get('/api/ip-check', async (req, res) => {
+// This is the main serverless function.
+// It must be the default export.
+module.exports = async (req, res) => {
   try {
     // 1. Get the public IP of the user making the request
     const ipRes = await fetch('https://api.ipify.org?format=json');
@@ -46,35 +40,21 @@ app.get('/api/ip-check', async (req, res) => {
       }
     }
     
-    // 4. Send a clean JSON response to the frontend
+    // 4. Send the successful JSON response
     const responseData = {
       ip: ip,
       status: status,
       isProxy: isFraud
     };
-
-    res.json(responseData);
+    
+    // Set CORS headers to allow requests from your domain
+    res.setHeader('Access-Control-Allow-Origin', '*'); 
+    res.status(200).json(responseData);
 
   } catch (err) {
     console.error("Error in /api/ip-check route:", err.message);
+    // Set CORS headers for error responses too
+    res.setHeader('Access-Control-Allow-Origin', '*'); 
     res.status(500).json({ error: true, message: "Server error while checking IP status" });
   }
-});
-
-// A root route to serve your main page
-// This ensures that visiting the root domain works
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-// IMPORTANT: This block is for local development only and is ignored by Vercel.
-// To make it Vercel-compatible, we must export the `app`.
-/*
-app.listen(PORT, () => {
-  console.log(`✅ Server is running at http://localhost:${PORT}`);
-});
-*/
-
-// THIS IS THE CRUCIAL LINE FOR VERCEL DEPLOYMENT
-// It exports the Express app instance for Vercel's serverless environment to use.
-module.exports = app;
+};
