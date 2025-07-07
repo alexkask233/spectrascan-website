@@ -27,7 +27,7 @@
     @keyframes page-transition-in { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
     /* --- Header / Navigation --- */
-    header { background-color: rgba(30, 30, 36, 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); padding: 0 20px; display: flex; justify-content: space-between; align-items: center; height: 70px; position: sticky; top: 0; z-index: 100; transition: background-color 0.3s ease, border-color 0.3s ease; }
+    header { background-color: rgba(30, 30, 36, 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); padding: 0 40px; display: flex; justify-content: space-between; align-items: center; height: 70px; position: sticky; top: 0; z-index: 100; transition: background-color 0.3s ease, border-color 0.3s ease; }
     body.light-mode header { background-color: rgba(255, 255, 255, 0.8); }
     .logo-link { text-decoration: none; }
     .logo { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 10px; color: var(--text-primary); }
@@ -38,7 +38,6 @@
     nav .nav-link:hover, nav .nav-link.active { color: var(--text-primary); }
     #theme-toggle-btn { background: none; border: none; color: var(--text-secondary); font-size: 20px; cursor: pointer; transition: color 0.2s ease, transform 0.2s ease; }
     #theme-toggle-btn:hover { color: var(--text-primary); transform: scale(1.1); }
-    
     #hamburger-btn, #close-nav-btn { display: none; background: none; border: none; font-size: 24px; color: var(--text-primary); cursor: pointer; }
     #close-nav-btn { position: absolute; top: 20px; right: 20px; }
     
@@ -71,9 +70,13 @@
     .details-grid .value { color: var(--text-primary); }
     .details-grid .value.danger { color: var(--accent-red); font-weight: 700; }
     .details-grid .value.safe { color: var(--accent-green); }
-    .static-page h2 { font-size: 24px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); text-align: left; color: var(--text-primary); }
-    .static-page p { color: var(--text-secondary); margin-bottom: 20px; text-align: left; }
-    .static-page h3 { color: var(--accent-blue); margin-top: 30px; margin-bottom: 10px; text-align: left; }
+    
+    /* --- Styles for FAQ, Privacy & Contact Pages --- */
+    .static-page h2 { font-size: 24px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); color: var(--text-primary); }
+    .static-page p { color: var(--text-secondary); margin-bottom: 20px; }
+    .static-page h3 { color: var(--accent-blue); margin-top: 30px; margin-bottom: 10px; }
+    
+    /* --- FIX: Full-width styles for Contact Form on ALL screen sizes --- */
     .contact-form .form-group { margin-bottom: 20px; }
     .contact-form input, .contact-form textarea { width: 100%; background-color: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; color: var(--text-primary); font-size: 15px; transition: border-color 0.2s ease, background-color 0.3s ease; }
     .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--accent-blue); }
@@ -93,19 +96,15 @@
         nav.is-open .nav-link, nav.is-open #theme-toggle-btn, nav.is-open #close-nav-btn { display: block; font-size: 24px; }
         .container { padding: 20px; }
         h1 { font-size: 24px; }
-
-        /* --- NEW: Responsive styles for results and forms --- */
+        
+        /* --- FIX: Responsive styles for results grid --- */
         .details-grid {
             grid-template-columns: 1fr; /* Switch to a single column */
             text-align: center;
-            gap: 4px; /* Tighter vertical gap */
+            gap: 4px;
         }
         .details-grid .value {
-            margin-bottom: 16px; /* Add space between each key-value pair */
-        }
-        .contact-form input, 
-        .contact-form textarea {
-            width: 100%; /* Ensure form fields take full width */
+            margin-bottom: 16px;
         }
     }
   </style>
@@ -139,16 +138,12 @@
 
 <script>
   /* --- RESPONSIVE NAVIGATION SCRIPT --- */
-  const hamburgerBtn = document.getElementById('hamburger-btn');
-  const closeNavBtn = document.getElementById('close-nav-btn');
-  const mainNav = document.getElementById('main-nav');
+  const hamburgerBtn = document.getElementById('hamburger-btn'); const closeNavBtn = document.getElementById('close-nav-btn'); const mainNav = document.getElementById('main-nav');
   hamburgerBtn.addEventListener('click', () => mainNav.classList.add('is-open'));
   closeNavBtn.addEventListener('click', () => mainNav.classList.remove('is-open'));
   
   /* --- THEME TOGGLE SCRIPT --- */
-  const themeToggleBtn = document.getElementById('theme-toggle-btn');
-  const body = document.body;
-  const themeIcon = themeToggleBtn.querySelector('i');
+  const themeToggleBtn = document.getElementById('theme-toggle-btn'); const body = document.body; const themeIcon = themeToggleBtn.querySelector('i');
   function applySavedTheme() { const savedTheme = localStorage.getItem('theme'); if (savedTheme === 'light') { body.classList.add('light-mode'); themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun'); } else { body.classList.remove('light-mode'); themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon'); } }
   themeToggleBtn.addEventListener('click', () => { body.classList.toggle('light-mode'); if (body.classList.contains('light-mode')) { localStorage.setItem('theme', 'light'); themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun'); } else { localStorage.setItem('theme', 'dark'); themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon'); } });
 
@@ -160,9 +155,7 @@
     document.querySelectorAll('.nav-link').forEach(link => {
       link.classList.remove('active');
       const targetPath = (new URL(link.href)).pathname;
-      if (targetPath === window.location.pathname || (window.location.pathname === '/' && targetPath === '/')) {
-        link.classList.add('active');
-      }
+      if (targetPath === window.location.pathname || (window.location.pathname === '/' && targetPath === '/')) { link.classList.add('active'); }
     });
   }
   const router = () => { const path = window.location.pathname; const pageId = pageContent[path] || 'page-catcher'; showPageContent(pageId); };
@@ -171,17 +164,14 @@
     if (target && (target.matches('.nav-link') || target.matches('.logo-link'))) {
       e.preventDefault();
       history.pushState(null, '', target.href);
-      mainNav.classList.remove('is-open'); // Close nav on link click
-      router();
+      mainNav.classList.remove('is-open'); router();
     }
   });
   window.addEventListener('popstate', router);
   document.addEventListener('DOMContentLoaded', () => { applySavedTheme(); router(); });
 
   /* --- CATCHER SCRIPT (NO CHANGE) --- */
-  const knownSpoofedCanvas = [-1222622419, -1982647924, -1687811050];
-  const knownSpoofedAudio = [18028.99390631693, 48000.276471651436];
-  const knownRealGPUs = ["NVIDIA GeForce RTX", "NVIDIA GeForce GTX"];
+  const knownSpoofedCanvas = [-1222622419, -1982647924, -1687811050]; const knownSpoofedAudio = [18028.99390631693, 48000.276471651436]; const knownRealGPUs = ["NVIDIA GeForce RTX", "NVIDIA GeForce GTX"];
   function resetCatcher() { document.getElementById('results-container').innerHTML = ''; document.getElementById('run-btn').style.display = 'block'; }
   async function runDetection() {
     const runBtn = document.getElementById('run-btn'); const resultsEl = document.getElementById('results-container');
