@@ -8,8 +8,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  
-  <!-- NEW: Loading the correct and reliable ThumbmarkJS library -->
+
+  <!-- ADDED: ThumbmarkJS Fingerprinting Library -->
   <script src="https://cdn.jsdelivr.net/npm/@thumbmarkjs/thumbmarkjs/dist/thumbmark.umd.js"></script>
 
   <style>
@@ -70,7 +70,7 @@
     .details-grid { display: grid; grid-template-columns: auto 1fr; gap: 10px 20px; padding-top: 20px; border-top: 1px solid var(--border-color); }
     .details-grid .label, .details-grid .value { font-weight: 500; word-break: break-all; }
     .details-grid .label { color: var(--text-secondary); }
-    .details-grid .value { color: var(--text-primary); font-size: 14px; }
+    .details-grid .value { color: var(--text-primary); font-size: 12px; }
     .details-grid .value.danger { color: var(--accent-red); font-weight: 700; }
     .details-grid .value.safe { color: var(--accent-green); }
     .static-page h2 { font-size: 24px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); color: var(--text-primary); }
@@ -94,7 +94,7 @@
 <body>
 
 <div class="page-wrapper">
-  <!-- ====== HEADER & NAVIGATION (Unchanged) ====== -->
+  <!-- ====== HEADER ====== -->
   <header>
     <a href="/" class="logo-link">
       <div class="logo">
@@ -113,166 +113,125 @@
     </nav>
   </header>
 
-  <!-- ====== MAIN CONTENT & PAGES (Unchanged) ====== -->
+  <!-- ====== MAIN CONTENT & FOOTER (Unchanged) ====== -->
   <main>
     <div id="page-catcher" class="page"><div class="container" id="catcher-container"><h1>Unmask Your Digital Ghost</h1><p class="tagline">Is your browser hiding in the shadows? Let's find out.</p><button id="run-btn" onclick="runDetection()">Run Detection</button><div id="results-container"></div></div></div>
-    <div id="page-faq" class="page"><div class="container static-page"><h2>Frequently Asked Questions</h2><p>Content for FAQ page.</p></div></div>
-    <div id="page-privacy" class="page"><div class="container static-page"><h2>Privacy Policy</h2><p>Content for Privacy page.</p></div></div>
-    <div id="page-contact" class="page"><div class="container static-page"><h2>Get In Touch</h2><p>Content for Contact page.</p></div></div>
+    <div id="page-faq" class="page"><div class="container static-page"><h2>Frequently Asked Questions</h2><h3>What is this tool?</h3><p>SpectraScan analyzes your browser's fingerprint for signs of manipulation. Websites use these fingerprints to track you. Our tool checks for common spoofing techniques (Canvas, WebGL, Audio) and flags connections from known VPNs or proxies.</p><h3>Why is a high risk score bad?</h3><p>A high score suggests your fingerprint is inconsistent, a common trait of antidetect browsers. While used for privacy, these browsers are often flagged as fraudulent by platforms like banks and e-commerce sites, risking account suspension.</p><h3>Is a score of 1 or 2 bad?</h3><p>No. A score below 3 is generally safe. Normal browsers can have minor inconsistencies. We only flag a browser as "likely antidetect" when multiple significant red flags are found.</p><h3>Is this 100% accurate?</h3><p>No tool is infallible in the cat-and-mouse game of browser security. This tool provides a strong, indicative analysis, not absolute proof.</p></div></div>
+    <div id="page-privacy" class="page"><div class="container static-page"><h2>Privacy Policy</h2><p>Your privacy is paramount. Our policy is simple: we don't store your data.</p><h3>IP Address Handling</h3><p>Your IP address is used *only* to perform the check with third-party databases during your session. It is never logged or stored on our servers.</p><h3>Browser Fingerprint</h3><p>All fingerprinting happens in your browser. Raw data (WebGL, Canvas, etc.) is never sent to us. Your device performs the analysis locally.</p><h3>Cookies & Tracking</h3><p>This website does not use cookies for tracking. Period.</p></div></div>
+    <div id="page-contact" class="page"><div class="container static-page"><h2>Get In Touch</h2><p>Have a question, feedback, or a partnership inquiry? We'd love to hear from you. Fill out the form below and our team will get back to you as soon as possible.</p><form class="contact-form" onsubmit="event.preventDefault(); alert('Thank you for your message! Our team will review it shortly.'); this.reset();"><div class="form-group"><input type="text" name="name" placeholder="Your Name" required></div><div class="form-group"><input type="email" name="email" placeholder="Your Email Address" required></div><div class="form-group"><input type="text" name="subject" placeholder="Subject" required></div><div class="form-group"><textarea name="message" placeholder="Your Message" required></textarea></div><button type="submit" class="form-submit-btn">Send Message</button></form></div></div>
   </main>
   
   <footer>© 2025 SpectraScan. All rights reserved. Your Shield in the Digital Shadows.</footer>
 </div>
 
 <script>
-  /* --- NAVIGATION, THEME, ROUTER --- */
-  const hamburgerBtn = document.getElementById('hamburger-btn'); 
-  const closeNavBtn = document.getElementById('close-nav-btn'); 
-  const mainNav = document.getElementById('main-nav');
+  /* --- NAVIGATION, THEME, ROUTER (Unchanged) --- */
+  const hamburgerBtn = document.getElementById('hamburger-btn'); const closeNavBtn = document.getElementById('close-nav-btn'); const mainNav = document.getElementById('main-nav');
   hamburgerBtn.addEventListener('click', () => mainNav.classList.add('is-open'));
   closeNavBtn.addEventListener('click', () => mainNav.classList.remove('is-open'));
-  
-  const themeToggleBtn = document.getElementById('theme-toggle-btn'); 
-  const body = document.body; 
-  const themeIcon = themeToggleBtn.querySelector('i');
-  
-  function applySavedTheme() { 
-    const savedTheme = localStorage.getItem('theme'); 
-    if (savedTheme === 'light') { 
-      body.classList.add('light-mode'); 
-      themeIcon.classList.remove('fa-moon'); 
-      themeIcon.classList.add('fa-sun'); 
-    } else { 
-      body.classList.remove('light-mode'); 
-      themeIcon.classList.remove('fa-sun'); 
-      themeIcon.classList.add('fa-moon'); 
-    } 
-  }
-  
-  themeToggleBtn.addEventListener('click', () => { 
-    body.classList.toggle('light-mode'); 
-    if (body.classList.contains('light-mode')) { 
-      localStorage.setItem('theme', 'light'); 
-      themeIcon.classList.remove('fa-moon'); 
-      themeIcon.classList.add('fa-sun'); 
-    } else { 
-      localStorage.setItem('theme', 'dark'); 
-      themeIcon.classList.remove('fa-sun'); 
-      themeIcon.classList.add('fa-moon'); 
-    } 
-  });
-  
+  const themeToggleBtn = document.getElementById('theme-toggle-btn'); const body = document.body; const themeIcon = themeToggleBtn.querySelector('i');
+  function applySavedTheme() { const savedTheme = localStorage.getItem('theme'); if (savedTheme === 'light') { body.classList.add('light-mode'); themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun'); } else { body.classList.remove('light-mode'); themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon'); } }
+  themeToggleBtn.addEventListener('click', () => { body.classList.toggle('light-mode'); if (body.classList.contains('light-mode')) { localStorage.setItem('theme', 'light'); themeIcon.classList.remove('fa-moon'); themeIcon.classList.add('fa-sun'); } else { localStorage.setItem('theme', 'dark'); themeIcon.classList.remove('fa-sun'); themeIcon.classList.add('fa-moon'); } });
   const pageContent = { '/': 'page-catcher', '/faq': 'page-faq', '/privacy': 'page-privacy', '/contact': 'page-contact' };
-  
-  function showPageContent(path) {
-    const pageId = pageContent[path] || 'page-catcher';
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    const el = document.getElementById(pageId);
-    if (el) el.classList.add('active');
-
-    document.querySelectorAll('.nav-link').forEach(l => {
-      l.classList.remove('active');
-      if (l.getAttribute('href') === path) {
-        l.classList.add('active');
-      }
-    });
-    // Special case for the root path
-    if (path === '/') {
-        const homeLink = document.querySelector('.nav-link[href="/"]');
-        if (homeLink) homeLink.classList.add('active');
-    }
-  }
-
-  function handleRouting() {
-    const path = window.location.pathname;
-    showPageContent(path);
-  }
-
-  document.addEventListener('click', (e) => { 
-    const a = e.target.closest('a'); 
-    if (a && (a.matches('.nav-link') || a.matches('.logo-link'))) { 
-      e.preventDefault(); 
-      history.pushState(null, '', a.href); 
-      mainNav.classList.remove('is-open'); 
-      handleRouting(); 
-    }
-  });
-  
+  function showPageContent(path) { const pageId = pageContent[path] || 'page-catcher'; document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); const el = document.getElementById(pageId); if (el) el.classList.add('active'); document.querySelectorAll('.nav-link').forEach(l => { l.classList.remove('active'); if (l.getAttribute('href') === path) l.classList.add('active'); }); if (path === '/') { const homeLink = document.querySelector('.nav-link[href="/"]'); if (homeLink) homeLink.classList.add('active'); }}
+  function handleRouting() { const path = window.location.pathname; showPageContent(path); }
+  document.addEventListener('click', (e) => { const a = e.target.closest('a'); if (a && (a.matches('.nav-link') || a.matches('.logo-link'))) { e.preventDefault(); history.pushState(null, '', a.href); mainNav.classList.remove('is-open'); handleRouting(); }});
   window.addEventListener('popstate', handleRouting);
-  
-  // Initial page setup on load
-  document.addEventListener('DOMContentLoaded', () => {
-    applySavedTheme();
-    handleRouting();
-  });
+  document.addEventListener('DOMContentLoaded', () => { applySavedTheme(); handleRouting(); });
 
-  /* --- CATCHER SCRIPT --- */
+  /* --- CATCHER SCRIPT (MODIFIED) --- */
+  const knownSpoofedCanvas = [-1222622419, -1982647924, -1687811050]; 
+  const knownSpoofedAudio = [18028.99390631693, 48000.276471651436]; 
+  const knownRealGPUs = ["NVIDIA GeForce RTX", "NVIDIA GeForce GTX", "AMD Radeon RX", "Apple M1", "Apple M2", "Apple M3"];
   
-  // Make runDetection globally accessible from the button's onclick
+  function resetCatcher() { 
+      document.getElementById('results-container').innerHTML = ''; 
+      document.getElementById('run-btn').style.display = 'block'; 
+  }
+
+  // Make runDetection globally accessible
   window.runDetection = async function() {
-    const runBtn = document.getElementById('run-btn');
+    const runBtn = document.getElementById('run-btn'); 
     const resultsEl = document.getElementById('results-container');
-    runBtn.style.display = 'none';
+    runBtn.style.display = 'none'; 
     resultsEl.innerHTML = `<div class="loader-wrapper"><div class="scanner-circle"></div><p class="scanner-text">ANALYZING SIGNATURE...</p></div>`;
-
+    
     const detectionPromise = (async () => {
-        // Get Fingerprint from ThumbmarkJS library
-        let browserFingerprint = 'N/A';
+        // --- 1. Get ThumbmarkJS Fingerprint ---
+        let thumbmarkFingerprint = 'N/A';
         try {
-            // The library is loaded via the <script> tag in <head> and creates a global ThumbmarkJS object
             if (typeof ThumbmarkJS !== 'undefined') {
-                browserFingerprint = await ThumbmarkJS.getFingerprint();
+                thumbmarkFingerprint = await ThumbmarkJS.getFingerprint();
             } else {
                 throw new Error("ThumbmarkJS library not found.");
             }
         } catch (err) {
             console.error("Could not get fingerprint:", err);
-            browserFingerprint = '<span class="danger">Error generating fingerprint</span>';
+            thumbmarkFingerprint = '<span class="danger">Error generating fingerprint</span>';
         }
 
-        // Fetch IP details
-        let ipData = null;
+        // --- 2. Run Existing Detection Logic (Unchanged) ---
+        let browserRiskScore = 0; 
+        const gl = getWebGLInfo(); 
+        const language = navigator.language; 
+        const platform = navigator.platform; 
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone; 
+        const canvasEntropy = getCanvasEntropy(); 
+        const audioFingerprint = await getAudioFingerprint();
+        
+        if (!timezone.toLowerCase().includes(language.slice(0, 2))) browserRiskScore += 1;
+        const isWinSpoofed = platform === "Win32" && gl.vendor.includes("Google Inc.") && gl.renderer.includes("ANGLE") && !knownRealGPUs.some(gpu => gl.renderer.includes(gpu));
+        if (isWinSpoofed) browserRiskScore += 2; 
+        if (knownSpoofedCanvas.includes(canvasEntropy)) browserRiskScore += 1; 
+        if (knownSpoofedAudio.includes(audioFingerprint)) browserRiskScore += 1;
+        
+        let ipRisk = 0; 
+        let ipData = null; 
         let ipError = false;
-        try {
-            // NOTE: Your '/api/ip-check' endpoint must be running for this to work.
+        try { 
             const resp = await fetch('/api/ip-check'); 
-            ipData = await resp.json();
-            if (ipData.error) { ipError = true; }
-        } catch (e) {
-            ipError = true;
-        }
+            ipData = await resp.json(); 
+            if (ipData.error) { ipError = true; } 
+            else if (ipData.isProxy) { ipRisk = 2; }
+        } catch (e) { ipError = true; }
         
-        // --- Build Results HTML ---
+        const totalRiskScore = browserRiskScore + ipRisk; 
+        const isBadBrowser = browserRiskScore >= 3; 
+        
+        // --- 3. Build Results HTML with all data ---
         let resultsHTML = '';
-        if (ipData && ipData.isProxy) {
-            resultsHTML += `<div class="verdict-box danger"><i class="fa-solid fa-tower-broadcast"></i><span>VPN or Proxy Detected!</span></div>`;
-        } else {
-             resultsHTML += `<div class="verdict-box safe"><i class="fa-solid fa-circle-check"></i><span>No major risk factors detected.</span></div>`;
+        resultsHTML += `<div class="verdict-box ${isBadBrowser ? 'danger' : 'safe'}"><i class="fa-solid ${isBadBrowser ? 'fa-triangle-exclamation' : 'fa-circle-check'}"></i><span>${isBadBrowser ? "This is likely an Antidetect Browser!" : "This appears to be a Normal Browser."}</span></div>`;
+        resultsHTML += `<div class="risk-score">Total Risk Score: <strong>${totalRiskScore}/5</strong></div>`;
+        
+        let detailsGridHTML = '';
+        if (ipError) { 
+            detailsGridHTML += `<div class="label">IP Status:</div><div class="value danger">Error fetching IP details</div>`;
+        } else { 
+            if (ipData.isProxy) { 
+                resultsHTML += `<div class="verdict-box danger" style="margin-bottom: 20px;"><i class="fa-solid fa-tower-broadcast"></i><span>VPN / Proxy Detected!</span></div>`; 
+            }
+            detailsGridHTML += `<div class="label">IP Address:</div><div class="value" style="font-size: 14px;">${ipData.ip}</div>`;
+            detailsGridHTML += `<div class="label">IP Status:</div><div class="value ${ipData.isProxy ? 'danger' : 'safe'}" style="font-size: 14px;">${ipData.status}</div>`;
         }
         
-        let ipDetailsHTML = '';
-        if (ipError) {
-            ipDetailsHTML += `<div class="label">IP Status:</div><div class="value danger">Error fetching IP details</div>`;
-        } else {
-            ipDetailsHTML += `<div class="label">IP Address:</div><div class="value">${ipData.ip}</div>`;
-            ipDetailsHTML += `<div class="label">IP Status:</div><div class="value ${ipData.isProxy ? 'danger' : 'safe'}">${ipData.status}</div>`;
-        }
-
-        // Display the results in the grid
-        resultsHTML += `<div class="details-grid">
-                            ${ipDetailsHTML}
-                            <div class="label">Browser Fingerprint:</div>
-                            <div class="value" style="color: var(--accent-blue); font-size: 12px; word-wrap: break-word;">${browserFingerprint}</div>
-                        </div>`;
-                        
-        resultsHTML += `<button id="reset-btn" onclick="location.reload()">Run Another Test</button>`;
+        // Append Thumbmark Fingerprint to the details
+        detailsGridHTML += `<div class="label">Browser Fingerprint:</div><div class="value" style="color: var(--accent-blue);">${thumbmarkFingerprint}</div>`;
+        
+        resultsHTML += `<div class="details-grid">${detailsGridHTML}</div>`;
+        resultsHTML += `<button id="reset-btn" onclick="resetCatcher()">Run Another Test</button>`;
         return resultsHTML;
     })();
-
-    const minDelay = new Promise(resolve => setTimeout(resolve, 1500));
+    
+    const minDelay = new Promise(resolve => setTimeout(resolve, 2000));
     const [finalHTML] = await Promise.all([detectionPromise, minDelay]);
     resultsEl.innerHTML = finalHTML;
   }
+  
+  // --- HELPER FUNCTIONS (Unchanged) ---
+  function getCanvasEntropy() {try {const canvas=document.createElement('canvas');const ctx=canvas.getContext('2d');ctx.textBaseline="top";ctx.font="14px 'Arial'";ctx.fillText("BrowserFingerprinting",2,2);return hashString(canvas.toDataURL())}catch{return null}}
+  function hashString(str){let hash=0;for(let i=0;i<str.length;i++){hash=((hash<<5)-hash)+str.charCodeAt(i);hash|=0}return hash}
+  async function getAudioFingerprint(){try{const AudioContext=window.AudioContext||window.webkitAudioContext;if(!AudioContext)return null;const ctx=new AudioContext;const osc=ctx.createOscillator();const analyser=ctx.createAnalyser();const gain=ctx.createGain();const script=ctx.createScriptProcessor(4096,1,1);return new Promise(resolve=>{script.onaudioprocess=e=>{const output=e.outputBuffer.getChannelData(0);const hash=Math.abs(output.slice(4500,5000).reduce((a,b)=>a+b,0));resolve(parseFloat(hash.toFixed(12)));script.disconnect();osc.disconnect();gain.disconnect();analyser.disconnect();ctx.close()};osc.connect(analyser);analyser.connect(script);script.connect(gain);gain.connect(ctx.destination);osc.start(0)})}catch{return null}}
+  function getWebGLInfo(){try{const canvas=document.createElement('canvas');const gl=canvas.getContext('webgl')||canvas.getContext('experimental-webgl');const dbg=gl.getExtension('WEBGL_debug_renderer_info');return{vendor:gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL),renderer:gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)}}catch{return{vendor:"unknown",renderer:"unknown"}}}
 </script>
 
 </body>
