@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>🛡️ SpectraScan - Unmask Your Digital Ghost</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20448%20512'%3E%3Cpath%20fill='%2300ff88'%20d='M224%20256A128%20128%200%201%200%20224%200a128%20128%200%201%200%200%20256zm-45.7%2048C79.8%20304%200%20383.8%200%20482.3C0%20498.7%2013.3%20512%2029.7%20512H418.3c16.4%200%2029.7-13.3%2029.7-29.7C448%20383.8%20368.2%20304%20269.7%20304H178.3z'/%3E%3C/svg%3E">
+  <!-- NEW: Themed Skull Favicon -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20512%20512'%3E%3Cpath%20fill='%2300ff88'%20d='M256%200C114.6%200%200%20114.6%200%20256S114.6%20512%20256%20512s256-114.6%20256-256S397.4%200%20256%200zM232%20368c-13.3%200-24-10.7-24-24s10.7-24%2024-24s24%2010.7%2024%2024s-10.7%2024-24%2024zm48-24c-13.3%200-24%2010.7-24%2024s10.7%2024%2024%2024s24-10.7%2024-24s-10.7-24-24-24zM256%20128c-17.7%200-32-14.3-32-32s14.3-32%2032-32s32%2014.3%2032%2032s-14.3%2032-32%2032z'/%3E%3C/svg%3E%0A">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -14,9 +15,12 @@
 
   <style>
     :root {
-      --bg-color: #0d0d12; --card-color: rgba(30, 30, 36, 0.9); --border-color: #33333a; --text-primary: #f0f0f0; --text-secondary: #a9a9b3; --accent-green: #00ff88; --accent-red: #ff4757; --accent-blue: #00aaff; --success-bg: rgba(0, 255, 136, 0.1); --danger-bg: rgba(255, 71, 87, 0.1); --bg-grid-color: #2a2a30;
+      --bg-color: #0d0d12; --card-color: rgba(30, 30, 36, 0.9); --border-color: #33333a; --text-primary: #f0f0f0; --text-secondary: #a9a9b3; --accent-green: #00ff88; --accent-red: #ff4757; --accent-blue: #00aaff; --success-bg: rgba(0, 255, 136, 0.1); --danger-bg: rgba(255, 71, 87, 0.1); --bg-grid-color: rgba(42, 42, 48, 0.7);
     }
-    
+    body.light-mode {
+      --bg-color: #f4f4f8; --card-color: #ffffff; --border-color: #e0e0e6; --text-primary: #121217; --text-secondary: #66666e; --success-bg: rgba(0, 200, 110, 0.1); --danger-bg: rgba(255, 71, 87, 0.1); --bg-grid-color: rgba(220, 224, 230, 0.8);
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     
     html { height: 100%; }
@@ -49,6 +53,7 @@
     @keyframes page-transition-in { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
     header { background-color: rgba(18, 18, 23, 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); padding: 0 40px; display: flex; justify-content: space-between; align-items: center; height: 70px; position: sticky; top: 0; z-index: 100; transition: background-color 0.3s ease, border-color 0.3s ease; }
+    body.light-mode header { background-color: rgba(255, 255, 255, 0.8); }
     .logo-link { text-decoration: none; }
     .logo { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 10px; color: var(--text-primary); }
     .logo .fa-shield-halved { color: var(--accent-green); }
@@ -72,11 +77,7 @@
         font-size: 18px; opacity: 0.7; user-select: none;
         animation: stamp-flicker 4s infinite alternate;
     }
-    .classified-stamp.safe { animation-name: stamp-pulse-safe; border-color: var(--accent-green); color: var(--accent-green); }
-    .classified-stamp.danger { animation-name: stamp-pulse-danger; border-color: var(--accent-red); color: var(--accent-red); }
-    @keyframes stamp-pulse-safe { 0%, 100% { opacity: 0.7; } 50% { opacity: 0.9; } }
-    @keyframes stamp-pulse-danger { 0%, 100% { opacity: 0.7; } 50% { opacity: 0.9; } }
-
+    
     h1, .static-page h2 {
         font-size: 2.2rem; font-weight: 700; margin-bottom: 10px; text-align: center; color: var(--text-primary);
         position: relative; animation: text-flicker 3s linear infinite;
@@ -277,14 +278,18 @@
     const savedTheme = localStorage.getItem('theme'); 
     if (savedTheme === 'light') { 
       body.classList.add('light-mode'); 
+      themeToggleBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
     } else { 
       body.classList.remove('light-mode'); 
+      themeToggleBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
     } 
   }
   
   themeToggleBtn.addEventListener('click', () => { 
     body.classList.toggle('light-mode'); 
-    localStorage.setItem('theme', body.classList.contains('light-mode') ? 'light' : 'dark');
+    const isLight = body.classList.contains('light-mode');
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    themeToggleBtn.innerHTML = isLight ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
   });
   
   const pageContent = { '/': 'page-catcher', '/faq': 'page-faq', '/privacy': 'page-privacy', '/contact': 'page-contact' };
@@ -420,12 +425,12 @@
   async function getAudioFingerprint(){try{const AudioContext=window.AudioContext||window.webkitAudioContext;if(!AudioContext)return null;const ctx=new AudioContext;const osc=ctx.createOscillator();const analyser=ctx.createAnalyser();const gain=ctx.createGain();const script=ctx.createScriptProcessor(4096,1,1);return new Promise(resolve=>{script.onaudioprocess=e=>{const output=e.outputBuffer.getChannelData(0);const hash=Math.abs(output.slice(4500,5000).reduce((a,b)=>a+b,0));resolve(parseFloat(hash.toFixed(12)));script.disconnect();osc.disconnect();gain.disconnect();analyser.disconnect();ctx.close()};osc.connect(analyser);analyser.connect(script);script.connect(gain);gain.connect(ctx.destination);osc.start(0)})}catch{return null}}
   function getWebGLInfo(){try{const canvas=document.createElement('canvas');const gl=canvas.getContext('webgl')||canvas.getContext('experimental-webgl');const dbg=gl.getExtension('WEBGL_debug_renderer_info');return{vendor:gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL),renderer:gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)}}catch{return{vendor:"unknown",renderer:"unknown"}}}
 
-  /* --- MATRIX BACKGROUND SCRIPT --- */
+  /* --- DYNAMIC BACKGROUND SCRIPT --- */
   const canvas = document.getElementById('matrix-bg');
   const ctx = canvas.getContext('2d');
-  let matrixInterval;
+  let backgroundInterval;
 
-  const setupMatrix = () => {
+  const setupCanvas = () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     setBackgroundState('default');
@@ -457,18 +462,12 @@
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.strokeStyle = 'rgba(0, 170, 255, 0.15)';
         ctx.lineWidth = 1;
-        gridOffset = (gridOffset + 0.5) % 80;
+        gridOffset = (gridOffset + 0.3) % 40;
         for (let x = -gridOffset; x < canvas.width; x += 40) {
-            ctx.beginPath();
-            ctx.moveTo(x, 0);
-            ctx.lineTo(x, canvas.height);
-            ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
         }
         for (let y = -gridOffset; y < canvas.height; y += 40) {
-            ctx.beginPath();
-            ctx.moveTo(0, y);
-            ctx.lineTo(canvas.width, y);
-            ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
         }
     }, 50);
   }
@@ -476,25 +475,25 @@
   function setBackgroundState(state) {
       const watermark = document.getElementById('background-watermark');
       body.classList.remove('safe-mode', 'danger-mode');
-      clearInterval(matrixInterval);
+      clearInterval(backgroundInterval);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
       if (state === 'danger') {
-          matrixInterval = drawMatrix('rgba(255, 71, 87, 0.7)', 25);
-          watermark.dataset.text = 'ACCESS DENIED';
+          backgroundInterval = drawMatrix('rgba(255, 71, 87, 0.7)', 25);
+          watermark.setAttribute('data-text', 'ACCESS DENIED');
           body.classList.add('danger-mode');
       } else if (state === 'safe') {
-          matrixInterval = drawBlueGrid();
-          watermark.dataset.text = 'UNCLASSIFIED';
+          backgroundInterval = drawBlueGrid();
+          watermark.setAttribute('data-text', 'UNCLASSIFIED');
           body.classList.add('safe-mode');
       } else { // default
-          matrixInterval = drawMatrix();
-          watermark.dataset.text = '';
+          backgroundInterval = drawMatrix();
+          watermark.setAttribute('data-text', '');
       }
   }
 
-  window.addEventListener('resize', setupMatrix);
-  document.addEventListener('DOMContentLoaded', setupMatrix);
+  window.addEventListener('resize', setupCanvas);
+  document.addEventListener('DOMContentLoaded', setupCanvas);
 </script>
 
 </body>
