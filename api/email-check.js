@@ -19,10 +19,12 @@ export default async function handler(req, res) {
       return res.status(500).json({ success: false, message: 'Server configuration error: API key is missing.' });
   }
 
-  const apiUrl = `https://www.ipqualityscore.com/api/json/email/${apiKey}/${encodeURIComponent(email)}`;
+  // Safely construct the API URL to prevent SSRF attacks
+  const baseUrl = `https://www.ipqualityscore.com/api/json/email/${apiKey}/`;
+  const apiUrl = new URL(encodeURIComponent(email), baseUrl);
 
   try {
-    const apiResponse = await fetch(apiUrl);
+    const apiResponse = await fetch(apiUrl.href);
     const data = await apiResponse.json();
 
     // Set a cache header to prevent Vercel from caching the API response for too long
