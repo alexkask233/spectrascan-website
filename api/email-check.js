@@ -4,7 +4,7 @@ const fetch = require('node-fetch');
 // This is your new serverless function
 export default async function handler(req, res) {
   // Your hardcoded API key is now safe on the server
-  const apiKey = 'rZibu8QUtBAuAG0qWXvKRfmj5AkeJa1Z';
+  const apiKey = process.env.IPQS_API_KEY;
   
   // Get the email from the query parameter (e.g., /api/email-check?email=test@example.com)
   const { email } = req.query;
