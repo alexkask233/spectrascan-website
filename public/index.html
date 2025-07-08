@@ -489,104 +489,157 @@
     resultsEl.innerHTML = `<div class="loader-wrapper"><div class="scanner-circle"></div><p class="scanner-text">INTERROGATING BROWSER...</p></div>`;
     const minDelay = new Promise(resolve => setTimeout(resolve, 2000));
     
-    const detectionPromise = (async () => {
-        let riskScore = 0;
-        let identifiedBrowserLabel = null;
-        let heuristicsScore = 0;
-        const riskFactors = [];
-        const TARGET_CHROME_VERSION = "138"; 
+    // START: Refactored Browser Detection Logic
+    let riskScore = 0;
+    const riskFactors = [];
+    // Flags to capture specific browser-related findings
+    const browserFlags = {
+        brave: false,
+        tor: false,
+        opera: false,
+        heuristicsSpoofing: false, // General spoofing signs (e.g., webdriver, weird UA, resolutions)
+        canvasRandomization: false,
+        webglEmulation: false
+    };
+    const TARGET_CHROME_VERSION = "138"; 
 
-        try {
-            const resp = await fetch('/api/ip-check', { cache: 'no-store' });
-            const ipData = await resp.json();
-            if (ipData.error) throw new Error("IP API Error");
-            riskFactors.push({ label: 'IP Address', value: ipData.ip, isBad: false, alwaysShow: true });
-            riskFactors.push({ label: 'VPN/Proxy', value: ipData.status, isBad: ipData.isProxy, alwaysShow: true });
-            if (ipData.isProxy) riskScore += 3;
-            if (ipData.status.includes('TOR')) riskScore += 5;
-        } catch (e) {
-            riskScore += 1;
-            riskFactors.push({ label: 'IP/VPN Check', value: "Error during lookup", isBad: true, alwaysShow: true });
-        }
+    // --- IP Check ---
+    try {
+        const resp = await fetch('/api/ip-check', { cache: 'no-store' });
+        const ipData = await resp.json();
+        if (ipData.error) throw new Error("IP API Error");
+        riskFactors.push({ label: 'IP Address', value: ipData.ip, isBad: false, alwaysShow: true });
+        riskFactors.push({ label: 'VPN/Proxy', value: ipData.status, isBad: ipData.isProxy, alwaysShow: true });
+        if (ipData.isProxy) riskScore += 3;
+        if (ipData.status.includes('TOR')) riskScore += 5; // TOR adds significant risk
+    } catch (e) {
+        riskScore += 1; // Minor penalty for failed IP lookup
+        riskFactors.push({ label: 'IP/VPN Check', value: "Error during lookup", isBad: true, alwaysShow: true });
+    }
 
-        const ua = navigator.userAgent;
-        const majorChromeVersion = (ua.match(/Chrome\/(\d+)/) || [])[1];
-        
-        if (navigator.brave && await navigator.brave.isBrave()) {
-            riskScore += 3;
-            identifiedBrowserLabel = 'Brave';
-        } else if (getCanvasEntropy() === 2001009873) {
-             riskScore += 5;
-             identifiedBrowserLabel = 'Tor';
-        } else if (typeof window.opr !== 'undefined' || ua.includes("OPR")) {
-             riskScore += 2;
-             identifiedBrowserLabel = 'Opera';
-        }
-        if (identifiedBrowserLabel) {
-            riskFactors.push({ label: 'Browser', value: identifiedBrowserLabel, isBad: true });
-        }
-
-        if (!ua.includes("Chrome") || majorChromeVersion !== TARGET_CHROME_VERSION) { heuristicsScore += 4; }
-        if (navigator.webdriver) { heuristicsScore += 4; }
-        if (navigator.plugins && navigator.plugins.length === 5) { heuristicsScore += 1; }
-        if (navigator.languages && navigator.languages.length === 4) { heuristicsScore += 2; }
-        const proResolutions = ['1920x1080', '2560x1440', '3840x2160'];
-        const currentRes = `${window.screen.width}x${window.screen.height}`;
-        if (majorChromeVersion === TARGET_CHROME_VERSION && !proResolutions.includes(currentRes)) { heuristicsScore += 2; }
-        riskScore += heuristicsScore;
-        
-        if (!identifiedBrowserLabel && heuristicsScore >= 4) {
-            riskFactors.push({ label: 'Browser', value: 'Antidetect', isBad: true });
-        }
-        
-        const canvasHash1 = getCanvasEntropy();
-        await new Promise(resolve => setTimeout(resolve, 30));
-        const canvasHash2 = getCanvasEntropy();
-        if (canvasHash1 !== canvasHash2) {
-            riskScore += 2;
-            riskFactors.push({ label: 'Canvas', value: 'Randomized', isBad: true });
-        }
-        const renderer = getWebGLInfo().renderer.toLowerCase();
-        if (renderer.includes("swiftshader") || renderer.includes("llvmpipe")) {
-             riskScore += 3;
-             riskFactors.push({ label: 'WebGL', value: "Software Emulated", isBad: true });
-        }
-
-        let thumbmarkFingerprint = 'N/A';
-        try { thumbmarkFingerprint = await ThumbmarkJS.getFingerprint(); } catch (err) {}
-        riskFactors.push({ label: 'FP Hash', value: thumbmarkFingerprint, isBad: false, isHash: true, alwaysShow: true });
-        
-        const isBadBrowser = riskScore >= 3;
-        const verdict = isBadBrowser ? "High Risk Profile Detected" : "Profile Appears Normal";
-        setBackgroundState(isBadBrowser ? 'danger' : 'safe');
-        
-        let resultsHTML = `<div class="verdict-box ${isBadBrowser ? 'danger' : 'safe'}"><i class="fa-solid ${isBadBrowser ? 'fa-user-secret' : 'fa-user-check'} fa-lg"></i><span>${verdict}</span></div>`;
-        resultsHTML += `<div class="risk-score">Threat Score: <strong>${riskScore}</strong></div>`;
-        
-        const displayableRiskFactors = riskFactors.filter(factor => factor.isBad || factor.alwaysShow);
-        let detailsGridHTML = displayableRiskFactors.map((factor, index) => {
-            let valueClass = 'value';
-            if (factor.isBad) valueClass += ' danger';
-            else if (!factor.isHash) valueClass += ' safe';
-            if (factor.isHash) valueClass += ' fingerprint-hash';
-            let labelHTML = `<div class="label" style="animation-delay: ${index * 0.05}s">${factor.label}:</div>`;
-            let valueHTML = `<div class="${valueClass}" style="animation-delay: ${index * 0.05}s">${factor.value}</div>`;
-            return labelHTML + valueHTML;
-        }).join('');
-        
-        resultsHTML += `<div class="details-grid">${displayableRiskFactors.length > 0 ? detailsGridHTML : '<div style="grid-column: 1 / -1; text-align: center; color: var(--accent-green);">All checks passed.</div>' }</div>`;
-        resultsHTML += `<div class="results-footer"><div class="results-separator ${isBadBrowser ? 'danger' : ''}"></div><div class="run-btn-wrapper"><button id="reset-btn" onclick="resetChecker()">Run Another Test</button></div></div>`;
-        
-        return {html: resultsHTML, bad: isBadBrowser};
-    })();
+    // --- Browser Specific Detections ---
+    const ua = navigator.userAgent;
+    const majorChromeVersion = (ua.match(/Chrome\/(\d+)/) || [])[1];
     
-    const [result] = await Promise.all([detectionPromise, minDelay]);
+    if (navigator.brave && await navigator.brave.isBrave()) {
+        riskScore += 3; // Brave adds risk
+        browserFlags.brave = true;
+    }
+    if (getCanvasEntropy() === 2001009873) { // Known Tor Browser canvas entropy
+        riskScore += 5; // Tor adds significant risk
+        browserFlags.tor = true;
+    }
+    if (typeof window.opr !== 'undefined' || ua.includes("OPR")) {
+        riskScore += 2; // Opera adds slight risk
+        browserFlags.opera = true;
+    }
+
+    // --- Heuristics-based Spoofing Detection ---
+    let currentHeuristicsScore = 0;
+    if (!ua.includes("Chrome") || majorChromeVersion !== TARGET_CHROME_VERSION) { currentHeuristicsScore += 4; }
+    if (navigator.webdriver) { currentHeuristicsScore += 4; }
+    if (navigator.plugins && navigator.plugins.length === 5) { currentHeuristicsScore += 1; }
+    if (navigator.languages && navigator.languages.length === 4) { currentHeuristicsScore += 2; }
+    const proResolutions = ['1920x1080', '2560x1440', '3840x2160'];
+    const currentRes = `${window.screen.width}x${window.screen.height}`;
+    if (majorChromeVersion === TARGET_CHROME_VERSION && !proResolutions.includes(currentRes)) { currentHeuristicsScore += 2; }
     
-    resultsEl.innerHTML = result.html;
+    riskScore += currentHeuristicsScore;
+    if (currentHeuristicsScore >= 4) { // If heuristics indicate strong spoofing
+        browserFlags.heuristicsSpoofing = true;
+    }
+    
+    // --- Canvas Fingerprint Randomization ---
+    const canvasHash1 = getCanvasEntropy();
+    await new Promise(resolve => setTimeout(resolve, 30)); // Small delay to check for randomization
+    const canvasHash2 = getCanvasEntropy();
+    if (canvasHash1 !== canvasHash2) {
+        riskScore += 2;
+        browserFlags.canvasRandomization = true;
+    }
+
+    // --- WebGL Emulation ---
+    const renderer = getWebGLInfo().renderer.toLowerCase();
+    if (renderer.includes("swiftshader") || renderer.includes("llvmpipe")) {
+        riskScore += 3;
+        browserFlags.webglEmulation = true;
+    }
+
+    // --- Determine overall verdict based on total riskScore ---
+    const isBadBrowserOverall = riskScore >= 3; // Define your "high risk" threshold here
+    setBackgroundState(isBadBrowserOverall ? 'danger' : 'safe');
+    
+    // --- Construct the 'Browser' risk factor message based on specific flags and overall verdict ---
+    let browserLabelValue;
+    let browserLabelIsBad = false;
+
+    if (browserFlags.heuristicsSpoofing || browserFlags.canvasRandomization || browserFlags.webglEmulation) {
+        // These are strong indicators of browser manipulation or antidetect characteristics
+        browserLabelValue = 'Antidetect Browser Detected';
+        browserLabelIsBad = true;
+    } else if (browserFlags.tor) {
+        // Tor is explicitly a high-risk browser for many detection purposes
+        browserLabelValue = 'Tor Browser (High Risk)';
+        browserLabelIsBad = true;
+    } else if (browserFlags.brave) {
+        // Brave has antidetect tendencies, especially if overall risk is high
+        if (isBadBrowserOverall) {
+            browserLabelValue = 'Brave Browser (Antidetect Tendencies)';
+            browserLabelIsBad = true;
+        } else {
+            // If Brave is detected but overall risk is low (e.g., only Brave with no other issues)
+            browserLabelValue = 'Brave Browser';
+            browserLabelIsBad = true; // Still mark as bad in label if Brave is present, due to its nature
+        }
+    } else if (browserFlags.opera) {
+        // Opera might have some privacy features; classify as suspicious if overall risk is high
+        if (isBadBrowserOverall) {
+            browserLabelValue = 'Opera Browser (Suspicious)';
+            browserLabelIsBad = true;
+        } else {
+            browserLabelValue = 'Opera Browser'; // Opera detected, but low overall risk
+            browserLabelIsBad = false;
+        }
+    } else {
+        // No specific browser anomalies detected
+        browserLabelValue = 'Normal';
+        browserLabelIsBad = false;
+    }
+    // Add the 'Browser' risk factor to the display list
+    riskFactors.push({ label: 'Browser', value: browserLabelValue, isBad: browserLabelIsBad, alwaysShow: true });
+
+    // --- Add Fingerprint Hash ---
+    let thumbmarkFingerprint = 'N/A';
+    try { thumbmarkFingerprint = await ThumbmarkJS.getFingerprint(); } catch (err) {}
+    riskFactors.push({ label: 'FP Hash', value: thumbmarkFingerprint, isBad: false, isHash: true, alwaysShow: true });
+    // END: Refactored Browser Detection Logic
+
+    const verdict = isBadBrowserOverall ? "High Risk Profile Detected" : "Profile Appears Normal";
+    
+    let resultsHTML = `<div class="verdict-box ${isBadBrowserOverall ? 'danger' : 'safe'}"><i class="fa-solid ${isBadBrowserOverall ? 'fa-user-secret' : 'fa-user-check'} fa-lg"></i><span>${verdict}</span></div>`;
+    resultsHTML += `<div class="risk-score">Threat Score: <strong>${riskScore}</strong></div>`;
+    
+    const displayableRiskFactors = riskFactors.filter(factor => factor.isBad || factor.alwaysShow);
+    let detailsGridHTML = displayableRiskFactors.map((factor, index) => {
+        let valueClass = 'value';
+        if (factor.isBad) valueClass += ' danger';
+        else if (!factor.isHash) valueClass += ' safe';
+        if (factor.isHash) valueClass += ' fingerprint-hash';
+        let labelHTML = `<div class="label" style="animation-delay: ${index * 0.05}s">${factor.label}:</div>`;
+        let valueHTML = `<div class="${valueClass}" style="animation-delay: ${index * 0.05}s">${factor.value}</div>`;
+        return labelHTML + valueHTML;
+    }).join('');
+    
+    resultsHTML += `<div class="details-grid">${displayableRiskFactors.length > 0 ? detailsGridHTML : '<div style="grid-column: 1 / -1; text-align: center; color: var(--accent-green);">All checks passed.</div>' }</div>`;
+    resultsHTML += `<div class="results-footer"><div class="results-separator ${isBadBrowserOverall ? 'danger' : ''}"></div><div class="run-btn-wrapper"><button id="reset-btn" onclick="resetChecker()">Run Another Test</button></div></div>`;
+    
+    const [resultHtmlContent] = await Promise.all([Promise.resolve(resultsHTML), minDelay]);
+    
+    resultsEl.innerHTML = resultHtmlContent;
     
     const resetButton = document.getElementById('reset-btn');
     if (resetButton) {
-        resetButton.classList.add(result.bad ? 'danger-button' : 'safe-button');
+        resetButton.classList.add(isBadBrowserOverall ? 'danger-button' : 'safe-button');
     }
   }
   
