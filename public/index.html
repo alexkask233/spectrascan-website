@@ -992,7 +992,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     riskFactors.push({ label: 'Browser', value: finalBrowserLabelValue, isBad: finalBrowserLabelIsBad, alwaysShow: true });
 
-    const verdict = isBadBrowserOverall ? "High Risk Profile Detected" : "Profile Appears Normal";
+    const verdict = isBadBrowserOverall ? "High Risk Profile Detected" : "Antidetect Browser Detected";
     
     let resultsHTML = `<div class="verdict-box ${isBadBrowserOverall ? 'danger' : 'safe'}"><i class="fa-solid ${isBadBrowserOverall ? 'fa-user-secret' : 'fa-user-check'} fa-lg"></i><span>${verdict}</span></div>`;
     resultsHTML += `<div class="risk-score">Threat Score: <strong>${riskScore}</strong></div>`;
