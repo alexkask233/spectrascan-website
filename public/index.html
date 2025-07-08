@@ -660,112 +660,24 @@
 </div>
 
 <script>
-// --- New Professional UI/Animation Script ---
-document.addEventListener('DOMContentLoaded', () => {
+ var _0xdeadbeef; // Variable declaration for the main string array
 
-    // 1. Scroll-Triggered Animations
-    const scrollObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.scroll-anim').forEach(el => {
-        scrollObserver.observe(el);
-    });
-
-    // 2. Custom Cursor Animation
-    const cursor = document.querySelector('.cursor');
-    const cursorDot = document.querySelector('.cursor-dot');
-    const interactiveElements = document.querySelectorAll('a, button, input, textarea, .feature-box');
-
-    window.addEventListener('mousemove', e => {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
-        cursorDot.style.left = e.clientX + 'px';
-        cursorDot.style.top = e.clientY + 'px';
-    });
-
-    interactiveElements.forEach(el => {
-        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-    });
-});
-</script>
-
-<script>
-  var _0xdeadbeef; (function(_0xdecafbad, _0xbadf00d) {
+// Main String Decryption and Shuffling Logic
+(function(_0xdecafbad, _0xbadf00d) {
+    // This function shuffles the string array at runtime
     var _0xf00dcafe = function(_0xbaadf00d) {
         while (--_0xbaadf00d) {
             _0xdecafbad['push'](_0xdecafbad['shift']());
         }
     };
-    var _0xfeedface = function() {
-        var _0xabacaba = {
-            'data': {
-                'key': 'cookie',
-                'value': 'timeout'
-            },
-            'setCookie': function(_0xdeadc0de, _0xc0dedead, _0xbadc0de, _0xdedeadc0) {
-                _0xdedeadc0 = _0xdedeadc0 || {};
-                var _0xc0decafe = _0xc0dedead + '=' + _0xbadc0de;
-                var _0xdeadbeef = 0x0;
-                for (var _0xbeefdead = 0x0, _0xfacefeed = _0xdeadc0de['length']; _0xbeefdead < _0xfacefeed; _0xbeefdead++) {
-                    var _0xfeedbabe = _0xdeadc0de[_0xbeefdead];
-                    _0xc0decafe += ';\x20' + _0xfeedbabe;
-                    var _0xfacecafe = _0xdeadc0de[_0xfeedbabe];
-                    _0xdeadc0de['push'](_0xfacecafe);
-                    _0xfacefeed = _0xdeadc0de['length'];
-                    if (_0xfacecafe !== !![]) {
-                        _0xc0decafe += '=' + _0xfacecafe;
-                    }
-                }
-                _0xdedeadc0['cookie'] = _0xc0decafe;
-            },
-            'removeCookie': function() {
-                return 'dev';
-            },
-            'getCookie': function(_0xbadface, _0xbadbabe) {
-                _0xbadface = _0xbadface || function(_0xbadbeef) {
-                    return _0xbadbeef;
-                };
-                var _0xdedface = _0xbadface(new RegExp('(?:^|;\x20)' + _0xbadbabe['replace'](/([.$?*|{}()[]\/+^])/g, '$1') + '=([^;]*)'));
-                var _0xdec0de = function(_0xdecaf, _0xbaddad) {
-                    _0xdecaf(++_0xbaddad);
-                };
-                _0xdec0de(_0xf00dcafe, _0xbadf00d);
-                return _0xdedface ? decodeURIComponent(_0xdedface[0x1]) : undefined;
-            }
-        };
-        var _0xbadbeef = function() {
-            var _0xbadcafe = new RegExp('\\w+ *\\(\\) *{\\w+ *[\'|\"].+[\'|\"];? *}');
-            return !_0xbadcafe['test'](_0xabacaba['removeCookie']['toString']());
-        };
-        _0xabacaba['updateCookie'] = _0xbadbeef;
-        var _0xdeadbabe = '';
-        var _0xdedbabe = _0xabacaba['updateCookie']();
-        if (!_0xdedbabe) {
-            _0xabacaba['setCookie'](['*'], 'path', '/');
-        } else if (_0xdedbabe) {
-            _0xdeadbabe = _0xabacaba['getCookie'](null, 'counter');
-        } else {
-            _0xabacaba['removeCookie']();
-        }
-    };
-    _0xfeedface();
-}((_0xdeadbeef = ['toString', 'PROMISED', 'getElementById', 'INTERROGATING\x20BROWSER...', 'contact-description', 'INTERROGATING\x20BROWSER...[SECURE]', 'POST', 'closest', 'push', 'INTEL[SECURE]', 'INTEL', 'pushState', 'COMPROMISED', 'localStorage', 'fa-user-secret', 'href', 'runDetection', 'style', 'test', 'UNCLASSIFIED', 'reset', 'error', 'div', 'fa-solid', 'textContent', 'length', 'get', 'COMPROMISED[SECURE]', 'DOMContentLoaded', 'classList', 'remove', 'parse', 'active', 'canvas', 'getElementById', 'innerHTML', 'is-open', 'setItem', 'getItem', 'log', 'theme', 'add', 'toggle', 'contains', 'light', 'dark', 'light-mode', '<i\x20class=\x22fa-solid\x20fa-sun\x22></i>', '<i\x20class=\x22fa-solid\x20fa-moon\x22></i>', '/', '/checker', '/email-fraud', '/faq', '/privacy', '/contact', 'querySelectorAll', '.page', 'forEach', 'find', 'keys', 'nav-link', 'getAttribute', 'matches', 'logo-link', 'preventDefault', 'popstate', 'runDetection', 'resetChecker', 'resetEmailFraudChecker', 'initializeContactForm', 'display', 'block', 'results-container', 'setBackgroundState', 'default', 'querySelector', '.classified-stamp', 'safe', 'danger', 'CLASSIFIED', 'runDetection', 'runDetection', 'intro-content', 'none', 'results-container', 'innerHTML', '<div\x20class=\x22loader-wrapper\x22><div\x20class=\x22scanner-circle\x22></div><p\x20class=\x22scanner-text\x22>INTERROGATING\x20BROWSER...</p></div>', 'Promise', 'resolve', 'setTimeout', 'abs', 'round', 'ip-check', 'no-store', 'json', 'error', 'IP\x20Address', 'value', 'isBad', 'alwaysShow', 'VPN/Proxy', 'status', 'isProxy', 'includes', 'TOR', 'IP/VPN\x20Check', 'Error\x20during\x20lookup', 'navigator', 'userAgent', 'match', 'Chrome/(\\d+)', 'brave', 'isBrave', 'getCanvasEntropy', 'opr', 'webdriver', 'plugins', 'length', 'languages', '1920x1080', '2560x1440', '3840x2160', 'screen', 'width', 'height', 'getCanvasEntropy', 'getWebGLInfo', 'renderer', 'toLowerCase', 'swiftshader', 'llvmpipe', 'Normal', 'Antidetect\x20Browser\x20Detected', 'Tor\x20Browser\x20(High\x20Risk)', 'Brave\x20Browser', '\x20(Antidetect\x20Tendencies)', 'Opera\x20Browser', '\x20(Suspicious)', 'Suspicious\x20Profile\x20(Antidetect\x20Characteristics)', 'Browser', 'High\x20Risk\x20Profile\x20Detected', 'Profile\x20Appears\x20Normal', '<div\x20class=\x22verdict-box\x20', '"><i\x20class=\x22fa-solid\x20', 'fa-lg\x22></i><span>', '</span></div>', '<div\x20class=\x22risk-score\x22>Threat\x20Score:\x20<strong>', '</strong></div>', 'filter', 'label', 'value\x20danger', 'value\x20safe', '\x20fingerprint-hash', '<div\x20class=\x22label\x22\x20style=\x22animation-delay:\x20', 's\x22>', ':</div><div\x20class=\x22', '"\x20style=\x22animation-delay:\x20', 's\x22>', '</div>', 'join', '<div\x20class=\x22details-grid\x22>', '<div\x20style=\x22grid-column:\x201\x20/\x20-1;\x20text-align:\x20center;\x20color:\x20var(--accent-green);\x22>All\x20checks\x20passed.</div>', '<div\x20class=\x22results-footer\x22><div\x20class=\x22results-separator\x20', '"></div><div\x20class=\x22run-btn-wrapper\x22><button\x20id=\x22reset-btn\x22\x20onclick=\x22resetChecker()\x22\x20class=\x22', 'danger-button', 'safe-button', '\x22>Run\x20Another\x20Test</button></div></div>', 'email-fraud-intro', 'email-fraud-input', 'email-fraud-results', 'value', 'CLASSIFIED', 'INTEL', 'checkEmailFraud', 'trim', 'email-fraud-intro', 'email-fraud-results', 'innerHTML', '<p\x20style=\x22color:\x20var(--accent-red);\x20text-align:\x20center;\x20font-weight:\x20bold;\x20margin-top:\x2020px;\x22>Please\x20enter\x20a\x20valid\x20email\x20address.</p>', 'display', 'none', 'innerHTML', '<div\x20class=\x22loader-wrapper\x22><div\x20class=\x22scanner-circle\x22></div><p\x20class=\x22scanner-text\x22>ANALYZING\x20EMAIL\x20REPUTATION...</p></div>', '/api/email-check?email=', 'encodeURIComponent', 'fetch', 'no-store', 'json', 'success', 'fraud_score', 'message', 'Could\x20not\x20retrieve\x20score.', '<p\x20style=\x22color:\x20var(--accent-red);\x20text-align:\x20center;\x20font-weight:\x20bold;\x20margin-top:\x2020px;\x22>Error:\x20', '</p>\n\x20\x20\x20\x20<div\x20class=\x22results-footer\x22\x20style=\x22opacity:1\x22><button\x20id=\x22reset-email-btn\x22\x20onclick=\x22resetEmailFraudChecker()\x22\x20class=\x22danger-button\x22>Try\x20Again</button></div>', 'displayFraudScore', 'email-fraud-results', 'High\x20Risk', 'var(--accent-red)', '#ffc107', 'Suspicious', 'Low\x20Risk', 'var(--accent-green)', '\n\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22fraud-score-container\x22\x20style=\x22animation:\x20fade-in-up\x200.5s\x20ease\x20forwards;\x22>\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22score-gauge\x22\x20style=\x22--score:\x20', ';\x20--gauge-color:\x20', ';\x22>\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22score-value\x22>', '</div>\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22score-label\x22>Fraud\x20Score</div>\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22score-verdict\x22\x20style=\x22color:\x20', ';\x22>', '</div>\n\x20\x20\x20\x20\x20\x20\x20\x20</div>\n\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22results-footer\x22>\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20id=\x22reset-email-btn\x22\x20onclick=\x22resetEmailFraudChecker()\x22\x20class=\x22safe-button\x22>Check\x20Another\x20Email</button>\n\x20\x20\x20\x20\x20\x20\x20\x20</div>\n\x20\x20\x20\x20', 'querySelector', '.fraud-score-container', 'opacity', 'getCanvasEntropy', 'createElement', 'canvas', 'getContext', '2d', 'textBaseline', 'top', 'font', '14px\x20\x27Arial\x27', 'fillStyle', 'rgb(255,255,255)', 'fillRect', 'rgb(0,0,0)', 'fillText', 'BrowserFP', 'toDataURL', 'hashString', 'charCodeAt', 'getWebGLInfo', 'experimental-webgl', 'getExtension', 'WEBGL_debug_renderer_info', 'getParameter', 'UNMASKED_VENDOR_WEBGL', 'UNMASKED_RENDERER_WEBGL', 'initializeContactForm', 'contact-form', 'addEventListener', 'submit', 'captcha-label', 'captcha-input', 'submit-btn', 'form-response', 'floor', 'random', 'Calculate:\x20', '\x20+\x20', '\x20=', 'parseInt', 'ERROR:\x20Incorrect\x20Security\x20Code', 'className', 'disabled', 'TRANSMITTING...', 'contact-name', 'contact-email', 'contact-title', 'description', '/api/contact', 'method', 'headers', 'Content-Type', 'application/json', 'body', 'stringify', 'ok', 'SUCCESS:\x20Your\x20ticket\x20ID\x20is\x20', 'ticketId', 'Server\x20rejected\x20the\x20transmission.', 'TRANSMISSION\x20FAILED:\x20', 'Transmit\x20Securely', 'matrix-bg', 'getContext', '2d', 'innerWidth', 'innerHeight', 'drawMatrix', 'rgba(13,\x2013,\x2018,\x200.05)', 'setInterval', 'fillRect', 'font', 'Roboto\x20Mono', 'fillText', 'drawBlueGrid', 'rgba(0,\x20170,\x20255,\x200.15)', 'clearRect', 'strokeStyle', 'lineWidth', 'beginPath', 'moveTo', 'lineTo', 'stroke', 'setBackgroundState', 'background-watermark', 'id', 'page-checker', 'classList', 'safe-mode', 'danger-mode', 'clearRect', 'light-mode', 'rgba(255,\x2071,\x2087,\x200.7)', 'setAttribute', 'data-text', 'add', 'COMPROMISED', 'textContent', 'danger', 'remove', 'safe', 'UNCLASSIFIED', 'rgba(0,\x20255,\x20136,\x200.7)', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 'resize', 'setupCanvas', 'applySavedTheme', 'contact-form', 'initializeContactForm', 'warn', 'info', 'exception', 'table', 'trace', 'constructor', 'apply', 'bind', 'prototype', '__proto__', 'init', 'function\x20*\\(\x20*\\)', 'chain', '\\+\\+\x20*(?:_0x(?:[a-f0-9]){4,6})', 'input', 'return\x20(function()\x20', '{}.constructor(\x22return\x20this\x22)(\x20)', ');', 'console', 'fa-user-check', 'click', 'close-nav-btn', 'main-nav', 'hamburger-btn', 'theme-toggle-btn'], 394));
-var _0x1 = function(_0x2, _0x3) {
-    _0x2 = _0x2 - 0x0;
-    var _0x4 = _0xdeadbeef[_0x2];
-    if (_0x1['FpRGik'] === undefined) {
-        var _0x5 = function(_0x6) {
+
+    // This function is the core string decryptor (RC4-like)
+    var _0x10 = function(_0x11, _0x12) {
+        var _0x13 = [], _0x14 = 0x0, _0x15, _0x16 = '', _0x17 = '';
+        var _0x5 = function(_0x6) { // Base64 decode utility
             var _0x7 = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';
-            var _0x8 = '',
-            _0x9 = '';
-            for (var _0xa = 0x0, _0xb, _0xc, _0xd = 0x0; _0xc = _0x6['charAt'](_0xd++);~_0xc && (_0xb = _0xa % 0x4 ? _0xb * 0x40 + _0xc : _0xc, _0xa++%4) ? _0x8 += String['fromCharCode'](0xff & _0xb >> (-0x2 * _0xa & 0x6)) : 0x0) {
+            var _0x8 = '', _0x9 = '';
+            for (var _0xa = 0x0, _0xb, _0xc, _0xd = 0x0; _0xc = _0x6['charAt'](_0xd++); ~_0xc && (_0xb = _0xa % 0x4 ? _0xb * 0x40 + _0xc : _0xc, _0xa++ % 0x4) ? _0x8 += String['fromCharCode'](0xff & _0xb >> (-0x2 * _0xa & 0x6)) : 0x0) {
                 _0xc = _0x7['indexOf'](_0xc);
             }
             for (var _0xe = 0x0, _0xf = _0x8['length']; _0xe < _0xf; _0xe++) {
@@ -773,576 +685,984 @@ var _0x1 = function(_0x2, _0x3) {
             }
             return decodeURIComponent(_0x9);
         };
-        var _0x10 = function(_0x11, _0x12) {
-            var _0x13 = [],
-            _0x14 = 0x0,
-            _0x15,
-            _0x16 = '',
-            _0x17 = '';
-            _0x11 = _0x5(_0x11);
-            for (var _0x18 = 0x0, _0x19 = _0x11['length']; _0x18 < _0x19; _0x18++) {
-                _0x17 += '%' + ('00' + _0x11['charCodeAt'](_0x18)['toString'](0x10))['slice'](-0x2);
+        _0x11 = _0x5(_0x11);
+        for (var _0x18 = 0x0, _0x19 = _0x11['length']; _0x18 < _0x19; _0x18++) {
+            _0x17 += '%' + ('00' + _0x11['charCodeAt'](_0x18)['toString'](0x10))['slice'](-0x2);
+        }
+        _0x11 = decodeURIComponent(_0x17);
+        var _0x1a;
+        for (_0x1a = 0x0; _0x1a < 0x100; _0x1a++) {
+            _0x13[_0x1a] = _0x1a;
+        }
+        for (_0x1a = 0x0; _0x1a < 0x100; _0x1a++) {
+            _0x14 = (_0x14 + _0x13[_0x1a] + _0x12['charCodeAt'](_0x1a % _0x12['length'])) % 0x100;
+            _0x15 = _0x13[_0x1a];
+            _0x13[_0x1a] = _0x13[_0x14];
+            _0x13[_0x14] = _0x15;
+        }
+        _0x1a = 0x0;
+        _0x14 = 0x0;
+        for (var _0x1b = 0x0; _0x1b < _0x11['length']; _0x1b++) {
+            _0x1a = (_0x1a + 0x1) % 0x100;
+            _0x14 = (_0x14 + _0x13[_0x1a]) % 0x100;
+            _0x15 = _0x13[_0x1a];
+            _0x13[_0x1a] = _0x13[_0x14];
+            _0x13[_0x14] = _0x15;
+            _0x16 += String['fromCharCode'](_0x11['charCodeAt'](_0x1b) ^ _0x13[(_0x13[_0x1a] + _0x13[_0x14]) % 0x100]);
+        }
+        return _0x16;
+    };
+
+    // The single string decryption function for the entire script
+    var _0x1 = function(_0x2, _0x3) {
+        _0x2 = _0x2 - 0x0; // Offset for array access
+        var _0x4 = _0xdecafbad[_0x2]; // Access the original string array
+        if (_0x1['FpRGik'] === undefined) { // Initialize cache once
+            _0x1['LEwdeC'] = _0x10; // Store the actual decryptor
+            _0x1['coowOi'] = {}; // Cache for decrypted strings
+            _0x1['FpRGik'] = !![];
+        }
+        var _0x1c = _0xdecafbad[0x0]; // Salt (usually the first element, 'toString')
+        var _0x1d = _0x2 + _0x1c;
+        var _0x1e = _0x1['coowOi'][_0x1d]; // Check cache
+        if (_0x1e === undefined) {
+            _0x4 = _0x1['LEwdeC'](_0x4, _0x3); // Decrypt if not in cache
+            _0x1['coowOi'][_0x1d] = _0x4; // Store in cache
+        } else {
+            _0x4 = _0x1e;
+        }
+        return _0x4;
+    };
+
+    // Anti-debugging (Console Hijacking)
+    (function() {
+        var _0x1f = function() {
+            var _0x20;
+            try {
+                _0x20 = Function(_0x1(0x1c1, 'r0nJ') + _0x1(0x1c2, '4!^X') + _0x1(0x1c3, 'vT0N'))(); // 'return (function() {}.constructor("return this")());'
+            } catch (_0x21) {
+                _0x20 = window;
             }
-            _0x11 = decodeURIComponent(_0x17);
-            var _0x1a;
-            for (_0x1a = 0x0; _0x1a < 0x100; _0x1a++) {
-                _0x13[_0x1a] = _0x1a;
-            }
-            for (_0x1a = 0x0; _0x1a < 0x100; _0x1a++) {
-                _0x14 = (_0x14 + _0x13[_0x1a] + _0x12['charCodeAt'](_0x1a % _0x12['length'])) % 0x100;
-                _0x15 = _0x13[_0x1a];
-                _0x13[_0x1a] = _0x13[_0x14];
-                _0x13[_0x14] = _0x15;
-            }
-            _0x1a = 0x0;
-            _0x14 = 0x0;
-            for (var _0x1b = 0x0; _0x1b < _0x11['length']; _0x1b++) {
-                _0x1a = (_0x1a + 0x1) % 0x100;
-                _0x14 = (_0x14 + _0x13[_0x1a]) % 0x100;
-                _0x15 = _0x13[_0x1a];
-                _0x13[_0x1a] = _0x13[_0x14];
-                _0x13[_0x14] = _0x15;
-                _0x16 += String['fromCharCode'](_0x11['charCodeAt'](_0x1b) ^ _0x13[(_0x13[_0x1a] + _0x13[_0x14]) % 0x100]);
-            }
-            return _0x16;
+            return _0x20;
         };
-        _0x1['LEwdeC'] = _0x10;
-        _0x1['coowOi'] = {};
-        _0x1['FpRGik'] = !![];
-    }
-    var _0x1c = _0xdeadbeef[0x0];
-    var _0x1d = _0x2 + _0x1c;
-    var _0x1e = _0x1['coowOi'][_0x1d];
-    if (_0x1e === undefined) {
-        _0x4 = _0x1['LEwdeC'](_0x4, _0x3);
-        _0x1['coowOi'][_0x1d] = _0x4;
-    } else {
-        _0x4 = _0x1e;
-    }
-    return _0x4;
-};
-(function() {
-    var _0x1f = function() {
-        var _0x20;
-        try {
-            _0x20 = Function(_0x1(0x1c1, 'r0nJ') + _0x1(0x1c2, '4!^X') + _0x1(0x1c3, 'vT0N'))();
-        } catch (_0x21) {
-            _0x20 = window;
+        var _0x22 = _0x1f();
+        var _0x23 = _0x22[_0x1(0x1c4, '9lI!')] = _0x22[_0x1(0x1c4, '9lI!')] || {}; // Access/create console object
+        var _0x24 = [_0x1(0x27, 'T9qZ'), _0x1(0x1af, 'iF#o'), _0x1(0x1b0, '9G#^'), _0x1(0x1b1, 'S@8a'), _0x1(0x1b2, '7o9p'), _0x1(0x1b3, 'nUAF'), _0x1(0x1b4, 'K3yR')]; // 'log', 'warn', 'info', 'error', 'exception', 'table', 'trace'
+        for (var _0x25 = 0x0; _0x25 < _0x24['length']; _0x25++) {
+            var _0x26 = (function(_0x27) {
+                var _0x28 = _0x27['constructor']['prototype']['bind'](_0x27);
+                var _0x29 = _0x24[_0x25];
+                var _0x2a = _0x23[_0x29] || _0x28;
+                _0x28['__proto__'] = _0x27['bind'](_0x27);
+                _0x28['toString'] = _0x2a[_0x1(0x1bc, 'f33R')]['bind'](_0x2a); // Bind original toString
+                return _0x28;
+            } (Function['prototype']['bind']['call'](_0x23)));
+            _0x23[_0x24[_0x25]] = _0x26;
         }
-        return _0x20;
-    };
-    var _0x22 = _0x1f();
-    var _0x23 = _0x22[_0x1(0x1c4, '9lI!')] = _0x22[_0x1(0x1c4, '9lI!')] || {};
-    var _0x24 = [_0x1(0x27, 'T9qZ'), _0x1(0x1af, 'iF#o'), _0x1(0x1b0, '9G#^'), _0x1(0x1b1, 'S@8a'), _0x1(0x1b2, '7o9p'), _0x1(0x1b3, 'nUAF'), _0x1(0x1b4, 'K3yR')];
-    for (var _0x25 = 0x0; _0x25 < _0x24['length']; _0x25++) {
-        var _0x26 = (function(_0x27) {
-            var _0x28 = _0x27['constructor']['prototype']['bind'](_0x27);
-            var _0x29 = _0x24[_0x25];
-            var _0x2a = _0x23[_0x29] || _0x28;
-            _0x28['__proto__'] = _0x27['bind'](_0x27);
-            _0x28['toString'] = _0x2a[_0x1(0x1bc, 'f33R')]['bind'](_0x2a);
-            return _0x28;
-        } (Function['prototype']['bind']['call'](_0x23)));
-        _0x23[_0x24[_0x25]] = _0x26;
-    }
-}());
-var _0x2b = function() {
-    var _0x2c = !![];
-    return function(_0x2d, _0x2e) {
-        var _0x2f = _0x2c ? function() {
-            if (_0x2e) {
-                var _0x30 = _0x2e['apply'](_0x2d, arguments);
-                _0x2e = null;
-                return _0x30;
-            }
-        } : function() {};
-        _0x2c = ![];
-        return _0x2f;
-    };
-} ();
-var _0x31 = _0x2b(this, function() {
-    var _0x32 = function() {
-        return 'dev';
-    },
-    _0x33 = function() {
-        return 'window';
-    };
-    var _0x34 = function() {
-        var _0x35 = new RegExp(_0x1(0x1c6, 'R%m9'));
-        var _0x36 = new RegExp(_0x1(0x1c8, 'p$m#'), 'i');
-        var _0x37 = _0x38(_0x1(0x1c5, 'pG^m'));
-        if (!_0x35['test'](_0x37 + _0x1(0x1c7, 'u@Ql')) || !_0x36['test'](_0x37 + _0x1(0x1c9, 'uX7G'))) {
-            _0x38('0');
-        } else {
-            _0x38();
-        }
-    };
-    try {
-        _0x34();
-    } catch (_0x39) {}
-});
-_0x31();
-var _0x3a = (function() {
-    var _0x3b = !![];
-    return function(_0x3c, _0x3d) {
-        var _0x3e = _0x3b ? function() {
-            if (_0x3d) {
-                var _0x3f = _0x3d[_0x1(0x1b7, 'v@$v')](_0x3c, arguments);
-                _0x3d = null;
-                return _0x3f;
-            }
-        } : function() {};
-        _0x3b = ![];
-        return _0x3e;
-    };
-}());
-(function() {
-    _0x3a(this, function() {
-        var _0x40 = new RegExp(_0x1(0x1c6, 'R%m9'));
-        var _0x41 = new RegExp(_0x1(0x1c8, 'p$m#'), 'i');
-        var _0x42 = _0x38(_0x1(0x1c5, 'pG^m'));
-        if (!_0x40['test'](_0x42 + _0x1(0x1c7, 'u@Ql')) || !_0x41['test'](_0x42 + _0x1(0x1c9, 'uX7G'))) {
-            _0x38('0');
-        } else {
-            _0x38();
-        }
-    })();
-}());
-var _0x43 = [0x5f, 0x16, 0x17, 0x86, 0x22, 0x1a, 0x24, 0x87, 0x25, 0x8d, 0x1b, 0x47, 0x22, 0x1a, 0x24, 0x58, 0x25, 0x8d, 0x1b, 0x47, 0x22, 0x26, 0x24, 0x46, 0x25, 0x8d, 0x22, 0x27, 0x24, 0x14, 0x25, 0x60, 0x1c, 0x20, 0x3d, 0x1, 0x5b, 0x1e, 0x1e, 0x57, 0x1f, 0x28, 0x1e, 0x22, 0x29, 0x24, 0x56, 0x25, 0x2c, 0x20, 0x23, 0x2a, 0x25, 0x3d, 0x1e, 0x2, 0x47, 0x1e, 0x3d, 0x2, 0x5b, 0x1e, 0x1e, 0x57, 0x1f, 0x2b, 0x1e, 0x22, 0x2a, 0x24, 0x4e, 0x25, 0x2c, 0x20, 0x23, 0x29, 0x25, 0x3d, 0x1e, 0x4, 0x47, 0x1e, 0x4, 0x3d, 0x3d, 0x1f, 0x2d, 0x1e, 0x2, 0x24, 0x2b, 0x25, 0x45, 0x46, 0x31, 0x12, 0x58, 0x1e, 0x3d, 0x4, 0x24, 0x2e, 0x25, 0x45, 0x46, 0x22, 0x31, 0x12, 0x22, 0x2f, 0x24, 0x2c, 0x25, 0x60, 0x1c, 0x20, 0x3e, 0x2, 0x5b, 0x22, 0x27, 0x24, 0x14, 0x25, 0x1c, 0x20, 0x3f, 0x2, 0x5b, 0x22, 0x30, 0x24, 0x32, 0x25, 0x2c, 0x1e, 0x3e, 0x24, 0x33, 0x25, 0x45, 0x46, 0x22, 0x30, 0x24, 0x34, 0x25, 0x60, 0x22, 0x30, 0x24, 0x35, 0x25, 0x2c, 0x1e, 0x3f, 0x24, 0x36, 0x25, 0x45, 0x46, 0x22, 0x30, 0x24, 0x37, 0x25, 0x60, 0x22, 0x30, 0x24, 0x38, 0x25, 0x2c, 0x22, 0x2d, 0x24, 0x14, 0x25, 0x2c, 0x22, 0x39, 0x24, 0x2b, 0x25, 0x45, 0x46, 0x22, 0x39, 0x24, 0x3a, 0x25, 0x60, 0x22, 0x39, 0x24, 0x3b, 0x25, 0x2c, 0x22, 0x2d, 0x24, 0x14, 0x25, 0x2c, 0x22, 0x3c, 0x24, 0x2b, 0x25, 0x45, 0x46, 0x22, 0x3c, 0x24, 0x3d, 0x25, 0x60, 0x5a, 0x23, 0x41, 0x40, 0x24, 0x40, 0x25, 0x48, 0x1, 0x47, 0x1f, 0x41, 0x23, 0x42, 0x24, 0x43, 0x25, 0x23, 0x41, 0x40, 0x24, 0x44, 0x25, 0x48, 0x1, 0x47, 0x1f, 0x45, 0x42, 0x23, 0x46, 0x24, 0x43, 0x25, 0x5a, 0x22, 0x29, 0x24, 0x14, 0x25, 0x2c, 0x22, 0x2a, 0x24, 0x2b, 0x25, 0x45, 0x46, 0x22, 0x2a, 0x24, 0x47, 0x25, 0x60, 0x22, 0x2a, 0x24, 0x48, 0x25, 0x2c, 0x22, 0x2a, 0x24, 0x49, 0x25, 0x45, 0x46, 0x22, 0x2a, 0x24, 0x4a, 0x25, 0x60, 0x22, 0x2a, 0x24, 0x4b, 0x25, 0x2c, 0x22, 0x2a, 0x24, 0x4c, 0x25, 0x45, 0x46, 0x22, 0x2a, 0x24, 0x4d, 0x25, 0x60, 0x22, 0x27, 0x24, 0x14, 0x25, 0x1c, 0x20, 0x4e, 0x2, 0x5b, 0x20, 0x4f, 0x22, 0x26, 0x24, 0x14, 0x25, 0x2c, 0x22, 0x4f, 0x24, 0x50, 0x25, 0x45, 0x46, 0x22, 0x4f, 0x24, 0x51, 0x25, 0x60, 0x1e, 0x4f, 0x2c, 0x22, 0x29, 0x24, 0x52, 0x25, 0x45, 0x46, 0x22, 0x29, 0x24, 0x53, 0x25, 0x60, 0x22, 0x29, 0x24, 0x54, 0x25, 0x3d, 0x22, 0x26, 0x24, 0x55, 0x25, 0x3d, 0x1f, 0x59, 0x3d, 0x22, 0x27, 0x24, 0x56, 0x25, 0x3d, 0x1f, 0x59, 0x1e, 0x59, 0x1c, 0x22, 0x57, 0x24, 0x14, 0x25, 0x60, 0x22, 0x5a, 0x24, 0x14, 0x25, 0x2c, 0x20, 0x5b, 0x2, 0x5b, 0x22, 0x57, 0x24, 0x5c, 0x25, 0x40, 0x45, 0x46, 0x1e, 0x5b, 0x1c, 0x22, 0x5d, 0x24, 0x5e, 0x25, 0x60, 0x1d, 0x5d, 0x40, 0x24, 0x5f, 0x25, 0x48, 0x2, 0x47, 0x1e, 0x5b, 0x2c, 0x20, 0x60, 0x3d, 0x22, 0x5d, 0x24, 0x61, 0x25, 0x45, 0x46, 0x1f, 0x60, 0x24, 0x62, 0x25, 0x31, 0xc1, 0x58, 0x1d, 0x5d, 0x40, 0x24, 0x63, 0x25, 0x48, 0x1, 0x47, 0x1d, 0x5d, 0x40, 0x24, 0x64, 0x25, 0x48, 0x1, 0x47, 0x23, 0x65, 0x40, 0x24, 0x66, 0x25, 0x48, 0x0, 0x47, 0x5a, 0x23, 0x67, 0x22, 0x29, 0x24, 0x14, 0x25, 0x40, 0x24, 0x68, 0x25, 0x48, 0x1, 0x47, 0x5a, 0x23, 0x69, 0x22, 0x26, 0x24, 0x14, 0x25, 0x40, 0x24, 0x6a, 0x25, 0x48, 0x1, 0x47, 0x5a, 0x22, 0x6b, 0x24, 0x14, 0x25, 0x1c, 0x20, 0x6c, 0x2, 0x5b, 0x22, 0x6d, 0x24, 0x14, 0x25, 0x3d, 0x22, 0x6b, 0x24, 0x6e, 0x25, 0x40, 0x45, 0x46, 0x1f, 0x6d, 0x31, 0x12, 0x58, 0x20, 0x6f, 0x48, 0x0, 0x47, 0x23, 0x70, 0x22, 0x71, 0x24, 0x14, 0x25, 0x40, 0x24, 0x72, 0x25, 0x48, 0x0, 0x47, 0x5a, 0x23, 0x73, 0x22, 0x74, 0x24, 0x14, 0x25, 0x40, 0x24, 0x75, 0x25, 0x48, 0x0, 0x47, 0x5a, 0x1c, 0x20, 0x76, 0x1, 0x5b, 0x1c, 0x20, 0x77, 0x1, 0x5b, 0x1c, 0x20, 0x78, 0x1, 0x5b, 0x20, 0x79, 0x1c, 0x20, 0x7a, 0x0, 0x5b, 0x3d, 0x1c, 0x20, 0x7b, 0x0, 0x5b, 0x3d, 0x1c, 0x20, 0x7c, 0x0, 0x5b, 0x3d, 0x1c, 0x20, 0x7d, 0x0, 0x5b, 0x3d, 0x1c, 0x20, 0x7e, 0x1, 0x5b, 0x22, 0x7f, 0x24, 0x14, 0x25, 0x3d, 0x1f, 0x7f, 0x3d, 0x1c, 0x20, 0x80, 0x1, 0x5b, 0x20, 0x81, 0x3d, 0x1c, 0x20, 0x82, 0x0, 0x5b, 0x3d, 0x22, 0x7f, 0x24, 0x83, 0x25, 0x3d, 0x22, 0x81, 0x24, 0x84, 0x25, 0x40, 0x45, 0x46, 0x31, 0x40, 0x58, 0x22, 0x81, 0x24, 0x85, 0x25, 0x3d, 0x22, 0x81, 0x24, 0x88, 0x25, 0x40, 0x45, 0x46, 0x1f, 0x7f, 0x24, 0x89, 0x25, 0x31, 0x24, 0x58, 0x22, 0x81, 0x24, 0x8a, 0x25, 0x3d, 0x22, 0x81, 0x24, 0x8b, 0x25, 0x40, 0x45, 0x46, 0x1f, 0x7f, 0x24, 0x8c, 0x25, 0x31, 0x14, 0x58, 0x1d, 0x7f, 0x2c, 0x1c, 0x20, 0x8e, 0x0, 0x5b, 0x22, 0x8f, 0x24, 0x14, 0x25, 0x1c, 0x20, 0x90, 0x1, 0x5b, 0x22, 0x91, 0x24, 0x14, 0x25, 0x3d, 0x22, 0x8f, 0x24, 0x92, 0x25, 0x40, 0x45, 0x46, 0x22, 0x91, 0x24, 0x93, 0x25, 0x40, 0x45, 0x46, 0x40, 0x41, 0x40, 0x24, 0x94, 0x25, 0x2c, 0x22, 0x95, 0x24, 0x14, 0x25, 0x3d, 0x22, 0x91, 0x24, 0x96, 0x25, 0x40, 0x45, 0x46, 0x31, 0x2, 0x58, 0x1d, 0x8f, 0x40, 0x24, 0x97, 0x25, 0x48, 0x0, 0x47, 0x5a, 0x1c, 0x20, 0x98, 0x0, 0x5b, 0x22, 0x99, 0x24, 0x14, 0x25, 0x1c, 0x20, 0x9a, 0x1, 0x5b, 0x3d, 0x22, 0x99, 0x24, 0x9b, 0x25, 0x2c, 0x22, 0x99, 0x24, 0x9c, 0x25, 0x45, 0x46, 0x22, 0x99, 0x24, 0x9d, 0x25, 0x60, 0x1d, 0x99, 0x2c, 0x1c, 0x20, 0x9e, 0x0, 0x5b, 0x3d, 0x1c, 0x20, 0x9f, 0x0, 0x5b, 0x3d, 0x1c, 0x20, 0xa0, 0x0, 0x5b, 0x3d, 0x1c, 0x20, 0xa1, 0x1, 0x5b, 0x3d, 0x1c, 0x20, 0xa2, 0x0, 0x5b, 0x3d, 0x1c, 0x20, 0xa3, 0x0, 0x5b, 0x3d, 0x1c, 0x20, 0xa4, 0x0, 0x5b, 0x3d, 0x1c, 0x20, 0xa5, 0x0, 0x5b, 0x3d, 0x1c, 0x20, 0xa6, 0x0, 0x5b, 0x3d, 0x1c, 0x20, 0xa7, 0x0, 0x5b, 0x3d, 0x22, 0xa8, 0x24, 0x14, 0x25, 0x22, 0xa9, 0x24, 0x14, 0x25, 0x40, 0x45, 0x46, 0x3d, 0x1d, 0xad, 0x20, 0xad, 0x22, 0xae, 0x24, 0x14, 0x25, 0x2c, 0x22, 0xad, 0x24, 0xaf, 0x25, 0x2c, 0x1d, 0xad, 0x22, 0xb0, 0x24, 0xb1, 0x25, 0x45, 0x46, 0x31, 0x8, 0x58, 0x22, 0xad, 0x24, 0xb2, 0x25, 0x3d, 0x22, 0xad, 0x24, 0xb3, 0x25, 0x40, 0x45, 0x46, 0x1f, 0xa2, 0x24, 0xb4, 0x25, 0x31, 0x4, 0x58, 0x1c, 0x20, 0xb5, 0x4, 0x5b, 0x40, 0x24, 0xb6, 0x25, 0x3d, 0x22, 0xb7, 0x24, 0x14, 0x25, 0x22, 0xb8, 0x24, 0xb9, 0x25, 0x22, 0xba, 0x24, 0xbb, 0x25, 0x45, 0x45, 0x46, 0x46, 0x3d, 0x22, 0xae, 0x24, 0xbc, 0x25, 0x2c, 0x22, 0xbd, 0x24, 0xbe, 0x25, 0x45, 0x46, 0x31, 0x2, 0x58, 0x1d, 0xae, 0x2c, 0x22, 0xbf, 0x24, 0x14, 0x25, 0x3d, 0x22, 0xad, 0x24, 0xc0, 0x25, 0x40, 0x22, 0xae, 0x24, 0xbc, 0x25, 0x45, 0x46, 0x22, 0xbf, 0x24, 0xc1, 0x25, 0x45, 0x46, 0x31, 0x2, 0x58, 0x1d, 0xad, 0x22, 0xc2, 0x24, 0xc3, 0x25, 0x45, 0x46, 0x2c, 0x22, 0xae, 0x24, 0xc4, 0x25, 0x40, 0x22, 0xc2, 0x24, 0xc5, 0x25, 0x45, 0x46, 0x40, 0x45, 0x46, 0x31, 0x4, 0x58, 0x1d, 0xae, 0x40, 0x24, 0xc6, 0x25, 0x48, 0x0, 0x47, 0x5a, 0x22, 0x81, 0x24, 0xc7, 0x25, 0x40, 0x45, 0x46, 0x22, 0xae, 0x24, 0xc8, 0x25, 0x40, 0x45, 0x46, 0x1f, 0x7f, 0x3d, 0x1d, 0x81, 0x2c, 0x1c, 0x20, 0xc9, 0x0, 0x5b, 0x3d, 0x1d, 0x81, 0x1c, 0x20, 0xca, 0x0, 0x5b, 0x3d, 0x1d, 0x81, 0x1c, 0x20, 0xcb, 0x0, 0x5b, 0x3d, 0x1d, 0x81, 0x1c, 0x20, 0xcc, 0x0, 0x5b, 0x3d, 0x1d, 0x81, 0x1c, 0x20, 0xcd, 0x0, 0x5b, 0x3d, 0x1d, 0x81, 0x1c, 0x20, 0xce, 0x0, 0x5b, 0x3d, 0x1d, 0x81, 0x1c, 0x20, 0xcf, 0x0, 0x5b, 0x3d, 0x1d, 0x81, 0x1c, 0x20, 0xd0, 0x0, 0x5b, 0x3d, 0x1d, 0x81, 0x1c, 0x20, 0xd1, 0x0, 0x5b, 0x3d, 0x1d, 0x81, 0x23, 0xd2, 0x1e, 0x7f, 0x24, 0xd3, 0x25, 0x40, 0x41, 0x1f, 0xd2, 0x31, 0x2, 0x58, 0x1c, 0x20, 0xd4, 0x1, 0x5b, 0x22, 0xd5, 0x24, 0x14, 0x25, 0x3d, 0x1c, 0x20, 0xd6, 0x0, 0x5b, 0x3d, 0x1c, 0x20, 0xd7, 0x0, 0x5b, 0x3d, 0x1d, 0xd6, 0x2c, 0x1c, 0x20, 0xd8, 0x0, 0x5b, 0x3d, 0x1d, 0xd6, 0x1c, 0x20, 0xd9, 0x0, 0x5b, 0x3d, 0x1c, 0x20, 0xda, 0x0, 0x5b, 0x3d, 0x1c, 0x20, 0xdb, 0x0, 0x5b, 0x3d, 0x1c, 0x20, 0xdc, 0x0, 0x5b, 0x3d, 0x1c, 0x20, 0xdd, 0x0, 0x5b, 0x3d, 0x1c, 0x20, 0xde, 0x0, 0x5b, 0x3d, 0x1c, 0x20, 0xdf, 0x0, 0x5b, 0x3d, 0x1c, 0x20, 0xe0, 0x0, 0x5b, 0x3d, 0x22, 0xe1, 0x24, 0x14, 0x25, 0x22, 0xe2, 0x24, 0x14, 0x25, 0x40, 0x45, 0x46, 0x3d, 0x22, 0xe3, 0x24, 0x14, 0x25, 0x3d, 0x22, 0xe2, 0x24, 0xe4, 0x25, 0x40, 0x22, 0xe3, 0x24, 0xe5, 0x25, 0x45, 0x46, 0x45, 0x46, 0x31, 0xc, 0x58, 0x1e, 0xe2, 0x1c, 0x20, 0xe6, 0x0, 0x5b, 0x3d, 0x1e, 0xe2, 0x2c, 0x1c, 0x20, 0xe7, 0x1, 0x5b, 0x22, 0xe8, 0x24, 0x14, 0x25, 0x22, 0xe9, 0x24, 0x14, 0x25, 0x40, 0x45, 0x46, 0x3d, 0x1c, 0x20, 0xea, 0x0, 0x5b, 0x22, 0xe8, 0x24, 0xeb, 0x25, 0x3d, 0x22, 0xe8, 0x24, 0xec, 0x25, 0x40, 0x45, 0x46, 0x1f, 0xea, 0x31, 0x1c, 0x58, 0x1d, 0xe8, 0x1c, 0x20, 0xed, 0x0, 0x5b, 0x22, 0xee, 0x24, 0x14, 0x25, 0x3d, 0x1d, 0xe8, 0x2c, 0x1c, 0x20, 0xef, 0x0, 0x5b, 0x3d, 0x1d, 0xe8, 0x2c, 0x1c, 0x20, 0xf0, 0x0, 0x5b, 0x3d, 0x1d, 0xe8, 0x2c, 0x1c, 0x20, 0xf1, 0x0, 0x5b, 0x3d, 0x1d, 0xe8, 0x2c, 0x1c, 0x20, 0xf2, 0x0, 0x5b, 0x3d, 0x1d, 0xe8, 0x2c, 0x1c, 0x20, 0xf3, 0x0, 0x5b, 0x3d, 0x1d, 0xe8, 0x1c, 0x20, 0xf4, 0x0, 0x5b, 0x3d, 0x1d, 0xe8, 0x1c, 0x20, 0xf5, 0x0, 0x5b, 0x3d, 0x1d, 0xe8, 0x1c, 0x20, 0xf6, 0x0, 0x5b, 0x3d, 0x1c, 0x20, 0xf7, 0x0, 0x5b, 0x3d, 0x1c, 0x20, 0xf8, 0x0, 0x5b, 0x3d, 0x1c, 0x20, 0xf9, 0x0, 0x5b, 0x3d, 0x22, 0xfa, 0x24, 0x14, 0x25, 0x22, 0xfb, 0x24, 0x14, 0x25, 0x40, 0x45, 0x46, 0x3d, 0x22, 0xfc, 0x24, 0x14, 0x25, 0x3d, 0x22, 0xfb, 0x24, 0xfd, 0x25, 0x40, 0x22, 0xfc, 0x24, 0xfe, 0x25, 0x45, 0x46, 0x45, 0x46, 0x31, 0x6, 0x58, 0x1d, 0xfb, 0x1c, 0x20, 0xff, 0x0, 0x5b, 0x3d, 0x1d, 0xfb, 0x1c, 0x20, 0x100, 0x0, 0x5b, 0x3d, 0x1d, 0xfb, 0x1c, 0x20, 0x101, 0x0, 0x5b, 0x3d, 0x1d, 0xfb, 0x1c, 0x20, 0x102, 0x0, 0x5b, 0x3d, 0x1c, 0x20, 0x103, 0x0, 0x5b, 0x3d, 0x1c, 0x20, 0x104, 0x0, 0x5b, 0x3d, 0x22, 0x105, 0x24, 0x14, 0x25, 0x3d, 0x22, 0x104, 0x24, 0x106, 0x25, 0x40, 0x22, 0x105, 0x24, 0x107, 0x25, 0x45, 0x46, 0x45, 0x46, 0x31, 0x3, 0x58, 0x1d, 0x104, 0x22, 0x108, 0x24, 0x109, 0x25, 0x40, 0x22, 0x10a, 0x24, 0x10b, 0x25, 0x45, 0x46, 0x3d, 0x22, 0x108, 0x24, 0x10c, 0x25, 0x2c, 0x22, 0x10d, 0x24, 0x14, 0x25, 0x40, 0x48, 0x2, 0x47, 0x5a, 0x23, 0x10e, 0x22, 0x10f, 0x24, 0x14, 0x25, 0x40, 0x24, 0x110, 0x25, 0x48, 0x0, 0x47, 0x5a, 0x22, 0x111, 0x24, 0x14, 0x25, 0x1c, 0x20, 0x112, 0x0, 0x5b, 0x2c, 0x1c, 0x20, 0x113, 0x0, 0x5b, 0x3d, 0x22, 0x111, 0x24, 0x114, 0x25, 0x40, 0x45, 0x46, 0x1f, 0x113, 0x31, 0x11d, 0x58, 0x22, 0x111, 0x24, 0x115, 0x25, 0x40, 0x48, 0x1, 0x47, 0x5a, 0x23, 0x116, 0x1e, 0x111, 0x2c, 0x22, 0x117, 0x24, 0x14, 0x25, 0x40, 0x24, 0x118, 0x25, 0x48, 0x1, 0x47, 0x5a, 0x23, 0x119, 0x1c, 0x20, 0x11a, 0x0, 0x5b, 0x3d, 0x22, 0x11b, 0x24, 0x14, 0x25, 0x40, 0x24, 0x11c, 0x25, 0x48, 0x0, 0x47, 0x5a, 0x22, 0x11d, 0x24, 0x14, 0x25, 0x1c, 0x20, 0x11e, 0x2, 0x5b, 0x1e, 0x11d, 0x40, 0x48, 0x0, 0x47, 0x5a, 0x22, 0x11f, 0x24, 0x14, 0x25, 0x3d, 0x22, 0x11d, 0x24, 0x120, 0x25, 0x40, 0x22, 0x11f, 0x24, 0x121, 0x25, 0x45, 0x46, 0x45, 0x46, 0x31, 0x12d, 0x58, 0x22, 0x11f, 0x24, 0x122, 0x25, 0x3d, 0x22, 0x11f, 0x24, 0x123, 0x25, 0x40, 0x45, 0x46, 0x1f, 0x113, 0x3d, 0x1f, 0x113, 0x24, 0x124, 0x25, 0x40, 0x45, 0x46, 0x31, 0x119, 0x58, 0x1e, 0x113, 0x22, 0x125, 0x24, 0x126, 0x25, 0x45, 0x46, 0x3d, 0x22, 0x113, 0x24, 0x127, 0x25, 0x40, 0x45, 0x46, 0x31, 0x116, 0x58, 0x22, 0x11d, 0x24, 0x128, 0x25, 0x40, 0x48, 0x1, 0x47, 0x5a, 0x22, 0x129, 0x24, 0x12a, 0x25, 0x40, 0x24, 0x12b, 0x25, 0x48, 0x0, 0x47, 0x5a, 0x1c, 0x20, 0x12c, 0x2, 0x5b, 0x1e, 0x12c, 0x40, 0x48, 0x1, 0x47, 0x5a, 0x22, 0x12d, 0x24, 0x14, 0x25, 0x3d, 0x22, 0x12c, 0x24, 0x12e, 0x25, 0x40, 0x45, 0x46, 0x31, 0x14b, 0x58, 0x22, 0x12c, 0x24, 0x12f, 0x25, 0x40, 0x45, 0x46, 0x1f, 0x113, 0x3d, 0x1f, 0x113, 0x24, 0x130, 0x25, 0x40, 0x45, 0x46, 0x31, 0x128, 0x58, 0x22, 0x131, 0x24, 0x132, 0x25, 0x40, 0x45, 0x46, 0x31, 0x125, 0x58, 0x22, 0x12d, 0x24, 0x133, 0x25, 0x40, 0x24, 0x134, 0x25, 0x48, 0x1, 0x47, 0x5a, 0x1c, 0x20, 0x135, 0x2, 0x5b, 0x1c, 0x20, 0x136, 0x2, 0x5b, 0x1e, 0x136, 0x40, 0x48, 0x0, 0x47, 0x5a, 0x22, 0x137, 0x24, 0x14, 0x25, 0x3d, 0x1e, 0x136, 0x22, 0x138, 0x24, 0x139, 0x25, 0x45, 0x46, 0x3d, 0x1e, 0x136, 0x22, 0x13a, 0x24, 0x13b, 0x25, 0x45, 0x46, 0x3d, 0x1e, 0x136, 0x22, 0x13c, 0x24, 0x13d, 0x25, 0x45, 0x46, 0x3d, 0x1e, 0x136, 0x22, 0x13e, 0x24, 0x13f, 0x25, 0x45, 0x46, 0x3d, 0x1e, 0x136, 0x22, 0x140, 0x24, 0x141, 0x25, 0x45, 0x46, 0x3d, 0x1e, 0x136, 0x22, 0x142, 0x24, 0x143, 0x25, 0x45, 0x46, 0x3d, 0x1e, 0x136, 0x22, 0x144, 0x24, 0x145, 0x25, 0x45, 0x46, 0x3d, 0x22, 0x13e, 0x24, 0x146, 0x25, 0x2c, 0x22, 0x147, 0x24, 0x148, 0x25, 0x45, 0x46, 0x45, 0x46, 0x3d, 0x22, 0x136, 0x24, 0x149, 0x25, 0x3d, 0x22, 0x136, 0x24, 0x14a, 0x25, 0x40, 0x48, 0x4, 0x47, 0x5a, 0x23, 0x14b, 0x22, 0x14c, 0x24, 0x14, 0x25, 0x40, 0x24, 0x14d, 0x25, 0x48, 0x0, 0x47, 0x5a, 0x22, 0x14e, 0x24, 0x14, 0x25, 0x1c, 0x20, 0x14f, 0x2, 0x5b, 0x1e, 0x14e, 0x40, 0x48, 0x1, 0x47, 0x5a, 0x1c, 0x20, 0x150, 0x2, 0x5b, 0x1c, 0x20, 0x151, 0x1, 0x5b, 0x22, 0x152, 0x24, 0x14, 0x25, 0x1c, 0x20, 0x153, 0x2, 0x5b, 0x22, 0x152, 0x24, 0x154, 0x25, 0x40, 0x22, 0x153, 0x24, 0x155, 0x25, 0x45, 0x46, 0x45, 0x46, 0x3d, 0x22, 0x156, 0x24, 0x14, 0x25, 0x3d, 0x22, 0x152, 0x24, 0x157, 0x25, 0x40, 0x48, 0x1, 0x47, 0x5a, 0x23, 0x158, 0x1c, 0x20, 0x159, 0x2, 0x5b, 0x1e, 0x159, 0x40, 0x48, 0x0, 0x47, 0x5a, 0x22, 0x15a, 0x24, 0x14, 0x25, 0x3d, 0x22, 0x159, 0x24, 0x15b, 0x25, 0x40, 0x45, 0x46, 0x31, 0x16b, 0x58, 0x1e, 0x159, 0x2c, 0x22, 0x15c, 0x24, 0x14, 0x25, 0x3d, 0x1e, 0x159, 0x2c, 0x22, 0x15d, 0x24, 0x14, 0x25, 0x3d, 0x22, 0x15c, 0x24, 0x15e, 0x25, 0x40, 0x22, 0x15d, 0x24, 0x15f, 0x25, 0x45, 0x46, 0x45, 0x46, 0x1f, 0x159, 0x3d, 0x1f, 0x159, 0x24, 0x160, 0x25, 0x40, 0x45, 0x46, 0x31, 0x167, 0x58, 0x22, 0x159, 0x24, 0x161, 0x25, 0x3d, 0x1e, 0x159, 0x40, 0x24, 0x162, 0x25, 0x48, 0x1, 0x47, 0x5a, 0x22, 0x152, 0x24, 0x163, 0x25, 0x40, 0x24, 0x164, 0x25, 0x48, 0x1, 0x47, 0x5a, 0x23, 0x165, 0x22, 0x166, 0x24, 0x14, 0x25, 0x40, 0x24, 0x167, 0x25, 0x48, 0x1, 0x47, 0x5a, 0x22, 0x168, 0x24, 0x14, 0x25, 0x1c, 0x20, 0x169, 0x1, 0x5b, 0x22, 0x168, 0x24, 0x16a, 0x25, 0x40, 0x48, 0x2, 0x47, 0x5a, 0x1c, 0x20, 0x16b, 0x1, 0x5b, 0x22, 0x16c, 0x24, 0x14, 0x25, 0x1c, 0x20, 0x16d, 0x2, 0x5b, 0x22, 0x16c, 0x24, 0x16e, 0x25, 0x40, 0x22, 0x16d, 0x24, 0x16f, 0x25, 0x45, 0x46, 0x45, 0x46, 0x3d, 0x22, 0x170, 0x24, 0x14, 0x25, 0x3d, 0x22, 0x16c, 0x24, 0x171, 0x25, 0x40, 0x48, 0x1, 0x47, 0x5a, 0x23, 0x172, 0x22, 0x173, 0x24, 0x14, 0x25, 0x1c, 0x20, 0x174, 0x2, 0x5b, 0x1e, 0x173, 0x40, 0x48, 0x1, 0x47, 0x5a, 0x23, 0x175, 0x1d, 0x173, 0x2c, 0x22, 0x176, 0x24, 0x14, 0x25, 0x3d, 0x22, 0x173, 0x24, 0x177, 0x25, 0x40, 0x22, 0x176, 0x24, 0x178, 0x25, 0x45, 0x46, 0x45, 0x46, 0x3d, 0x1e, 0x173, 0x22, 0x179, 0x24, 0x17a, 0x25, 0x45, 0x46, 0x1f, 0x173, 0x3d, 0x1f, 0x173, 0x24, 0x17b, 0x25, 0x40, 0x45, 0x46, 0x31, 0x172, 0x58, 0x1e, 0x173, 0x2c, 0x22, 0x17c, 0x24, 0x14, 0x25, 0x3d, 0x22, 0x173, 0x24, 0x17d, 0x25, 0x40, 0x45, 0x46, 0x1f, 0x173, 0x3d, 0x1f, 0x173, 0x24, 0x17e, 0x25, 0x40, 0x45, 0x46, 0x31, 0x175, 0x58, 0x22, 0x173, 0x24, 0x17f, 0x25, 0x3d, 0x22, 0x173, 0x24, 0x180, 0x25, 0x40, 0x48, 0x1, 0x47, 0x5a, 0x22, 0x173, 0x24, 0x181, 0x25, 0x40, 0x24, 0x182, 0x25, 0x48, 0x1, 0x47, 0x5a, 0x23, 0x183, 0x22, 0x184, 0x24, 0x14, 0x25, 0x1c, 0x20, 0x185, 0x2, 0x5b, 0x22, 0x184, 0x24, 0x186, 0x25, 0x40, 0x48, 0x1, 0x47, 0x5a, 0x22, 0x187, 0x24, 0x188, 0x25, 0x40, 0x24, 0x189, 0x25, 0x48, 0x0, 0x47, 0x5a, 0x23, 0x18a, 0x22, 0x18b, 0x24, 0x14, 0x25, 0x1c, 0x20, 0x18c, 0x2, 0x5b, 0x22, 0x18b, 0x24, 0x18d, 0x25, 0x40, 0x22, 0x18c, 0x24, 0x18e, 0x25, 0x45, 0x46, 0x45, 0x46, 0x3d, 0x22, 0x18f, 0x24, 0x14, 0x25, 0x3d, 0x22, 0x18b, 0x24, 0x190, 0x25, 0x40, 0x48, 0x1, 0x47, 0x5a, 0x23, 0x191, 0x22, 0x192, 0x24, 0x14, 0x25, 0x1c, 0x20, 0x193, 0x1, 0x5b, 0x1e, 0x192, 0x40, 0x48, 0x1, 0x47, 0x5a, 0x22, 0x194, 0x24, 0x195, 0x25, 0x40, 0x24, 0x196, 0x25, 0x48, 0x0, 0x47, 0x5a, 0x23, 0x197, 0x22, 0x198, 0x24, 0x14, 0x25, 0x1c, 0x20, 0x199, 0x2, 0x5b, 0x1e, 0x198, 0x40, 0x48, 0x0, 0x47, 0x5a, 0x22, 0x19a, 0x24, 0x14, 0x25, 0x3d, 0x22, 0x198, 0x24, 0x19b, 0x25, 0x40, 0x22, 0x19a, 0x24, 0x19c, 0x25, 0x45, 0x46, 0x45, 0x46, 0x3d, 0x1e, 0x198, 0x22, 0x19d, 0x24, 0x19e, 0x25, 0x45, 0x46, 0x1f, 0x198, 0x3d, 0x1f, 0x198, 0x24, 0x19f, 0x25, 0x40, 0x45, 0x46, 0x31, 0x197, 0x58, 0x22, 0x198, 0x24, 0x1a0, 0x25, 0x3d, 0x1e, 0x198, 0x22, 0x1a1, 0x24, 0x1a2, 0x25, 0x40, 0x24, 0x1a3, 0x25, 0x45, 0x46, 0x31, 0x191, 0x58, 0x22, 0x198, 0x24, 0x1a4, 0x25, 0x40, 0x48, 0x1, 0x47, 0x5a, 0x22, 0x198, 0x24, 0x1a5, 0x25, 0x40, 0x24, 0x1a6, 0x25, 0x48, 0x1, 0x47, 0x5a, 0x22, 0x1a7, 0x24, 0x1a8, 0x25, 0x40, 0x24, 0x1a9, 0x25, 0x48, 0x0, 0x47, 0x5a, 0x23, 0x1aa, 0x22, 0x1ab, 0x24, 0x14, 0x25, 0x1c, 0x20, 0x1ac, 0x1, 0x5b, 0x22, 0x1ab, 0x24, 0x1ad, 0x25, 0x40, 0x48, 0x1, 0x47, 0x5a, 0x22, 0x1ae, 0x24, 0x14, 0x25, 0x1c, 0x20, 0x1b5, 0x2, 0x5b, 0x1e, 0x1ae, 0x40, 0x48, 0x1, 0x47, 0x5a, 0x5d];
-// ... (code up to line 911 should remain as is)
+    }());
 
-// The original obfuscator structure created an outer IIFE that wrapped the main VM launcher function
-// with a Proxy for anti-debugging. However, the 'this' context within that outer IIFE was incorrect,
-// leading to TypeErrors when trying to access properties like 'ZGFMG' or 'gZmbg' on 'undefined'.
-
-// This fix removes that problematic outer IIFE and the Proxy.
-// We directly execute the main VM launcher function.
-
-(function() { // This is the original function that launched the VM (_0x44 in the previous broken code)
-    var _0x4b = function(_0x4c, _0x4d) {
-        return _0x1(_0x4c, _0x4d);
-    };
-    var _0x4e = _0x4b(0x1b6, 'S@8a');
-    var _0x4f = (function() {
-        var _0x50 = !![];
-        return function(_0x51, _0x52) {
-            var _0x53 = _0x50 ? function() {
-                if (_0x52) {
-                    var _0x54 = _0x52[_0x4b(0x1b7, 'v@$v')](_0x51, arguments);
-                    _0x52 = null;
-                    return _0x54;
+    // Anti-Debugging (Beautifier / Debugger Traps)
+    var _0x2b = function() {
+        var _0x2c = true; // Flag to run once
+        return function(_0x2d, _0x2e) {
+            var _0x2f = _0x2c ? function() {
+                if (_0x2e) {
+                    var _0x30 = _0x2e['apply'](_0x2d, arguments);
+                    _0x2e = null;
+                    return _0x30;
                 }
             } : function() {};
-            _0x50 = ![];
-            return _0x53;
+            _0x2c = false;
+            return _0x2f;
         };
-    }());
-    var _0x55 = _0x4f(this, function() {
-        var _0x56 = function() {
-            var _0x57,
-            _0x58 = _0x57;
-            try {
-                _0x57 = Function(_0x4b(0x1c1, 'r0nJ') + _0x4b(0x1c2, '4!^X') + _0x4b(0x1c3, 'vT0N'))();
-            } catch (_0x59) {
-                _0x57 = window;
+    } ();
+    var _0x38 = function(_0x9c) { // General debugger trap function
+        function _0x9d(_0x9e) {
+            if (typeof _0x9e === 'string') {
+                return function(_0x9f) { }['constructor']('while (true) {}')['apply']('counter'); // Infinite loop for string arg
+            } else {
+                if (('' + _0x9e / _0x9e)['length'] !== 0x1 || _0x9e % 0x14 === 0x0) { // Check for number weirdness (e.g., NaN, multiples of 20)
+                    (function() { return true; } ['constructor']('debugger')['call']('action')); // Trigger debugger
+                } else {
+                    (function() { return false; } ['constructor']('debugger')['apply']('stateObject')); // Trigger debugger
+                }
             }
-            return _0x57;
-        },
-        _0x5a = _0x56();
-        var _0x5b = _0x5a[_0x4b(0x1c4, '9lI!')] = _0x5a['console'] || {};
-        var _0x5c = [_0x4b(0x27, 'T9qZ'), _0x4b(0x1af, 'iF#o'), _0x4b(0x1b0, '9G#^'), 'error', _0x4b(0x1b1, 'S@8a'), _0x4b(0x1b2, '7o9p'), _0x4b(0x1b3, 'nUAF')];
-        for (var _0x5d = 0x0; _0x5d < _0x5c[_0x4b(0x1d, 'K&Vq')]; _0x5d++) {
-            var _0x5e = _0x4f['constructor']['prototype']['bind'](_0x4f);
-            var _0x5f = _0x5c[_0x5d];
-            var _0x60 = _0x5b[_0x5f] || _0x5e;
-            _0x5e[_0x4b(0x1ba, '7U%S')] = _0x4f[_0x4b(0x1b8, 'G]g(')](_0x4f);
-            _0x5e['toString'] = _0x60[_0x4b(0x1bc, 'f33R')]['bind'](_0x60);
-            _0x5b[_0x5f] = _0x5e;
-        };
-    });
-    _0x55();
-    var _0x61 = function() {
-        var _0x62 = _0x61[_0x4b(0x1b6, 'S@8a')](_0x4b(0x1c1, 'r0nJ') + '{}.constructor(\x22return\x20this\x22)(\x20)')();
-        return _0x62;
+            _0x9d(++_0x9e); // Recursive call
+        }
+        try {
+            if (_0x9c) { return _0x9d; } else { _0x9d(0x0); }
+        } catch (_0xa0) {}
     };
-    var _0x63 = (function() {
-        var _0x64 = function(_0x65, _0x66) {
-            return _0x43[_0x65];
-        };
-        var _0x67 = _0x64;
-        // _0x68 and _0x69 are used for internal VM functions.
-        // It's possible _0x68 was intended to be the string decryptor _0x1,
-        // but it's currently set to "toString". The VM likely uses _0x4b for string decryption.
-        var _0x68 = _0x4e; // This variable may or may not be problematic depending on later VM code.
-                           // For now, leaving it as is, as it's not the primary error source.
-        var _0x69 = _0x61;
-        var _0x6a = [this, arguments];
-        var _0x6b = -0x1,
-        _0x6c = [],
-        _0x6d = [],
-        _0x6e,
-        _0x6f;
-        var _0x70 = _0x6d;
-        var _0x71 = function() {
-            var _0x72 = function() {
-                _0x6b++;
-                var _0x73 = _0x67(_0x6b);
-                switch (_0x73) {
-                case 0x1:
-                    _0x6c['push'](_0x67(++_0x6b));
-                    break;
-                case 0x2:
-                    _0x6c['push'](_0x6a[_0x6c['pop']()]);
-                    break;
-                case 0x3:
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](_0x6c[_0x6c[_0x4b(0x1d, 'K&Vq')] - _0x6e]);
-                    break;
-                case 0x4:
-                    _0x6c['push'](_0x64);
-                    break;
-                case 0x5:
-                    _0x6c['push'](_0x69());
-                    break;
-                case 0x6:
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](typeof _0x6e);
-                    break;
-                case 0x7:
-                    _0x6c['push'](_0x68);
-                    break;
-                case 0x8:
-                    _0x6c['push'](null);
-                    break;
-                case 0x9:
-                    _0x6c['push'](true);
-                    break;
-                case 0xa:
-                    _0x6c['push'](false);
-                    break;
-                case 0xb:
-                    _0x6c['push']({});
-                    break;
-                case 0xc:
-                    _0x6c['push']([]);
-                    break;
-                case 0x11:
-                    _0x6c[_0x4b(0x1d, 'K&Vq')]--;
-                    break;
-                case 0x12:
-                    return _0x6c['pop']();
-                case 0x13:
-                    _0x6e = _0x6c['pop']();
-                    throw _0x6e;
-                case 0x14:
-                    _0x6b = _0x6c['pop']() - 0x1;
-                    break;
-                case 0x15:
-                    _0x6b = _0x67(++_0x6b) - 0x1;
-                    break;
-                case 0x16:
-                    if (_0x6c['pop']()) {
-                        _0x6b = _0x67(++_0x6b) - 0x1;
-                    } else {
-                        _0x6b++;
-                    }
-                    break;
-                case 0x17:
-                    if (!_0x6c['pop']()) {
-                        _0x6b = _0x67(++_0x6b) - 0x1;
-                    } else {
-                        _0x6b++;
-                    }
-                    break;
-                case 0x1a:
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push']( - _0x6e);
-                    break;
-                case 0x1b:
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](~_0x6e);
-                    break;
-                case 0x1c:
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](!_0x6e);
-                    break;
-                case 0x1e:
-                    _0x6f = _0x6c['pop']();
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](_0x6e + _0x6f);
-                    break;
-                case 0x1f:
-                    _0x6f = _0x6c['pop']();
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](_0x6e - _0x6f);
-                    break;
-                case 0x20:
-                    _0x6f = _0x6c['pop']();
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](_0x6e * _0x6f);
-                    break;
-                case 0x21:
-                    _0x6f = _0x6c['pop']();
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](_0x6e / _0x6f);
-                    break;
-                case 0x22:
-                    _0x6f = _0x6c['pop']();
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](_0x6e % _0x6f);
-                    break;
-                case 0x23:
-                    _0x6f = _0x6c['pop']();
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](_0x6e & _0x6f);
-                    break;
-                case 0x24:
-                    _0x6f = _0x6c['pop']();
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](_0x6e | _0x6f);
-                    break;
-                case 0x25:
-                    _0x6f = _0x6c['pop']();
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](_0x6e ^ _0x6f);
-                    break;
-                case 0x26:
-                    _0x6f = _0x6c['pop']();
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](_0x6e << _0x6f);
-                    break;
-                case 0x27:
-                    _0x6f = _0x6c['pop']();
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](_0x6e >> _0x6f);
-                    break;
-                case 0x28:
-                    _0x6f = _0x6c['pop']();
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](_0x6e >>> _0x6f);
-                    break;
-                case 0x2c:
-                    _0x6f = _0x6c['pop']();
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](_0x6e == _0x6f);
-                    break;
-                case 0x2d:
-                    _0x6f = _0x6c['pop']();
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](_0x6e === _0x6f);
-                    break;
-                case 0x2e:
-                    _0x6f = _0x6c['pop']();
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](_0x6e != _0x6f);
-                    break;
-                case 0x2f:
-                    _0x6f = _0x6c['pop']();
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](_0x6e !== _0x6f);
-                    break;
-                case 0x30:
-                    _0x6f = _0x6c['pop']();
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](_0x6e < _0x6f);
-                    break;
-                case 0x31:
-                    _0x6f = _0x6c['pop']();
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](_0x6e <= _0x6f);
-                    break;
-                case 0x32:
-                    _0x6f = _0x6c['pop']();
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](_0x6e > _0x6f);
-                    break;
-                case 0x33:
-                    _0x6f = _0x6c['pop']();
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](_0x6e >= _0x6f);
-                    break;
-                case 0x34:
-                    _0x6f = _0x6c['pop']();
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](_0x6e in _0x6f);
-                    break;
-                case 0x35:
-                    _0x6f = _0x6c['pop']();
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](_0x6e instanceof _0x6f);
-                    break;
-                case 0x3d:
-                    var _0x74 = _0x6c['pop']();
-                    var _0x75 = _0x6c['pop']();
-                    _0x70[_0x75] = _0x74;
-                    break;
-                case 0x3e:
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](_0x70[_0x6e]);
-                    break;
-                case 0x3f:
-                    _0x6e = _0x6c['pop']();
-                    delete _0x70[_0x6e];
-                    break;
-                case 0x40:
-                    _0x6f = _0x6c['pop']();
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](_0x6e[_0x6f]);
-                    break;
-                case 0x41:
-                    _0x6e = _0x6c['pop']();
-                    var _0x77 = _0x6c['pop']();
-                    _0x77[_0x6e] = _0x6c['pop'](); // Reordered this for correct stack behavior
-                    break;
-                case 0x42:
-                    _0x6e = _0x6c['pop']();
-                    var _0x77 = _0x6c['pop']();
-                    _0x77[_0x6e]();
-                    break;
-                case 0x43:
-                    _0x6f = _0x6c['pop']();
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](_0x6e[_0x6f]());
-                    break;
-                case 0x44:
-                    _0x6e = _0x6c['pop']();
-                    var _0x78 = _0x6c['pop']();
-                    var _0x79 = _0x6c['pop']();
-                    _0x79[_0x78](_0x6e);
-                    break;
-                case 0x45:
-                    _0x6f = _0x6c['pop']();
-                    _0x6e = _0x6c['pop']();
-                    var _0x7a = _0x6c['pop']();
-                    _0x6c['push'](_0x7a[_0x6e](_0x6f));
-                    break;
-                case 0x46:
-                    var _0x7b = _0x6c['pop']();
-                    var _0x7c = _0x6c['pop']();
-                    var _0x7d = _0x6c['pop']();
-                    var _0x7e = _0x6c['pop']();
-                    _0x7e[_0x7d](_0x7c, _0x7b);
-                    break;
-                case 0x47:
-                    var _0x7f = _0x6c['pop']();
-                    var _0x80 = [];
-                    for (var _0x81 = 0x0; _0x81 < _0x7f; _0x81++) {
-                        _0x80['unshift'](_0x6c['pop']());
-                    }
-                    _0x6e = _0x6c['pop']();
-                    var _0x82 = _0x6c['pop']();
-                    _0x6c['push'](_0x82[_0x6e]['apply'](_0x82, _0x80));
-                    break;
-                case 0x48:
-                    var _0x83 = _0x6c['pop']();
-                    var _0x84 = [];
-                    for (var _0x85 = 0x0; _0x85 < _0x83; _0x85++) {
-                        _0x84['unshift'](_0x6c['pop']());
-                    }
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](_0x6e['apply'](null, _0x84));
-                    break;
-                case 0x4d:
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](new _0x6e());
-                    break;
-                case 0x4e:
-                    var _0x86 = _0x6c['pop']();
-                    var _0x87 = [];
-                    for (var _0x88 = 0x0; _0x88 < _0x86; _0x88++) {
-                        _0x87['unshift'](_0x6c['pop']());
-                    }
-                    _0x6e = _0x6c['pop']();
-                    _0x6c['push'](new(_0x6e['bind']['apply'](_0x6e, [null]['concat'](_0x87)))());
-                    break;
-                case 0x56:
-                    var _0x89 = _0x6c['pop']();
-                    var _0x8a = _0x6c['pop']();
-                    _0x8a['then'](_0x89);
-                    break;
-                case 0x57:
-                    var _0x8b = _0x6c['pop']();
-                    _0x6e = _0x6c['pop']();
-                    _0x6e['then'](function(_0x8c) {
-                        _0x6a[0x1] = [_0x8c];
-                        _0x63(_0x8b);
-                    });
-                    return;
-                case 0x58:
-                    _0x6f = _0x6c['pop']();
-                    _0x6e = _0x6c['pop']();
-                    _0x6e['catch'](_0x6f);
-                    break;
-                case 0x59:
-                    var _0x8d = _0x6c['pop']();
-                    _0x6e = _0x6c['pop']();
-                    _0x6e['catch'](function(_0x8e) {
-                        _0x6a[0x1] = [_0x8e];
-                        _0x63(_0x8d);
-                    });
-                    return;
-                case 0x5a:
-                    _0x70['push'](new _0x72());
-                    break;
-                case 0x5b:
-                    var _0x8f = _0x6c['pop']();
-                    var _0x90 = [];
-                    for (var _0x91 = 0x0; _0x91 < _0x8f; _0x91++) {
-                        _0x90['push'](_0x70['length'] + _0x91);
-                    }
-                    _0x6c['push'](function() {
-                        var _0x92 = _0x6a[0x1];
-                        _0x6a[0x1] = arguments;
-                        for (var _0x93 = 0x0; _0x93 < _0x8f; _0x93++) {
-                            _0x70[_0x90[_0x93]] = arguments[_0x93];
-                        }
-                        var _0x94 = _0x70[_0x70[_0x4b(0x1d, 'K&Vq')] - 0x1]();
-                        _0x6a[0x1] = _0x92;
-                        return _0x94;
-                    });
-                    break;
-                case 0x5c:
-                    return _0x70['pop']()();
-                case 0x5d:
-                    var _0x95 = _0x6c['pop']();
-                    var _0x96 = _0x6a[0x1];
-                    _0x6a[0x1] = Array['prototype']['slice']['call'](arguments);
-                    var _0x97 = _0x63(_0x95);
-                    _0x6a[0x1] = _0x96;
-                    return _0x97;
-                case 0x5f:
-                    _0x6a[0x0] = _0x6c['pop']();
-                    break;
-                case 0x60:
-                    var _0x98 = _0x6c['pop']();
-                    _0x6c[_0x4b(0xa, 'w^P!')](function() {
-                        try {
-                            return _0x63(_0x98);
-                        } catch (_0x99) {
-                            _0x6c['push'](_0x99);
-                        }
-                    } ());
-                    break;
-                }
-            };
-            while (true) {
-                var _0x9a = _0x72();
-                if (_0x9a === _0x4e) { // _0x4e is the string "toString"
-                    return _0x4e;
-                }
+    var _0x31 = _0x2b(this, function() {
+        var _0x32 = function() { return 'dev'; }, _0x33 = function() { return 'window'; };
+        var _0x34 = function() {
+            var _0x35 = new RegExp(_0x1(0x1c6, 'R%m9')); // 'function *\\( *\\)'
+            var _0x36 = new RegExp(_0x1(0x1c8, 'p$m#'), 'i'); // '\\+\\+ *(?:_0x(?:[a-f0-9]){4,6})'
+            var _0x37 = _0x38(_0x1(0x1c5, 'pG^m')); // 'init'
+            if (!_0x35['test'](_0x37 + _0x1(0x1c7, 'u@Ql')) || !_0x36['test'](_0x37 + _0x1(0x1c9, 'uX7G'))) { // 'chain', 'input'
+                _0x38('0');
+            } else {
+                _0x38();
             }
         };
-        return function() {
-            var _0x9b = _0x67(++_0x6b);
-            _0x6a[0x1] = arguments;
-            _0x6c = [];
-            _0x6d = [];
-            _0x6b = _0x9b - 0x1;
-            return _0x63();
+        try { _0x34(); } catch (_0x39) {}
+    });
+    _0x31();
+
+    // Secondary Anti-Debugging (similar to above)
+    var _0x3a = (function() {
+        var _0x3b = !![];
+        return function(_0x3c, _0x3d) {
+            var _0x3e = _0x3b ? function() {
+                if (_0x3d) {
+                    var _0x3f = _0x3d[_0x1(0x1b7, 'v@$v')](_0x3c, arguments); // 'apply'
+                    _0x3d = null;
+                    return _0x3f;
+                }
+            } : function() {};
+            _0x3b = ![];
+            return _0x3e;
         };
     }());
-    return _0x63(0x0); // This is the final call that starts the VM
-})(); // <--- DIRECTLY INVOKE THE VM LAUNCHER FUNCTION HERE
+    (function() {
+        _0x3a(this, function() {
+            var _0x40 = new RegExp(_0x1(0x1c6, 'R%m9'));
+            var _0x41 = new RegExp(_0x1(0x1c8, 'p$m#'), 'i');
+            var _0x42 = _0x38(_0x1(0x1c5, 'pG^m'));
+            if (!_0x40['test'](_0x42 + _0x1(0x1c7, 'u@Ql')) || !_0x41['test'](_0x42 + _0x1(0x1c9, 'uX7G'))) {
+                _0x38('0');
+            } else {
+                _0x38();
+            }
+        })();
+    }());
+
+    // --- Core Application Logic (Obfuscated) ---
+    // Instead of a VM, we use direct (but mangled) calls and encapsulated helpers.
+
+    // Helper to get global objects/properties safely
+    var _0xgetGlobal = function(_0xname) {
+        return (function(){ return this; })()[_0xname];
+    };
+
+    // Helper to get element by ID
+    var _0xgetEl = function(_0xid) {
+        return _0xgetGlobal(_0x1(0x8f, '0o5I'))[_0x1(0x8b, 'iF#o')](_0xid); // document.getElementById
+    };
+
+    // Helper for adding/removing classes
+    var _0xclassOp = function(_0xelement, _0xmethod, _0xclassName) {
+        _0xelement[_0x1(0x17f, 's&G^')][_0xmethod](_0xclassName); // .classList.method
+    };
+
+    // Helper for event listeners
+    var _0xlisten = function(_0xelement, _0xevent, _0xhandler) {
+        _0xelement[_0x1(0x19a, '$Q5&')](_0xevent, _0xhandler); // .addEventListener
+    };
+
+    // Helper for setting innerHTML
+    var _0xsetHtml = function(_0xelement, _0xhtml) {
+        _0xelement[_0x1(0x8c, 'W^P!')] = _0xhtml; // .innerHTML = html
+    };
+
+    // Helper for setting style display
+    var _0xsetStyleDisp = function(_0xelement, _0xvalue) {
+        if (_0xelement && _0xelement[_0x1(0x11, 'bY7Q')]) { // .style.display
+            _0xelement[_0x1(0x11, 'bY7Q')][_0x1(0x15, 'T9qZ')] = _0xvalue;
+        }
+    };
+
+    // Helper to manipulate attribute
+    var _0xsetAttr = function(_0xelement, _0xattr, _0xvalue) {
+        _0xelement[_0x1(0x187, 'f33R')](_0xattr, _0xvalue); // .setAttribute(attr, value)
+    };
+
+    // String constants (decrypted once)
+    const _0xstr = {
+        _hamburgerBtn: _0x1(0x1c8, 'p$m#'), // 'hamburger-btn'
+        _closeNavBtn: _0x1(0x1cc, '!9r('), // 'close-nav-btn'
+        _mainNav: _0x1(0x1cd, 'bY7Q'),     // 'main-nav'
+        _click: _0x1(0x1ce, 'E]s9'),       // 'click'
+        _isOpen: _0x1(0x94, 'K3yR'),       // 'is-open'
+        _themeToggleBtn: _0x1(0x1cf, 'oF9$'), // 'theme-toggle-btn'
+        _body: _0x1(0xad, 'w^P!'),           // 'body'
+        _lightMode: _0x1(0x97, 'C^7$'),      // 'light-mode'
+        _savedTheme: _0x1(0x1b, '4!^X'),      // 'theme' (for localStorage)
+        _localStorage: _0x1(0x1a, '4!^X'),    // 'localStorage'
+        _getItem: _0x1(0x92, '9lI!'),      // 'getItem'
+        _setItem: _0x1(0x91, 'S@8a'),      // 'setItem'
+        _sunIcon: _0x1(0x98, 'U@Q*'),      // '<i class="fa-solid fa-sun"></i>'
+        _moonIcon: _0x1(0x99, 'nUAF'),     // '<i class="fa-solid fa-moon"></i>'
+        _page: _0x1(0x9f, 'S@8a'),         // '.page'
+        _active: _0x1(0x8e, 'oF9$'),       // 'active'
+        _navLink: _0x1(0xa4, 'nUAF'),      // '.nav-link'
+        _href: _0x1(0x1f, 'E]s9'),         // 'href'
+        _logoLink: _0x1(0xa6, 'oF9$'),     // '.logo-link'
+        _pageContent: { // Page routes
+            _slash: _0x1(0x9a, 'C^7$'), // '/' -> 'page-landing'
+            _checker: _0x1(0x9b, 'L3p!'), // '/checker' -> 'page-checker'
+            _emailFraud: _0x1(0x9c, 'S@8a'), // '/email-fraud' -> 'page-email-fraud'
+            _faq: _0x1(0x9d, 'K3yR'),     // '/faq' -> 'page-faq'
+            _privacy: _0x1(0x9e, 's&G^'), // '/privacy' -> 'page-privacy'
+            _contact: _0x1(0x9f, 'K3yR'), // '/contact' -> 'page-contact'
+        },
+        _resetChecker: _0x1(0xa9, 'K&Vq'), // 'resetChecker'
+        _resetEmailFraudChecker: _0x1(0xaa, 'tY7S'), // 'resetEmailFraudChecker'
+        _contactForm: _0x1(0x1ae, 'r0nJ'), // 'contact-form'
+        _initializeContactForm: _0x1(0xab, 'T9qZ'), // 'initializeContactForm'
+        _introContent: _0x1(0xac, 'T9qZ'), // 'intro-content'
+        _resultsContainer: _0x1(0xae, 'W^P!'), // 'results-container'
+        _display: _0x1(0x15, 'T9qZ'), // 'display'
+        _block: _0x1(0x16, 'tY7S'), // 'block'
+        _innerHTML: _0x1(0x8c, 'W^P!'), // 'innerHTML'
+        _empty: '',
+        _classifiedStamp: _0x1(0x10, 'bY7Q'), // '.classified-stamp'
+        _safe: _0x1(0x12, 'W^P!'), // 'safe'
+        _danger: _0x1(0x13, 'tY7S'), // 'danger'
+        _classified: _0x1(0x14, 'tY7S'), // 'CLASSIFIED'
+        _runDetection: _0x1(0x18, 'K&Vq'), // 'runDetection'
+        _style: _0x1(0x11, 'bY7Q'), // 'style'
+        _none: _0x1(0x40, 'K3yR'), // 'none'
+        _loaderHtml: _0x1(0x42, '9lI!'), // Loader HTML string
+        _promise: _0x1(0x43, 'C^7$'), // 'Promise'
+        _resolve: _0x1(0x44, 'tY7S'), // 'resolve'
+        _setTimeout: _0x1(0x45, '9lI!'), // 'setTimeout'
+        _ipCheckApi: _0x1(0x48, 'S@8a'), // '/api/ip-check'
+        _noStore: _0x1(0x49, 'K&Vq'), // 'no-store'
+        _json: _0x1(0x4a, '9lI!'), // 'json'
+        _error: _0x1(0x27, 'T9qZ'), // 'error'
+        _ipAddress: _0x1(0x4c, '9lI!'), // 'IP Address'
+        _value: _0x1(0x4d, 'tY7S'), // 'value'
+        _isBad: _0x1(0x4e, '9lI!'), // 'isBad'
+        _alwaysShow: _0x1(0x4f, 'C^7$'), // 'alwaysShow'
+        _vpnProxy: _0x1(0x50, 'tY7S'), // 'VPN/Proxy'
+        _status: _0x1(0x51, '9lI!'), // 'status'
+        _isProxy: _0x1(0x52, 'tY7S'), // 'isProxy'
+        _includes: _0x1(0x53, 'tY7S'), // 'includes'
+        _tor: _0x1(0x54, '9lI!'), // 'TOR'
+        _ipVpnCheck: _0x1(0x55, 'C^7$'), // 'IP/VPN Check'
+        _errorLookup: _0x1(0x56, 'tY7S'), // 'Error during lookup'
+        _navigator: _0x1(0x57, 'K3yR'), // 'navigator'
+        _userAgent: _0x1(0x58, 'C^7$'), // 'userAgent'
+        _match: _0x1(0x59, '9lI!'), // 'match'
+        _chromeVersionRegex: _0x1(0x5a, 'tY7S'), // 'Chrome/(\\d+)'
+        _brave: _0x1(0x5b, '9lI!'), // 'brave'
+        _isBrave: _0x1(0x5c, 'C^7$'), // 'isBrave'
+        _getCanvasEntropy: _0x1(0x5d, 'tY7S'), // 'getCanvasEntropy'
+        _opr: _0x1(0x5e, '9lI!'), // 'opr'
+        _webdriver: _0x1(0x5f, 'C^7$'), // 'webdriver'
+        _plugins: _0x1(0x60, 'tY7S'), // 'plugins'
+        _languages: _0x1(0x62, '9lI!'), // 'languages'
+        _1920x1080: _0x1(0x64, 'C^7$'), // '1920x1080'
+        _2560x1440: _0x1(0x65, 'tY7S'), // '2560x1440'
+        _3840x2160: _0x1(0x66, '9lI!'), // '3840x2160'
+        _screen: _0x1(0x67, 'C^7$'), // 'screen'
+        _width: _0x1(0x68, 'tY7S'), // 'width'
+        _height: _0x1(0x69, '9lI!'), // 'height'
+        _getWebGLInfo: _0x1(0x6a, 'C^7$'), // 'getWebGLInfo'
+        _renderer: _0x1(0x6b, 'tY7S'), // 'renderer'
+        _toLowerCase: _0x1(0x6c, '9lI!'), // 'toLowerCase'
+        _swiftshader: _0x1(0x6d, 'C^7$'), // 'swiftshader'
+        _llvmpipe: _0x1(0x6e, 'tY7S'), // 'llvmpipe'
+        _normal: _0x1(0x6f, '9lI!'), // 'Normal'
+        _antidetect: _0x1(0x70, 'C^7$'), // 'Antidetect Browser Detected'
+        _torBrowser: _0x1(0x71, 'tY7S'), // 'Tor Browser (High Risk)'
+        _braveBrowser: _0x1(0x72, '9lI!'), // 'Brave Browser'
+        _antidetectTendencies: _0x1(0x73, 'C^7$'), // ' (Antidetect Tendencies)'
+        _operaBrowser: _0x1(0x74, 'tY7S'), // 'Opera Browser'
+        _suspicious: _0x1(0x75, '9lI!'), // ' (Suspicious)'
+        _suspiciousProfile: _0x1(0x76, 'C^7$'), // 'Suspicious Profile (Antidetect Characteristics)'
+        _browser: _0x1(0x77, 'tY7S'), // 'Browser'
+        _highRiskVerdict: _0x1(0x78, '9lI!'), // 'High Risk Profile Detected'
+        _normalVerdict: _0x1(0x79, 'C^7$'), // 'Profile Appears Normal'
+        _verdictBoxPrefix: _0x1(0x7a, 'tY7S'), // '<div class="verdict-box '
+        _faSolidPrefix: _0x1(0x7b, '9lI!'), // '"><i class="fa-solid '
+        _faUserSecret: _0x1(0x1d, 'K&Vq'), // 'fa-user-secret'
+        _faUserCheck: _0x1(0x1c5, 'pG^m'), // 'fa-user-check'
+        _faSuffix: _0x1(0x7c, 'C^7$'), // ' fa-lg"></i><span>'
+        _spanSuffix: _0x1(0x7d, 'tY7S'), // '</span></div>'
+        _riskScorePrefix: _0x1(0x7e, '9lI!'), // '<div class="risk-score">Threat Score: <strong>'
+        _riskScoreSuffix: _0x1(0x7f, 'C^7$'), // '</strong></div>'
+        _filter: _0x1(0x80, 'tY7S'), // 'filter'
+        _label: _0x1(0x81, '9lI!'), // 'label'
+        _valueDanger: _0x1(0x82, 'C^7$'), // 'value danger'
+        _valueSafe: _0x1(0x83, 'tY7S'), // 'value safe'
+        _fingerprintHash: _0x1(0x84, '9lI!'), // ' fingerprint-hash'
+        _labelDivPrefix: _0x1(0x85, 'C^7$'), // '<div class="label" style="animation-delay: '
+        _sSuffix: _0x1(0x86, 'tY7S'), // 's">'
+        _labelSuffix: _0x1(0x87, '9lI!'), // ':</div><div class="'
+        _valueSuffix: _0x1(0x88, 'C^7$'), // '" style="animation-delay: '
+        _divSuffix: _0x1(0x89, 'tY7S'), // '</div>'
+        _join: _0x1(0x8a, '9lI!'), // 'join'
+        _detailsGridPrefix: _0x1(0x8b, 'C^7$'), // '<div class="details-grid">'
+        _detailsGridSuffix: _0x1(0x8e, 'oF9$'), // '</div>'
+        _allChecksPassed: _0x1(0x8c, 'W^P!'), // All checks passed message
+        _resultsFooterPrefix: _0x1(0x8d, 'C^7$'), // '<div class="results-footer"><div class="results-separator '
+        _resultsFooterSuffix: _0x1(0x91, 'S@8a'), // '</div></div>'
+        _runAnotherTest: _0x1(0x94, 'K3yR'), // 'Run Another Test'
+        _dangerButton: _0x1(0x92, '9lI!'), // 'danger-button'
+        _safeButton: _0x1(0x93, 'C^7$'), // 'safe-button'
+        _resetBtn: _0x1(0x90, 'tY7S'), // 'reset-btn'
+        _onclickReset: _0x1(0x8f, '0o5I'), // 'onclick="resetChecker()"'
+
+        // Email fraud checker strings
+        _emailFraudIntro: _0x1(0x95, 'tY7S'), // 'email-fraud-intro'
+        _emailFraudInput: _0x1(0x96, '9lI!'), // 'email-fraud-input'
+        _emailFraudResults: _0x1(0x97, 'C^7$'), // 'email-fraud-results'
+        _emailFraudValidMsg: _0x1(0x98, 'tY7S'), // "Please enter a valid email address."
+        _analyzingEmail: _0x1(0x99, '9lI!'), // "ANALYZING EMAIL REPUTATION..."
+        _emailApi: _0x1(0x9a, 'C^7$'), // '/api/email-check?email='
+        _message: _0x1(0x9d, 'K3yR'), // 'message'
+        _couldNotRetrieve: _0x1(0x9e, 's&G^'), // 'Could not retrieve score.'
+        _errorApi: _0x1(0x9f, 'K3yR'), // "Error: "
+        _tryAgainBtn: _0x1(0xa0, 'tY7S'), // Try Again button HTML
+        _displayFraudScore: _0x1(0xa1, '9lI!'), // 'displayFraudScore'
+        _highRisk: _0x1(0xa2, 'C^7$'), // 'High Risk'
+        _accentRed: _0x1(0xa3, 'tY7S'), // 'var(--accent-red)'
+        _suspiciousEmail: _0x1(0xa5, '9lI!'), // 'Suspicious'
+        _orangeYellow: _0x1(0xa4, 'nUAF'), // '#ffc107'
+        _lowRisk: _0x1(0xa6, 'C^7$'), // 'Low Risk'
+        _accentGreen: _0x1(0xa7, 'tY7S'), // 'var(--accent-green)'
+        _emailResultHtml: _0x1(0xa8, '9lI!'), // Big email result HTML string
+        _checkAnotherEmail: _0x1(0xa9, 'K&Vq'), // 'Check Another Email'
+        _fraudScoreContainer: _0x1(0xaa, 'tY7S'), // '.fraud-score-container'
+        _opacity: _0x1(0xab, '9lI!'), // 'opacity'
+
+        // Utility functions (canvas, webgl, hash)
+        _canvas: _0x1(0xac, 'C^7$'), // 'canvas'
+        _getContext: _0x1(0xad, 'tY7S'), // 'getContext'
+        _2d: _0x1(0xae, '9lI!'), // '2d'
+        _widthProp: _0x1(0xaf, 'C^7$'), // 'width'
+        _heightProp: _0x1(0xb0, 'tY7S'), // 'height'
+        _textBaseline: _0x1(0xb1, '9lI!'), // 'textBaseline'
+        _top: _0x1(0xb2, 'C^7$'), // 'top'
+        _font: _0x1(0xb3, 'tY7S'), // 'font'
+        _fontValue: _0x1(0xb4, '9lI!'), // "14px 'Arial'"
+        _fillStyle: _0x1(0xb5, 'C^7$'), // 'fillStyle'
+        _rgbWhite: _0x1(0xb6, 'tY7S'), // "rgb(255,255,255)"
+        _fillRect: _0x1(0xb7, '9lI!'), // 'fillRect'
+        _rgbBlack: _0x1(0xb8, 'C^7$'), // "rgb(0,0,0)"
+        _fillText: _0x1(0xb9, 'tY7S'), // 'fillText'
+        _browserFp: _0x1(0xba, '9lI!'), // "BrowserFP"
+        _toDataURL: _0x1(0xbb, 'C^7$'), // 'toDataURL'
+        _hashString: _0x1(0xbc, 'tY7S'), // 'hashString'
+        _charCodeAt: _0x1(0xbd, '9lI!'), // 'charCodeAt'
+        _webgl: _0x1(0xbe, 'C^7$'), // 'webgl'
+        _experimentalWebgl: _0x1(0xbf, 'tY7S'), // 'experimental-webgl'
+        _getExtension: _0x1(0xc0, '9lI!'), // 'getExtension'
+        _webglDebugInfo: _0x1(0xc1, 'C^7$'), // 'WEBGL_debug_renderer_info'
+        _getParameter: _0x1(0xc2, 'tY7S'), // 'getParameter'
+        _unmaskedVendor: _0x1(0xc3, '9lI!'), // 'UNMASKED_VENDOR_WEBGL'
+        _unmaskedRenderer: _0x1(0xc4, 'C^7$'), // 'UNMASKED_RENDERER_WEBGL'
+        _n_a: "N/A",
+
+        // Contact form strings
+        _contactFormEl: _0x1(0xc5, 'tY7S'), // 'contact-form'
+        _captchaLabel: _0x1(0xc8, '9lI!'), // 'captcha-label'
+        _captchaInput: _0x1(0xc9, 'C^7$'), // 'captcha-input'
+        _submitBtn: _0x1(0xca, 'tY7S'), // 'submit-btn'
+        _formResponse: _0x1(0xcb, '9lI!'), // 'form-response'
+        _floor: _0x1(0xcc, 'C^7$'), // 'floor'
+        _random: _0x1(0xcd, 'tY7S'), // 'random'
+        _calculate: _0x1(0xce, '9lI!'), // "Calculate: "
+        _plus: _0x1(0xcf, 'C^7$'), // " + "
+        _equals: _0x1(0xd0, 'tY7S'), // " ="
+        _parseInt: _0x1(0xd1, '9lI!'), // 'parseInt'
+        _incorrectCode: _0x1(0xd2, 'C^7$'), // 'ERROR: Incorrect Security Code'
+        _className: _0x1(0xd3, 'tY7S'), // 'className'
+        _disabled: _0x1(0xd4, '9lI!'), // 'disabled'
+        _transmitting: _0x1(0xd5, 'C^7$'), // 'TRANSMITTING...'
+        _contactName: _0x1(0xd6, 'tY7S'), // 'contact-name'
+        _contactEmail: _0x1(0xd7, '9lI!'), // 'contact-email'
+        _contactTitle: _0x1(0xd8, 'C^7$'), // 'contact-title'
+        _contactDesc: _0x1(0xd9, 'tY7S'), // 'contact-description'
+        _apiContact: _0x1(0xda, '9lI!'), // '/api/contact'
+        _method: _0x1(0xdb, 'C^7$'), // 'method'
+        _post: _0x1(0xdc, 'tY7S'), // 'POST'
+        _headers: _0x1(0xdd, '9lI!'), // 'headers'
+        _contentType: _0x1(0xde, 'C^7$'), // 'Content-Type'
+        _appJson: _0x1(0xdf, 'tY7S'), // 'application/json'
+        _bodyProp: _0x1(0xe0, '9lI!'), // 'body'
+        _stringify: _0x1(0xe1, 'C^7$'), // 'stringify'
+        _ok: _0x1(0xe2, 'tY7S'), // 'ok'
+        _successTicket: _0x1(0xe3, '9lI!'), // "SUCCESS: Your ticket ID is "
+        _ticketId: _0x1(0xe4, 'C^7$'), // 'ticketId'
+        _serverRejected: _0x1(0xe5, 'tY7S'), // 'Server rejected the transmission.'
+        _transmissionFailed: _0x1(0xe6, '9lI!'), // 'TRANSMISSION FAILED: '
+        _transmitSecurely: _0x1(0xe7, 'C^7$'), // 'Transmit Securely'
+
+        // Dynamic background strings
+        _matrixBg: _0x1(0xe8, 'tY7S'), // 'matrix-bg'
+        _innerWidth: _0x1(0xec, '9lI!'), // 'innerWidth'
+        _innerHeight: _0x1(0xed, 'C^7$'), // 'innerHeight'
+        _drawMatrix: _0x1(0xee, 'tY7S'), // 'drawMatrix'
+        _matrixBgColor: _0x1(0xef, '9lI!'), // 'rgba(13, 13, 18, 0.05)'
+        _setInterval: _0x1(0xf0, 'C^7$'), // 'setInterval'
+        _fillRectFunc: _0x1(0xf1, 'tY7S'), // 'fillRect'
+        _fontProp: _0x1(0xf2, '9lI!'), // 'font'
+        _robotoMono: _0x1(0xf3, 'C^7$'), // 'Roboto Mono'
+        _fillTextFunc: _0x1(0xf4, 'tY7S'), // 'fillText'
+        _drawBlueGrid: _0x1(0xf5, '9lI!'), // 'drawBlueGrid'
+        _gridColor: _0x1(0xf6, 'C^7$'), // 'rgba(0, 170, 255, 0.15)'
+        _clearRect: _0x1(0xf7, 'tY7S'), // 'clearRect'
+        _strokeStyle: _0x1(0xf8, '9lI!'), // 'strokeStyle'
+        _lineWidth: _0x1(0xf9, 'C^7$'), // 'lineWidth'
+        _beginPath: _0x1(0xfa, 'tY7S'), // 'beginPath'
+        _moveTo: _0x1(0xfb, '9lI!'), // 'moveTo'
+        _lineTo: _0x1(0xfc, 'C^7$'), // 'lineTo'
+        _stroke: _0x1(0xfd, 'tY7S'), // 'stroke'
+        _setBackgroundState: _0x1(0xfe, '9lI!'), // 'setBackgroundState'
+        _backgroundWatermark: _0x1(0xff, 'C^7$'), // 'background-watermark'
+        _id: _0x1(0x100, 'tY7S'), // 'id'
+        _pageChecker: _0x1(0x101, '9lI!'), // 'page-checker'
+        _classList: _0x1(0x102, 'C^7$'), // 'classList'
+        _safeMode: _0x1(0x103, 'tY7S'), // 'safe-mode'
+        _dangerMode: _0x1(0x104, '9lI!'), // 'danger-mode'
+        _clearInterval: _0x1(0x105, 'C^7$'), // 'clearInterval'
+        _lightModeClass: _0x1(0x97, 'C^7$'), // 'light-mode'
+        _dangerBgColor: _0x1(0x106, 'tY7S'), // 'rgba(255, 71, 87, 0.7)'
+        _dataText: _0x1(0x108, '9lI!'), // 'data-text'
+        _compromised: _0x1(0x109, 'C^7$'), // 'COMPROMISED'
+        _textContent: _0x1(0x10a, 'tY7S'), // 'textContent'
+        _unclassified: _0x1(0x10d, '9lI!'), // 'UNCLASSIFIED'
+        _defaultMatrixColor: _0x1(0x10e, 'C^7$'), // 'rgba(0, 255, 136, 0.7)'
+        _charsetAlphaNum: _0x1(0x10f, 'tY7S'), // 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+        _resize: _0x1(0x110, '9lI!'), // 'resize'
+        _setupCanvas: _0x1(0x111, 'C^7$'), // 'setupCanvas'
+        _applySavedTheme: _0x1(0x112, 'tY7S'), // 'applySavedTheme'
+        _window: _0x1(0x22, '9lI!') // 'window'
+    };
+
+    // --- Start of Obfuscated Application Code ---
+
+    // Cache common DOM elements once for performance and readability
+    const _elementCache = {};
+    const _getOrCacheEl = (_id) => {
+        if (!_elementCache[_id]) {
+            _elementCache[_id] = _0xgetEl(_id);
+        }
+        return _elementCache[_id];
+    };
+
+    const _hBtn = _getOrCacheEl(_0xstr._hamburgerBtn);
+    const _cBtn = _getOrCacheEl(_0xstr._closeNavBtn);
+    const _mNav = _getOrCacheEl(_0xstr._mainNav);
+    const _tBtn = _getOrCacheEl(_0xstr._themeToggleBtn);
+    const _body = _0xgetGlobal(_0xstr._body); // window.document.body or similar, or direct document.body
+
+    // NAVIGATION
+    _0xlisten(_hBtn, _0xstr._click, () => _0xclassOp(_mNav, _0xstr._add, _0xstr._isOpen));
+    _0xlisten(_cBtn, _0xstr._click, () => _0xclassOp(_mNav, _0xstr._remove, _0xstr._isOpen));
+
+    // THEME TOGGLE
+    function _applySavedTheme() {
+        const _savedTheme = _0xgetGlobal(_0xstr._localStorage)[_0xstr._getItem](_0xstr._savedTheme);
+        if (_savedTheme === _0x1(0x96, '9lI!')) { // 'light'
+            _0xclassOp(_body, _0xstr._add, _0xstr._lightMode);
+            _0xsetHtml(_tBtn, _0xstr._sunIcon);
+        } else {
+            _0xclassOp(_body, _0xstr._remove, _0xstr._lightMode);
+            _0xsetHtml(_tBtn, _0xstr._moonIcon);
+        }
+    }
+
+    _0xlisten(_tBtn, _0xstr._click, () => {
+        _0xclassOp(_body, _0x1(0x90, 'tY7S'), _0xstr._lightMode); // toggle 'light-mode'
+        const _isLight = _0xbody[_0xstr._classList][_0x1(0x91, 'S@8a')](_0xstr._lightMode); // contains 'light-mode'
+        _0xgetGlobal(_0xstr._localStorage)[_0xstr._setItem](_0xstr._savedTheme, _isLight ? _0x1(0x96, '9lI!') : _0x1(0x97, 'C^7$')); // 'light' : 'dark'
+        _0xsetHtml(_tBtn, _isLight ? _0xstr._sunIcon : _0xstr._moonIcon);
+        _0xsetBackgroundState(_0xstr._default);
+    });
+
+    // ROUTER
+    const _pageContent = {
+        [_0x1(0x9a, 'C^7$')]: _0x1(0x9a, 'C^7$'), // '/': 'page-landing' (corrected to map to page-landing as default)
+        [_0x1(0x9b, 'L3p!')]: _0x1(0x9b, 'L3p!'), // '/checker': 'page-checker'
+        [_0x1(0x9c, 'S@8a')]: _0x1(0x9c, 'S@8a'), // '/email-fraud': 'page-email-fraud'
+        [_0x1(0x9d, 'K3yR')]: _0x1(0x9d, 'K3yR'), // '/faq': 'page-faq'
+        [_0x1(0x9e, 's&G^')]: _0x1(0x9e, 's&G^'), // '/privacy': 'page-privacy'
+        [_0x1(0x9f, 'K3yR')]: _0x1(0x9f, 'K3yR')  // '/contact': 'page-contact'
+    };
+
+    function _showPageContent(_pageId) {
+        _0xgetGlobal(_0x1(0x8f, '0o5I'))[_0x1(0xa0, 'nUAF')](_0xstr._page)[_0x1(0xa1, 'nUAF')](_page => _0xclassOp(_page, _0xstr._remove, _0xstr._active)); // document.querySelectorAll('.page').forEach(page => page.classList.remove('active'))
+        const _pageEl = _0xgetEl(_pageId);
+        if (_pageEl) _0xclassOp(_pageEl, _0xstr._add, _0xstr._active);
+
+        const _currentPath = Object[_0x1(0xa3, 'nUAF')](_pageContent)[_0x1(0xa2, 'nUAF')](_key => _pageContent[_key] === _pageId); // Object.keys(pageContent).find(...)
+        _0xgetGlobal(_0x1(0x8f, '0o5I'))[_0x1(0xa0, 'nUAF')](_0xstr._navLink)[_0x1(0xa1, 'nUAF')](_link => {
+            _link[_0xstr._classList][_0x1(0x90, 'tY7S')](_0xstr._active, _link[_0x1(0xa5, 'oF9$')](_0xstr._href) === _currentPath); // link.classList.toggle('active', link.getAttribute('href') === currentPath)
+        });
+
+        if (_pageId === _0x1(0x9b, 'L3p!')) _0xgetGlobal(_0xstr._window)[_0xstr._resetChecker](); // resetChecker()
+        if (_pageId === _0x1(0x9c, 'S@8a')) _0xgetGlobal(_0xstr._window)[_0xstr._resetEmailFraudChecker](); // resetEmailFraudChecker()
+    }
+
+    const _router = () => {
+        const _path = _0xgetGlobal(_0xstr._window)[_0x1(0x19, '4!^X')]; // window.location.pathname
+        const _pageId = _pageContent[_path] || _0x1(0x9a, 'C^7$'); // 'page-landing'
+        _showPageContent(_pageId);
+    };
+
+    _0xgetGlobal(_0x1(0x8f, '0o5I'))[_0x1(0x19a, '$Q5&')](_0xstr._click, (_e) => { // document.addEventListener('click', ...)
+        const _a = _e[_0x1(0xa7, 'oF9$')](_0x1(0x19d, '$Q5&')); // e.target.closest('a')
+        if (_a && (_a[_0x1(0xa8, 'nUAF')](_0xstr._navLink) || _a[_0x1(0xa8, 'nUAF')](_0xstr._logoLink))) { // a.matches('.nav-link') || a.matches('.logo-link')
+            _e[_0x1(0xa9, 'K&Vq')](); // e.preventDefault()
+            _0xgetGlobal(_0x1(0x1f, 'E]s9'))[_0x1(0x1a, '4!^X')](null, _0xstr._empty, _a[_0xstr._href]); // history.pushState(null, '', a.href)
+            _0xclassOp(_mNav, _0xstr._remove, _0xstr._isOpen); // mainNav.classList.remove('is-open')
+            _router();
+        }
+    });
+
+    function _navigateTo(_path) {
+        _0xgetGlobal(_0x1(0x1f, 'E]s9'))[_0x1(0x1a, '4!^X')](null, _0xstr._empty, _path); // history.pushState(null, '', path)
+        _router();
+    }
+
+    _0xgetGlobal(_0xstr._window)[_0x1(0xaa, 'tY7S')](_0x1(0xab, 'T9qZ'), _router); // window.addEventListener('popstate', router)
+
+    _0xgetGlobal(_0x1(0x8f, '0o5I'))[_0x1(0x19a, '$Q5&')](_0x1(0x1b, '4!^X'), () => { // document.addEventListener('DOMContentLoaded', ...)
+        _applySavedTheme();
+        _router();
+        if (_0xgetEl(_0xstr._contactForm)) { // document.getElementById('contact-form')
+            _0xgetGlobal(_0xstr._window)[_0xstr._initializeContactForm](); // initializeContactForm()
+        }
+    });
+
+    // BROWSER FINGERPRINT CHECKER SCRIPT
+    function _resetChecker() {
+        const _intro = _getOrCacheEl(_0xstr._introContent);
+        if (_intro && _intro[_0x1(0xd, 'E]s9')](_0x1(0x101, '9lI!'))) _0xsetStyleDisp(_intro, _0xstr._block); // intro.closest('#page-checker')
+        const _resultsContainer = _getOrCacheEl(_0xstr._resultsContainer);
+        if (_resultsContainer && _resultsContainer[_0x1(0xd, 'E]s9')](_0x1(0x101, '9lI!'))) _0xsetHtml(_resultsContainer, _0xstr._empty); // resultsContainer.innerHTML = ''
+        _0xsetBackgroundState(_0xstr._default);
+        const _stamp = _0xgetGlobal(_0x1(0x8f, '0o5I'))[_0x1(0x10, 'bY7Q')](_0x1(0x1b7, 'v@$v')); // document.querySelector('#page-checker .classified-stamp')
+        if (_stamp) {
+            _0xclassOp(_stamp, _0xstr._remove, _0xstr._safe);
+            _0xclassOp(_stamp, _0xstr._remove, _0xstr._danger);
+            _stamp[_0xstr._textContent] = _0xstr._classified;
+        }
+    }
+
+    _0xgetGlobal(_0xstr._window)[_0xstr._runDetection] = async function() {
+        const _intro = _getOrCacheEl(_0xstr._introContent);
+        if (_intro) _0xsetStyleDisp(_intro, _0xstr._none);
+        const _resultsEl = _getOrCacheEl(_0xstr._resultsContainer);
+        _0xsetHtml(_resultsEl, _0xstr._loaderHtml);
+        const _minDelay = new (_0xgetGlobal(_0xstr._promise))(_resolve => _0xgetGlobal(_0xstr._window)[_0xstr._setTimeout](_resolve, 2000)); // new Promise(resolve => setTimeout(resolve, 2000))
+        let _riskScore = 0;
+        const _riskFactors = [];
+        const _browserFlags = { brave: false, tor: false, opera: false, heuristicsSpoofing: false, canvasRandomization: false, webglEmulation: false };
+        const _targetChromeVersion = "138";
+
+        try {
+            const _resp = await _0xgetGlobal(_0xstr._window)[_0x1(0x9b, 'L3p!')](_0xstr._ipCheckApi, { cache: _0xstr._noStore }); // fetch('/api/ip-check', { cache: 'no-store' })
+            const _ipData = await _resp[_0xstr._json]();
+            if (_ipData[_0xstr._error]) throw new _0xgetGlobal(_0xstr._window)[_0xstr._error](_0x1(0x4b, 'K3yR')); // throw new Error("IP API Error")
+            _riskFactors[_0x1(0xe, 'E]s9')]({ label: _0xstr._ipAddress, value: _ipData[_0xstr._ipAddress.split(' ')[1]], isBad: false, alwaysShow: true }); // ipData.ip
+            _riskFactors[_0x1(0xe, 'E]s9')]({ label: _0xstr._vpnProxy, value: _ipData[_0xstr._status], isBad: _ipData[_0xstr._isProxy], alwaysShow: true });
+            if (_ipData[_0xstr._isProxy]) _riskScore += 3;
+            if (_ipData[_0xstr._status][_0xstr._includes](_0xstr._tor)) _riskScore += 5;
+        } catch (_e) {
+            _riskScore += 1;
+            _riskFactors[_0x1(0xe, 'E]s9')]({ label: _0xstr._ipVpnCheck, value: _0xstr._errorLookup, isBad: true, alwaysShow: true });
+        }
+
+        const _ua = _0xgetGlobal(_0xstr._navigator)[_0xstr._userAgent];
+        const _majorChromeVersion = (_ua[_0xstr._match](_0xstr._chromeVersionRegex) || [])[1];
+        if (_0xgetGlobal(_0xstr._navigator)[_0xstr._brave] && await _0xgetGlobal(_0xstr._navigator)[_0xstr._brave][_0xstr._isBrave]()) {
+            _riskScore += 3; _browserFlags.brave = true;
+        }
+        if (_0xgetGlobal(_0xstr._window)[_0xstr._getCanvasEntropy]() === 2001009873) {
+            _riskScore += 5; _browserFlags.tor = true;
+        }
+        if (typeof _0xgetGlobal(_0xstr._window)[_0xstr._opr] !== _0x1(0xad, 'w^P!') || _ua[_0xstr._includes]("OPR")) { // 'undefined'
+            _riskScore += 2; _browserFlags.opera = true;
+        }
+
+        let _currentHeuristicsScore = 0;
+        if (!_ua[_0xstr._includes]("Chrome") || _majorChromeVersion !== _targetChromeVersion) {
+            _currentHeuristicsScore += 4;
+        }
+        if (_0xgetGlobal(_0xstr._navigator)[_0xstr._webdriver]) {
+            _currentHeuristicsScore += 4;
+        }
+        if (_0xgetGlobal(_0xstr._navigator)[_0xstr._plugins] && _0xgetGlobal(_0xstr._navigator)[_0xstr._plugins][_0xstr._length] === 5) { // .length
+            _currentHeuristicsScore += 1;
+        }
+        if (_0xgetGlobal(_0xstr._navigator)[_0xstr._languages] && _0xgetGlobal(_0xstr._navigator)[_0xstr._languages][_0xstr._length] === 4) {
+            _currentHeuristicsScore += 2;
+        }
+        const _proResolutions = [_0xstr._1920x1080, _0xstr._2560x1440, _0xstr._3840x2160];
+        const _currentRes = `${_0xgetGlobal(_0xstr._window)[_0xstr._screen][_0xstr._width]}x${_0xgetGlobal(_0xstr._window)[_0xstr._screen][_0xstr._height]}`;
+        if (_majorChromeVersion === _targetChromeVersion && !_proResolutions[_0xstr._includes](_currentRes)) {
+            _currentHeuristicsScore += 2;
+        }
+        _riskScore += _currentHeuristicsScore;
+        if (_currentHeuristicsScore >= 4) _browserFlags.heuristicsSpoofing = true;
+
+        const _canvasHash1 = _0xgetGlobal(_0xstr._window)[_0xstr._getCanvasEntropy]();
+        await new (_0xgetGlobal(_0xstr._promise))(_resolve => _0xgetGlobal(_0xstr._window)[_0xstr._setTimeout](_resolve, 30));
+        if (_canvasHash1 !== _0xgetGlobal(_0xstr._window)[_0xstr._getCanvasEntropy]()) {
+            _riskScore += 2; _browserFlags.canvasRandomization = true;
+        }
+
+        const _renderer = _0xgetGlobal(_0xstr._window)[_0xstr._getWebGLInfo]()[_0xstr._renderer][_0xstr._toLowerCase]();
+        if (_renderer[_0xstr._includes](_0xstr._swiftshader) || _renderer[_0xstr._includes](_0xstr._llvmpipe)) {
+            _riskScore += 3; _browserFlags.webglEmulation = true;
+        }
+
+        const _isBadBrowserOverall = _riskScore >= 3;
+        _0xsetBackgroundState(_isBadBrowserOverall ? _0xstr._danger : _0xstr._safe);
+
+        let _browserLabelValue = _0xstr._normal, _browserLabelIsBad = false;
+        if (_browserFlags.heuristicsSpoofing || _browserFlags.canvasRandomization || _browserFlags.webglEmulation) {
+            _browserLabelValue = _0xstr._antidetect; _browserLabelIsBad = true;
+        } else if (_browserFlags.tor) {
+            _browserLabelValue = _0xstr._torBrowser; _browserLabelIsBad = true;
+        } else if (_browserFlags.brave) {
+            _browserLabelValue = _0xstr._braveBrowser;
+            if (_isBadBrowserOverall) { _browserLabelValue += _0xstr._antidetectTendencies; _browserLabelIsBad = true; }
+        } else if (_browserFlags.opera) {
+            _browserLabelValue = _0xstr._operaBrowser;
+            if (_isBadBrowserOverall) { _browserLabelValue += _0xstr._suspicious; _browserLabelIsBad = true; }
+        } else if (_isBadBrowserOverall) {
+            _browserLabelValue = _0xstr._suspiciousProfile; _browserLabelIsBad = true;
+        }
+        _riskFactors[_0x1(0xe, 'E]s9')]({ label: _0xstr._browser, value: _browserLabelValue, isBad: _browserLabelIsBad, alwaysShow: true });
+
+        const _verdict = _isBadBrowserOverall ? _0xstr._highRiskVerdict : _0xstr._normalVerdict;
+        let _resultsHTML = _0xstr._verdictBoxPrefix + (_isBadBrowserOverall ? _0xstr._danger : _0xstr._safe) + _0xstr._faSolidPrefix + (_isBadBrowserOverall ? _0xstr._faUserSecret : _0xstr._faUserCheck) + _0xstr._faSuffix + _verdict + _0xstr._spanSuffix;
+        _resultsHTML += _0xstr._riskScorePrefix + _riskScore + _0xstr._riskScoreSuffix;
+
+        let _detailsGridHTML = _riskFactors[_0xstr._filter](_f => _f[_0xstr._isBad] || _f[_0xstr._alwaysShow])[_0xstr._join]((_factor, _index) => {
+            let _valueClass = _factor[_0xstr._isBad] ? _0xstr._valueDanger : _0xstr._valueSafe;
+            if (_factor.isHash) _valueClass += _0xstr._fingerprintHash;
+            return _0xstr._labelDivPrefix + (_index * 0.05) + _0xstr._sSuffix + _factor[_0xstr._label] + _0xstr._labelSuffix + _valueClass + _0xstr._valueSuffix + (_index * 0.05) + _0xstr._sSuffix + _factor[_0xstr._value] + _0xstr._divSuffix;
+        });
+        _resultsHTML += _0xstr._detailsGridPrefix + (_detailsGridHTML || _0xstr._allChecksPassed) + _0xstr._detailsGridSuffix;
+        _resultsHTML += _0xstr._resultsFooterPrefix + (_isBadBrowserOverall ? _0xstr._danger : _0xstr._empty) + _0xstr._resultsFooterSuffix.replace('Run Another Test', `<button id="${_0xstr._resetBtn}" onclick="${_0xstr._onclickReset}" class="${_isBadBrowserOverall ? _0xstr._dangerButton : _0xstr._safeButton}">${_0xstr._runAnotherTest}</button>`);
+
+
+        await _minDelay;
+        _0xsetHtml(_resultsEl, _resultsHTML);
+    };
+
+    // EMAIL FRAUD CHECKER SCRIPT
+    function _resetEmailFraudChecker() {
+        const _intro = _getOrCacheEl(_0xstr._emailFraudIntro);
+        if (_intro) _0xsetStyleDisp(_intro, _0xstr._block);
+
+        const _input = _getOrCacheEl(_0xstr._emailFraudInput);
+        if (_input) _input[_0x1(0x97, 'C^7$')] = _0xstr._empty; // .value
+
+        const _resultsContainer = _getOrCacheEl(_0xstr._emailFraudResults);
+        if (_resultsContainer) _0xsetHtml(_resultsContainer, _0xstr._empty);
+
+        const _stamp = _0xgetGlobal(_0x1(0x8f, '0o5I'))[_0x1(0x10, 'bY7Q')](_0x1(0x1b8, 'v@$v')); // document.querySelector('#page-email-fraud .classified-stamp')
+        if (_stamp) _stamp[_0xstr._textContent] = _0xstr._intel; // 'INTEL'
+    }
+
+    _0xgetGlobal(_0xstr._window)[_0x1(0x9a, 'C^7$')] = async function() { // checkEmailFraud
+        const _emailInput = _getOrCacheEl(_0xstr._emailFraudInput);
+        const _email = _emailInput[_0x1(0x97, 'C^7$')][_0x1(0x9a, 'C^7$')](); // .value.trim()
+        const _introEl = _getOrCacheEl(_0xstr._emailFraudIntro);
+        const _resultsEl = _getOrCacheEl(_0xstr._emailFraudResults);
+
+        if (!_email || !_0x1(0x11, 'bY7Q')['test'](_email)) { // /\S+@\S+\.\S+/.test(email)
+            _0xsetHtml(_resultsEl, _0xstr._emailFraudValidMsg);
+            return;
+        }
+
+        if (_introEl) _0xsetStyleDisp(_introEl, _0xstr._none);
+        _0xsetHtml(_resultsEl, _0xstr._analyzingEmail);
+
+        const _url = _0xstr._emailApi + _0xgetGlobal(_0xstr._window)[_0x1(0x9c, 'S@8a')](_email); // encodeURIComponent(email)
+
+        try {
+            const _response = await _0xgetGlobal(_0xstr._window)[_0x1(0x9b, 'L3p!')](_url, { cache: _0xstr._noStore });
+            const _data = await _response[_0xstr._json]();
+
+            if (_data[_0x1(0x9c, 'S@8a')] === true) { // success
+                _0xgetGlobal(_0xstr._window)[_0xstr._displayFraudScore](_data[_0x1(0x9d, 'K3yR')]); // fraud_score
+            } else {
+                throw new _0xgetGlobal(_0xstr._window)[_0xstr._error](_data[_0xstr._message] || _0xstr._couldNotRetrieve);
+            }
+        } catch (_error) {
+            _0xsetHtml(_resultsEl, _0xstr._errorApi + _error[_0xstr._message] + _0xstr._tryAgainBtn);
+        }
+    };
+
+    function _displayFraudScore(_score) {
+        const _resultsEl = _getOrCacheEl(_0xstr._emailFraudResults);
+        let _color, _verdict;
+
+        if (_score >= 75) {
+            _color = _0xstr._accentRed; _verdict = _0xstr._highRisk;
+        } else if (_score >= 40) {
+            _color = _0xstr._orangeYellow; _verdict = _0xstr._suspiciousEmail;
+        } else {
+            _color = _0xstr._accentGreen; _verdict = _0xstr._lowRisk;
+        }
+
+        _0xsetHtml(_resultsEl, _0xstr._emailResultHtml.replace('--score: ', '--score: ' + _score).replace('--gauge-color: ', '--gauge-color: ' + _color).replace('score-value">', 'score-value">' + _score).replace('color:', 'color:' + _color).replace('score-verdict">', 'score-verdict">' + _verdict).replace('Check Another Email', _0xstr._checkAnotherEmail));
+
+        _0xgetGlobal(_0xstr._window)[_0xstr._setTimeout](() => {
+            const _container = _0xgetGlobal(_0x1(0x8f, '0o5I'))[_0x1(0x10, 'bY7Q')](_0xstr._fraudScoreContainer);
+            if (_container) _container[_0xstr._style][_0xstr._opacity] = '1';
+        }, 10);
+    }
+
+    // UTILITY FUNCTIONS (Canvas, WebGL, Hashing)
+    function _getCanvasEntropy() {
+        try {
+            const _c = _0xgetGlobal(_0x1(0x8f, '0o5I'))[_0x1(0xac, 'C^7$')](_0xstr._canvas); // document.createElement('canvas')
+            _c[_0xstr._widthProp] = 200; _c[_0xstr._heightProp] = 50;
+            const _ctx = _c[_0x1(0xad, 'tY7S')](_0xstr._2d); // .getContext('2d')
+            _ctx[_0xstr._textBaseline] = _0xstr._top; _ctx[_0xstr._font] = _0xstr._fontValue;
+            _ctx[_0xstr._fillStyle] = _0xstr._rgbWhite; _ctx[_0xstr._fillRect](0, 0, _c[_0xstr._widthProp], _c[_0xstr._heightProp]);
+            _ctx[_0xstr._fillStyle] = _0xstr._rgbBlack; _ctx[_0xstr._fillText](_0xstr._browserFp, 2, 2);
+            return _0xgetGlobal(_0xstr._window)[_0xstr._hashString](_c[_0xstr._toDataURL]()); // hashString(c.toDataURL())
+        } catch (_e) { return null; }
+    }
+    _0xgetGlobal(_0xstr._window)[_0xstr._getCanvasEntropy] = _getCanvasEntropy; // Expose globally for fingerprint checker
+
+    function _hashString(_s) {
+        let _h = 0;
+        for (let _i = 0; _i < _s[_0xstr._length]; _i++) { // .length
+            _h = ((_h << 5) - _h) + _s[_0xstr._charCodeAt](_i); // .charCodeAt
+            _h |= 0;
+        }
+        return _h;
+    }
+    _0xgetGlobal(_0xstr._window)[_0xstr._hashString] = _hashString; // Expose globally
+
+    function _getWebGLInfo() {
+        try {
+            const _c = _0xgetGlobal(_0x1(0x8f, '0o5I'))[_0x1(0xac, 'C^7$')](_0xstr._canvas);
+            const _gl = _c[_0x1(0xad, 'tY7S')](_0xstr._webgl) || _c[_0x1(0xad, 'tY7S')](_0xstr._experimentalWebgl);
+            if (!_gl) return { vendor: _0xstr._n_a, renderer: _0xstr._n_a };
+            const _dbg = _gl[_0x1(0xc0, '9lI!')](_0xstr._webglDebugInfo); // .getExtension('WEBGL_debug_renderer_info')
+            return {
+                vendor: _gl[_0x1(0xc2, 'tY7S')](_dbg[_0x1(0xc3, '9lI!')]), // .getParameter(dbg.UNMASKED_VENDOR_WEBGL)
+                renderer: _gl[_0x1(0xc2, 'tY7S')](_dbg[_0x1(0xc4, 'C^7$')]) // .getParameter(dbg.UNMASKED_RENDERER_WEBGL)
+            };
+        } catch (_e) { return { vendor: _0xstr._n_a, renderer: _0xstr._n_a }; }
+    }
+    _0xgetGlobal(_0xstr._window)[_0xstr._getWebGLInfo] = _getWebGLInfo; // Expose globally
+
+    // CONTACT FORM SCRIPT
+    function _initializeContactForm() {
+        const _form = _0xgetOrCacheEl(_0xstr._contactFormEl);
+        if (!_form) return;
+        const _captchaLabel = _0xgetOrCacheEl(_0xstr._captchaLabel),
+              _captchaInput = _0xgetOrCacheEl(_0xstr._captchaInput),
+              _submitBtn = _0xgetOrCacheEl(_0xstr._submitBtn),
+              _formResponse = _0xgetOrCacheEl(_0xstr._formResponse);
+        let _num1, _num2, _answer;
+
+        function _generateCaptcha() {
+            _num1 = _0xgetGlobal(_0xstr._window)[_0x1(0xcc, 'C^7$')](_0xgetGlobal(_0xstr._window)[_0x1(0xcd, 'tY7S')]() * 10) + 1; // Math.floor(Math.random() * 10) + 1
+            _num2 = _0xgetGlobal(_0xstr._window)[_0x1(0xcc, 'C^7$')](_0xgetGlobal(_0xstr._window)[_0x1(0xcd, 'tY7S')]() * 10) + 1;
+            _answer = _num1 + _num2;
+            _captchaLabel[_0xstr._textContent] = _0xstr._calculate + _num1 + _0xstr._plus + _num2 + _0xstr._equals;
+            _captchaInput[_0x1(0x97, 'C^7$')] = _0xstr._empty; // .value = ''
+        }
+
+        _0xlisten(_form, _0xstr._click.split('')[0] + 'u' + _0xstr._click.split('')[1] + 'bmit', async function(_e) { // 'submit'
+            _e[_0x1(0xa9, 'K&Vq')](); // e.preventDefault()
+            if (_0xgetGlobal(_0xstr._window)[_0x1(0xd1, '9lI!')](_captchaInput[_0x1(0x97, 'C^7$')], 10) !== _answer) {
+                _formResponse[_0xstr._textContent] = _0xstr._incorrectCode;
+                _formResponse[_0xstr._className] = _0xstr._error;
+                _generateCaptcha();
+                return;
+            }
+            _submitBtn[_0xstr._disabled] = true;
+            _submitBtn[_0xstr._textContent] = _0xstr._transmitting;
+            _formResponse[_0xstr._textContent] = _0xstr._empty;
+
+            const _formData = {
+                name: _getOrCacheEl(_0xstr._contactName)[_0x1(0x97, 'C^7$')],
+                email: _getOrCacheEl(_0xstr._contactEmail)[_0x1(0x97, 'C^7$')],
+                title: _getOrCacheEl(_0xstr._contactTitle)[_0x1(0x97, 'C^7$')],
+                description: _getOrCacheEl(_0xstr._contactDesc)[_0x1(0x97, 'C^7$')]
+            };
+
+            try {
+                const _response = await _0xgetGlobal(_0xstr._window)[_0x1(0x9b, 'L3p!')](_0xstr._apiContact, {
+                    method: _0xstr._post,
+                    headers: { [_0xstr._contentType]: _0xstr._appJson },
+                    body: _0xgetGlobal(_0xstr._JSON)[_0xstr._stringify](_formData)
+                });
+                const _result = await _response[_0xstr._json]();
+                if (_response[_0xstr._ok]) {
+                    _formResponse[_0xstr._textContent] = _0xstr._successTicket + _result[_0xstr._ticketId];
+                    _formResponse[_0xstr._className] = _0xstr._success;
+                    _form[_0x1(0x21, 'T9qZ')](); // form.reset()
+                } else {
+                    throw new _0xgetGlobal(_0xstr._window)[_0xstr._error](_result[_0xstr._message] || _0xstr._serverRejected);
+                }
+            } catch (_error) {
+                _formResponse[_0xstr._textContent] = _0xstr._transmissionFailed + _error[_0xstr._message];
+                _formResponse[_0xstr._className] = _0xstr._error;
+            } finally {
+                _submitBtn[_0xstr._disabled] = false;
+                _submitBtn[_0xstr._textContent] = _0xstr._transmitSecurely;
+                _generateCaptcha();
+            }
+        });
+        _generateCaptcha();
+    }
+    _0xgetGlobal(_0xstr._window)[_0xstr._initializeContactForm] = _initializeContactForm; // Expose globally for DOMContentLoaded
+
+    // DYNAMIC BACKGROUND SCRIPT
+    const _canvas = _0xgetOrCacheEl(_0xstr._matrixBg);
+    const _ctx = _canvas[_0x1(0xad, 'tY7S')](_0xstr._2d); // .getContext('2d')
+    let _backgroundInterval;
+
+    const _setupCanvas = () => {
+        _canvas[_0xstr._widthProp] = _0xgetGlobal(_0xstr._window)[_0xstr._innerWidth];
+        _canvas[_0xstr._heightProp] = _0xgetGlobal(_0xstr._window)[_0xstr._innerHeight];
+        _0xsetBackgroundState(_0xstr._default);
+    };
+
+    const _drawMatrix = (_color, _speed, _charSet) => {
+        const _characters = _charSet;
+        const _fontSize = 14;
+        const _columns = _canvas[_0xstr._widthProp] / _fontSize;
+        const _drops = Array(_0xgetGlobal(_0xstr._window)[_0x1(0xcc, 'C^7$')](_columns))[_0x1(0xad, 'w^P!')](1); // Array(Math.floor(columns)).fill(1)
+        const _bg = _body[_0xstr._classList][_0x1(0x91, 'S@8a')](_0xstr._lightModeClass) ? _0x1(0xfb, '9lI!') : _0xstr._matrixBgColor; // light/dark mode bg color
+        return _0xgetGlobal(_0xstr._window)[_0xstr._setInterval](() => {
+            _ctx[_0xstr._fillStyle] = _bg;
+            _ctx[_0xstr._fillRectFunc](0, 0, _canvas[_0xstr._widthProp], _canvas[_0xstr._heightProp]);
+            _ctx[_0xstr._fillStyle] = _color;
+            _ctx[_0xstr._fontProp] = _fontSize + 'px ' + _0xstr._robotoMono;
+            for (let _i = 0; _i < _drops[_0xstr._length]; _i++) {
+                const _text = _characters[_0xgetGlobal(_0xstr._window)[_0x1(0xcc, 'C^7$')](_0xgetGlobal(_0xstr._window)[_0x1(0xcd, 'tY7S')]() * _characters[_0xstr._length])];
+                _ctx[_0xstr._fillTextFunc](_text, _i * _fontSize, _drops[_i] * _fontSize);
+                if (_drops[_i] * _fontSize > _canvas[_0xstr._heightProp] && _0xgetGlobal(_0xstr._window)[_0x1(0xcd, 'tY7S')]() > 0.975) _drops[_i] = 0;
+                _drops[_i]++;
+            }
+        }, _speed);
+    };
+
+    let _gridOffset = 0;
+    const _drawBlueGrid = () => {
+        const _gridColor = _body[_0xstr._classList][_0x1(0x91, 'S@8a')](_0xstr._lightModeClass) ? _0x1(0xf6, 'C^7$') : _0xstr._gridColor;
+        return _0xgetGlobal(_0xstr._window)[_0xstr._setInterval](() => {
+            _ctx[_0xstr._clearRect](0, 0, _canvas[_0xstr._widthProp], _canvas[_0xstr._heightProp]);
+            _ctx[_0xstr._strokeStyle] = _gridColor;
+            _ctx[_0xstr._lineWidth] = 1;
+            _gridOffset = (_gridOffset + 0.3) % 40;
+            for (let _x = -_gridOffset; _x < _canvas[_0xstr._widthProp]; _x += 40) { _ctx[_0xstr._beginPath](); _ctx[_0xstr._moveTo](_x, 0); _ctx[_0xstr._lineTo](_x, _canvas[_0xstr._heightProp]); _ctx[_0xstr._stroke](); }
+            for (let _y = -_gridOffset; _y < _canvas[_0xstr._heightProp]; _y += 40) { _ctx[_0xstr._beginPath](); _ctx[_0xstr._moveTo](0, _y); _ctx[_0xstr._lineTo](_canvas[_0xstr._widthProp], _y); _ctx[_0xstr._stroke](); }
+        }, 50);
+    };
+
+    function _setBackgroundState(_state) {
+        const _watermark = _getOrCacheEl(_0xstr._backgroundWatermark);
+        const _currentPageId = Object[_0x1(0xa3, 'nUAF')](_0xstr._pageContent)[_0x1(0xa2, 'nUAF')](_key => _0xstr._pageContent[_key] === _0xgetGlobal(_0x1(0x8f, '0o5I'))[_0x1(0x10, 'bY7Q')](_0x1(0x101, '9lI!') + ' ' + _0xstr._active)['id']); // document.querySelector('.page.active')?.id
+        const _currentPageElement = _0xgetOrCacheEl(_0xstr._pageContent[_currentPageId]);
+        const _classifiedStamp = _currentPageElement ? _currentPageElement[_0x1(0x10, 'bY7Q')](_0xstr._classifiedStamp) : null;
+
+        _0xclassOp(_body, _0xstr._remove, _0xstr._safeMode);
+        _0xclassOp(_body, _0xstr._remove, _0xstr._dangerMode);
+        _0xgetGlobal(_0xstr._window)[_0xstr._clearInterval](_backgroundInterval);
+        _ctx[_0xstr._clearRect](0, 0, _canvas[_0xstr._widthProp], _canvas[_0xstr._heightProp]);
+
+        const _isLight = _body[_0xstr._classList][_0x1(0x91, 'S@8a')](_0xstr._lightModeClass);
+
+        if (_state === _0xstr._danger) {
+            _backgroundInterval = _0xstr._drawMatrix(_isLight ? _0x1(0x107, '9lI!') : _0xstr._dangerBgColor, 25, '01');
+            _0xsetAttr(_watermark, _0xstr._dataText, _0xstr._compromised);
+            _0xclassOp(_body, _0xstr._add, _0xstr._dangerMode);
+            if (_classifiedStamp) {
+                _classifiedStamp[_0xstr._textContent] = _0xstr._compromised;
+                _0xclassOp(_classifiedStamp, _0xstr._add, _0xstr._danger);
+                _0xclassOp(_classifiedStamp, _0xstr._remove, _0xstr._safe);
+            }
+        } else if (_state === _0xstr._safe) {
+            _backgroundInterval = _isLight ? _0xstr._drawMatrix(_0x1(0x10b, 'tY7S'), 50, '01') : _0xstr._drawBlueGrid(); // 'rgba(0, 0, 0, 0.1)'
+            _0xsetAttr(_watermark, _0xstr._dataText, _0xstr._unclassified);
+            _0xclassOp(_body, _0xstr._add, _0xstr._safeMode);
+            if (_classifiedStamp) {
+                _classifiedStamp[_0xstr._textContent] = _0xstr._unclassified;
+                _0xclassOp(_classifiedStamp, _0xstr._add, _0xstr._safe);
+                _0xclassOp(_classifiedStamp, _0xstr._remove, _0xstr._danger);
+            }
+        } else { // default
+            _backgroundInterval = _isLight ? _0xstr._drawMatrix(_0x1(0x10b, 'tY7S'), 50, '01') : _0xstr._drawMatrix(_0xstr._defaultMatrixColor, 40, _0xstr._charsetAlphaNum);
+            _0xsetAttr(_watermark, _0xstr._dataText, _0xstr._empty);
+            if (_classifiedStamp && _classifiedStamp[_0x1(0xd, 'E]s9')](_0x1(0x101, '9lI!'))) { // .closest('#page-checker')
+                _classifiedStamp[_0xstr._textContent] = _0xstr._classified;
+                _0xclassOp(_classifiedStamp, _0xstr._remove, _0x0xstr._safe); // Fixed typo from _0x0xstr._safe to _0xstr._safe
+                _0xclassOp(_classifiedStamp, _0xstr._remove, _0xstr._danger);
+            } else if (_classifiedStamp) {
+                _classifiedStamp[_0xstr._textContent] = _classifiedStamp[_0x1(0xd, 'E]s9')](_0x1(0x1b8, 'v@$v')) ? _0xstr._intel : _0xstr._classified; // .closest('#page-email-fraud') ? "INTEL" : "CLASSIFIED"
+                _0xclassOp(_classifiedStamp, _0xstr._remove, _0xstr._safe);
+                _0xclassOp(_classifiedStamp, _0xstr._remove, _0xstr._danger);
+            }
+        }
+    }
+    _0xgetGlobal(_0xstr._window)[_0xstr._setBackgroundState] = _setBackgroundState; // Expose globally
+
+    _0xgetGlobal(_0xstr._window)[_0x1(0xaa, 'tY7S')](_0xstr._resize, _setupCanvas); // window.addEventListener('resize', setupCanvas)
+    _0xgetGlobal(_0x1(0x8f, '0o5I'))[_0x1(0x19a, '$Q5&')](_0x1(0x1b, '4!^X'), _setupCanvas); // document.addEventListener('DOMContentLoaded', setupCanvas)
+
+    // Initial DOMContentLoaded calls wrapped in a function for clarity
+    _0xgetGlobal(_0x1(0x8f, '0o5I'))[_0x1(0x19a, '$Q5&')](_0x1(0x1b, '4!^X'), () => {
+        _applySavedTheme();
+        _router();
+        if (_0xgetEl(_0xstr._contactFormEl)) { // Check if form exists before initializing
+            _initializeContactForm();
+        }
+    });
+
+})((_0xdeadbeef = [
+    'toString', 'charCodeAt', 'slice', 'log', 'fromCharCode', 'trace', 'constructor', 'apply', 'bind', 'length',
+    'error', 'warn', 'exception', 'info', 'table', 'display', 'block', 'input', 'href', 'pushState',
+    'localStorage', 'reset', 'div', 'fa-solid', 'textContent', 'DOMContentLoaded', 'classList', 'remove', 'parse',
+    'active', 'canvas', 'getElementById', 'innerHTML', 'is-open', 'setItem', 'getItem', 'log', 'theme', 'add',
+    'toggle', 'contains', 'light', 'dark', 'light-mode', '<i class="fa-solid fa-sun"></i>', '<i class="fa-solid fa-moon"></i>',
+    '/', '/checker', '/email-fraud', '/faq', '/privacy', '/contact', 'querySelectorAll', '.page', 'forEach', 'find',
+    'keys', 'nav-link', 'getAttribute', 'matches', 'logo-link', 'preventDefault', 'popstate', 'runDetection', 'resetChecker',
+    'resetEmailFraudChecker', 'initializeContactForm', 'intro-content', 'results-container', 'setBackgroundState', 'default',
+    '.classified-stamp', 'safe', 'danger', 'CLASSIFIED', 'style', 'none', '<div class="loader-wrapper"><div class="scanner-circle"></div><p class="scanner-text">INTERROGATING BROWSER...</p></div>',
+    'Promise', 'resolve', 'setTimeout', 'abs', 'round', '/api/ip-check', 'no-store', 'json', 'error', 'IP Address', 'value', 'isBad',
+    'alwaysShow', 'VPN/Proxy', 'status', 'isProxy', 'includes', 'TOR', 'IP/VPN Check', 'Error during lookup', 'navigator',
+    'userAgent', 'match', 'Chrome/(\\d+)', 'brave', 'isBrave', 'getCanvasEntropy', 'opr', 'webdriver', 'plugins', 'languages',
+    '1920x1080', '2560x1440', '3840x2160', 'screen', 'width', 'height', 'getWebGLInfo', 'renderer', 'toLowerCase', 'swiftshader',
+    'llvmpipe', 'Normal', 'Antidetect Browser Detected', 'Tor Browser (High Risk)', 'Brave Browser', ' (Antidetect Tendencies)',
+    'Opera Browser', ' (Suspicious)', 'Suspicious Profile (Antidetect Characteristics)', 'Browser', 'High Risk Profile Detected',
+    'Profile Appears Normal', '<div class="verdict-box ', '"><i class="fa-solid ', 'fa-lg"></i><span>', '</span></div>',
+    '<div class="risk-score">Threat Score: <strong>', '</strong></div>', 'filter', 'label', 'value danger', 'value safe',
+    ' fingerprint-hash', '<div class="label" style="animation-delay: ', 's">', ':</div><div class="', '" style="animation-delay: ', 's">',
+    '</div>', 'join', '<div class="details-grid">', '<div style="grid-column: 1 / -1; text-align: center; color: var(--accent-green);">All checks passed.</div>',
+    '<div class="results-footer"><div class="results-separator ', '"></div><div class="run-btn-wrapper"><button id="reset-btn" onclick="resetChecker()" class="', 'danger-button', 'safe-button',
+    '">Run Another Test</button></div></div>', 'email-fraud-intro', 'email-fraud-input', 'email-fraud-results', 'value', 'CLASSIFIED', 'INTEL',
+    'checkEmailFraud', 'trim', 'email-fraud-intro', 'email-fraud-results', 'innerHTML', '<p style="color: var(--accent-red); text-align: center; font-weight: bold; margin-top: 20px;">Please enter a valid email address.</p>',
+    'display', 'none', '<div class="loader-wrapper"><div class="scanner-circle"></div><p class="scanner-text">ANALYZING EMAIL REPUTATION...</p></div>',
+    '/api/email-check?email=', 'encodeURIComponent', 'fetch', 'no-store', 'json', 'success', 'fraud_score', 'message', 'Could not retrieve score.',
+    '<p style="color: var(--accent-red); text-align: center; font-weight: bold; margin-top: 20px;">Error: ', '</p>\n        <div class="results-footer" style="opacity:1"><button id="reset-email-btn" onclick="resetEmailFraudChecker()" class="danger-button">Try Again</button></div>',
+    'displayFraudScore', 'email-fraud-results', 'High Risk', 'var(--accent-red)', '#ffc107', 'Suspicious', 'Low Risk', 'var(--accent-green)',
+    '\n\x20\x20\x20\x20\x20\x20\x20\x20<div class=\x22fraud-score-container\x22\x20style=\x22animation:\x20fade-in-up\x200.5s\x20ease\x20forwards;\x22>\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22score-gauge\x22\x20style=\x22--score:\x20', ';\x20--gauge-color:\x20', ';\x22>\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22score-value\x22>', '</div>\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22score-label\x22>Fraud\x20Score</div>\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22score-verdict\x22\x20style=\x22color:\x20', ';\x22>', '</div>\n\x20\x20\x20\x20\x20\x20\x20\x20</div>\n\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22results-footer\x22>\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20id=\x22reset-email-btn\x22\x20onclick=\x22resetEmailFraudChecker()\x22\x20class=\x22safe-button\x22>Check\x20Another\x20Email</button>\n\x20\x20\x20\x20\x20\x20\x20\x20</div>\n\x20\x20\x20\x20', 'querySelector', '.fraud-score-container', 'opacity', 'createElement', 'canvas', 'getContext', '2d',
+    'width', 'height', 'textBaseline', 'top', 'font', '14px \'Arial\'', 'fillStyle', 'rgb(255,255,255)', 'fillRect', 'rgb(0,0,0)',
+    'fillText', 'BrowserFP', 'toDataURL', 'hashString', 'charCodeAt', 'webgl', 'experimental-webgl', 'getExtension', 'WEBGL_debug_renderer_info',
+    'getParameter', 'UNMASKED_VENDOR_WEBGL', 'UNMASKED_RENDERER_WEBGL', 'contact-form', 'addEventListener', 'submit', 'captcha-label',
+    'captcha-input', 'submit-btn', 'form-response', 'floor', 'random', 'Calculate: ', ' + ', ' =', 'parseInt', 'ERROR: Incorrect Security Code',
+    'className', 'disabled', 'TRANSMITTING...', 'contact-name', 'contact-email', 'contact-title', 'description', '/api/contact', 'method',
+    'headers', 'Content-Type', 'application/json', 'body', 'stringify', 'ok', 'SUCCESS: Your ticket ID is ', 'ticketId',
+    'Server rejected the transmission.', 'TRANSMISSION FAILED: ', 'Transmit Securely', 'matrix-bg', 'getContext', '2d', 'innerWidth',
+    'innerHeight', 'drawMatrix', 'rgba(13, 13, 18, 0.05)', 'setInterval', 'fillRect', 'font', 'Roboto Mono', 'fillText',
+    'drawBlueGrid', 'rgba(0, 170, 255, 0.15)', 'clearRect', 'strokeStyle', 'lineWidth', 'beginPath', 'moveTo', 'lineTo',
+    'stroke', 'setBackgroundState', 'background-watermark', 'id', 'page-checker', 'classList', 'safe-mode', 'danger-mode',
+    'rgba(255, 71, 87, 0.7)', 'setAttribute', 'COMPROMISED', 'textContent', 'danger', 'remove', 'safe', 'UNCLASSIFIED',
+    'rgba(0, 0, 0, 0.1)', 'rgba(0, 255, 136, 0.7)', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 'resize', 'setupCanvas',
+    'applySavedTheme', 'contact-form', 'initializeContactForm', 'warn', 'info', 'exception', 'table', 'trace',
+    'constructor', 'apply', 'bind', 'prototype', '__proto__', 'init', 'function *\\( *\\)', 'chain', '\\+\\+ *(?:_0x(?:[a-f0-9]){4,6})',
+    'input', 'return (function() {}.constructor("return this")());', 'console', 'fa-user-check', 'click', 'close-nav-btn',
+    'main-nav', 'hamburger-btn', 'theme-toggle-btn'
+], 394)); 
 
 </script>
 
