@@ -28,8 +28,6 @@
       --header-bg-color: rgba(18, 18, 23, 0.98);
       --nav-overlay-bg: rgba(18, 18, 23, 0.98);
 
-      /* Removed custom cursor variables */
-
       --scroll-anim-delay: 0s;
       --scroll-anim-duration: 0.8s;
       --scroll-anim-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -59,7 +57,7 @@
       position: relative; 
       overflow-x: hidden;
       transition: background-color 0.3s ease, color 0.3s ease;
-      /* Removed custom cursor property */
+      /* Cursor is now default, no custom properties needed */
     }
     
     body::before {
@@ -90,7 +88,7 @@
       mix-blend-mode: screen;
     }
 
-    /* Removed .cursor and .cursor-dot CSS */
+    /* No custom cursor CSS */
     
     .page-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
     main { flex-grow: 1; display: flex; justify-content: center; align-items: center; padding: 60px 20px; }
@@ -251,6 +249,7 @@
     @keyframes typing { from { width: 0 } to { width: 100% } }
     @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--accent-green); } }
 
+    /* New styles for landing page feature boxes */
     .feature-boxes-grid {
         display: flex;
         flex-wrap: wrap;
@@ -374,6 +373,79 @@
     }
     /* End Scroll Animation */
 
+    /* Background Detected Targets for Landing Page */
+    #page-landing .detected-targets-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        pointer-events: none;
+        z-index: -1; /* Behind the container, but above canvas bg */
+    }
+
+    .detected-target {
+        position: absolute;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        filter: grayscale(100%) brightness(50%) contrast(150%) blur(1px); /* Detected look */
+        opacity: 0.08; /* Subtle presence */
+        transform: rotate(var(--rotate-deg, 0deg)); /* Rotation for flair */
+        animation: glitch-flicker 4s infinite alternate ease-in-out;
+    }
+
+    .detected-target::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        /* Creates a red X */
+        background: 
+            linear-gradient(to top left, transparent calc(50% - 1px), var(--accent-red) calc(50% - 1px), var(--accent-red) calc(50% + 1px), transparent calc(50% + 1px)), 
+            linear-gradient(to top right, transparent calc(50% - 1px), var(--accent-red) calc(50% - 1px), var(--accent-red) calc(50% + 1px), transparent calc(50% + 1px));
+        opacity: 0.8; /* Stronger red X */
+        mix-blend-mode: multiply; /* Blends nicely with the filtered image */
+        transform: scale(0.9); /* Slightly smaller X than the image itself */
+        animation: cross-flicker 3s infinite alternate ease-in-out;
+    }
+
+    /* Specific positioning and size for each target */
+    .detected-target-iproyal {
+        /* REPLACE THIS URL WITH YOUR IPROYAL LOGO IMAGE */
+        background-image: url('https://via.placeholder.com/150x50/333/00ff88?text=IPROYAL'); /* Placeholder */
+        width: 25vw; /* Responsive width */
+        height: 8.3vw; /* Maintain aspect ratio (150/50 = 3) */
+        top: 15%;
+        left: 5%;
+        --rotate-deg: -10deg;
+        animation-delay: 0.5s;
+    }
+
+    .detected-target-adspower {
+        /* REPLACE THIS URL WITH YOUR ADSPOWER LOGO IMAGE */
+        background-image: url('https://via.placeholder.com/200x50/333/00aaff?text=ADSPOWER'); /* Placeholder */
+        width: 30vw; /* Responsive width */
+        height: 7.5vw; /* Maintain aspect ratio (200/50 = 4) */
+        bottom: 10%;
+        right: 10%;
+        --rotate-deg: 15deg;
+        animation-delay: 1.2s;
+    }
+
+    @keyframes glitch-flicker {
+        0%, 100% { opacity: 0.08; transform: rotate(var(--rotate-deg, 0deg)) scale(1); }
+        50% { opacity: 0.05; transform: rotate(var(--rotate-deg, 0deg)) scale(0.99); filter: grayscale(100%) brightness(40%) contrast(200%) blur(0.5px); }
+        90% { opacity: 0.09; transform: rotate(var(--rotate-deg, 0deg)) scale(1.01); }
+    }
+
+    @keyframes cross-flicker {
+        0%, 100% { opacity: 0.8; }
+        25% { opacity: 0.6; }
+        75% { opacity: 0.9; }
+    }
+    /* End Background Detected Targets */
+
     /* General Responsiveness */
     @media (max-width: 1024px) {
         header { padding: 0 30px; }
@@ -382,10 +454,14 @@
         h1, .static-page h2 { font-size: 2rem; }
         .feature-box h3 { font-size: 1.4rem; }
         .feature-box .icon-wrapper { font-size: 3.5rem; }
+
+        /* Background targets adjustments */
+        .detected-target-iproyal { width: 35vw; height: 11.6vw; top: 10%; left: 3%; }
+        .detected-target-adspower { width: 40vw; height: 10vw; bottom: 8%; right: 5%; }
     }
 
     @media (max-width: 768px) {
-        /* Removed custom cursor properties, as cursor: auto is default here */
+        /* Cursor is auto by default on mobile, no custom properties needed */
         header { padding: 0 20px; }
         nav .nav-link, nav #theme-toggle-btn { display: none; }
         #hamburger-btn { display: block; }
@@ -408,6 +484,10 @@
         .feature-box h3 { font-size: 1.3rem; }
         .feature-box .icon-wrapper { font-size: 3rem; }
         .classified-stamp { font-size: 16px; padding: 4px 8px; top: 15px; right: 15px; }
+
+        /* Background targets adjustments for smaller screens */
+        .detected-target-iproyal { width: 45vw; height: 15vw; top: 15%; left: 0%; }
+        .detected-target-adspower { width: 55vw; height: 13.75vw; bottom: 5%; right: 0%; }
     }
 
     @media (max-width: 480px) {
@@ -418,12 +498,16 @@
         button#run-btn, button#reset-btn, button.landing-scan-btn { padding: 12px 25px; font-size: 16px; }
         .verdict-box { font-size: 18px; padding: 15px; }
         .details-grid .label, .details-grid .value { font-size: 13px; }
+
+        /* Even smaller targets for very small screens */
+        .detected-target-iproyal { width: 60vw; height: 20vw; top: 10%; left: -5%; }
+        .detected-target-adspower { width: 70vw; height: 17.5vw; bottom: 0%; right: -5%; }
     }
   </style>
 </head>
 <body>
 
-<!-- Removed .cursor and .cursor-dot HTML elements -->
+<!-- No custom cursor HTML elements -->
 
 <canvas id="matrix-bg"></canvas>
 <div id="background-watermark"></div>
@@ -450,6 +534,13 @@
 
   <main>
     <div id="page-landing" class="page">
+      <!-- New: Detected Targets Background -->
+      <div class="detected-targets-background">
+        <div class="detected-target detected-target-iproyal"></div>
+        <div class="detected-target detected-target-adspower"></div>
+      </div>
+      <!-- End New: Detected Targets Background -->
+
       <div class="container scroll-anim">
         <div class="classified-stamp">CLASSIFIED</div>
         <h1>SpectraScan: Your Guardian Against Digital Disguises</h1>
@@ -554,9 +645,7 @@ document.addEventListener('DOMContentLoaded', () => {
         scrollObserver.observe(el);
     });
 
-    // 2. Removed Custom Cursor Animation
-    // The custom cursor CSS and HTML elements have been removed.
-    // No JS needed here for the custom cursor anymore.
+    // 2. Custom Cursor is removed, no JS needed for it.
 });
 </script>
 
@@ -919,43 +1008,43 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   let scanLineOffset = 0;
-  let scanDirection = 1; // 1 for horizontal, 0 for vertical
+  let scanDirection = 1; /* 1 for horizontal, 0 for vertical */
   const drawScanningLines = (color, speed) => {
     const isLight = body.classList.contains('light-mode');
-    const baseColor = isLight ? 'rgba(0, 170, 255, 0.2)' : 'rgba(0, 255, 136, 0.15)'; // Accent blue for light, green for dark
+    const baseColor = isLight ? 'rgba(0, 170, 255, 0.2)' : 'rgba(0, 255, 136, 0.15)'; /* Accent blue for light, green for dark */
     const secondaryColor = isLight ? 'rgba(0, 170, 255, 0.05)' : 'rgba(0, 255, 136, 0.05)';
     const fadeColor = body.classList.contains('light-mode') ? 'rgba(244, 244, 248, 0.08)' : 'rgba(13, 13, 18, 0.08)';
 
     return setInterval(() => {
-        ctx.fillStyle = fadeColor; // Faintly clear old frames to create trails
+        ctx.fillStyle = fadeColor; /* Faintly clear old frames to create trails */
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         ctx.strokeStyle = baseColor;
         ctx.lineWidth = 1;
 
-        const scanSpeed = 1.5; // Pixels per frame
-        const scanWidth = 100; // Width of the "scan" area
+        const scanSpeed = 1.5; /* Pixels per frame */
+        const scanWidth = 100; /* Width of the "scan" area */
 
-        if (scanDirection === 1) { // Horizontal scan
+        if (scanDirection === 1) { /* Horizontal scan */
             scanLineOffset = (scanLineOffset + scanSpeed);
-            if (scanLineOffset > canvas.width + scanWidth) scanLineOffset = -scanWidth; // Reset position
+            if (scanLineOffset > canvas.width + scanWidth) scanLineOffset = -scanWidth; /* Reset position */
 
-            // Draw multiple lines within the scan area
+            /* Draw multiple lines within the scan area */
             for (let i = 0; i < canvas.height; i += 20) {
-                const lineX = scanLineOffset + (Math.sin(i * 0.1 + scanLineOffset * 0.01) * 10); // Subtle wavy effect
+                const lineX = scanLineOffset + (Math.sin(i * 0.1 + scanLineOffset * 0.01) * 10); /* Subtle wavy effect */
                 ctx.beginPath();
                 ctx.moveTo(lineX, i);
-                ctx.lineTo(lineX + 50, i); // Shorter lines in horizontal direction
+                ctx.lineTo(lineX + 50, i); /* Shorter lines in horizontal direction */
                 ctx.stroke();
 
-                // Add a slightly dimmer trailing line
+                /* Add a slightly dimmer trailing line */
                 ctx.strokeStyle = secondaryColor;
                 ctx.beginPath();
                 ctx.moveTo(lineX - 10, i);
                 ctx.lineTo(lineX + 40, i);
                 ctx.stroke();
             }
-        } else { // Vertical scan (alternative, not currently used but good to have)
+        } else { /* Vertical scan (alternative, not currently used but good to have) */
             scanLineOffset = (scanLineOffset + scanSpeed);
             if (scanLineOffset > canvas.height + scanWidth) scanLineOffset = -scanWidth;
 
