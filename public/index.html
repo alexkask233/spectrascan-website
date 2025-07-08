@@ -81,6 +81,21 @@
         font-size: 2.2rem; font-weight: 700; margin-bottom: 10px; text-align: center; color: var(--text-primary);
         position: relative; animation: text-shadow-flicker 4s linear infinite;
     }
+    /* New style for the landing page body text - more standard paragraph */
+    .landing-page-description {
+        color: var(--text-secondary);
+        font-size: 1rem;
+        line-height: 1.8;
+        margin: 25px auto 40px auto; /* More vertical space */
+        max-width: 600px;
+        text-align: center;
+    }
+    .landing-page-description strong {
+        color: var(--accent-green);
+        font-weight: 700;
+    }
+
+
     @keyframes text-shadow-flicker {
         0%, 100% { text-shadow: 2px 2px 0 var(--accent-green), -2px -2px 0 var(--accent-red); }
         25% { text-shadow: -2px 2px 0 var(--accent-green), 2px -2px 0 var(--accent-red); }
@@ -93,13 +108,20 @@
       font-family: 'Roboto Mono', monospace; white-space: nowrap; overflow: hidden;
       border-right: .15em solid var(--accent-green); animation: typing 2s steps(38, end), blink-caret .75s step-end infinite;
     }
+    /* Adjust typing animation to only run once for the landing page tagline */
+    #page-landing .tagline {
+        animation: typing 2s steps(38, end) forwards, blink-caret .75s step-end infinite;
+        white-space: normal; /* Allow wrapping */
+        overflow: visible; /* Prevent cutting off text if it wraps */
+        border-right: none; /* Remove blinking caret on landing page tagline after typing */
+    }
     @keyframes typing { from { width: 0 } to { width: 100% } }
     @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--accent-green); } }
 
     .run-btn-wrapper { display: flex; justify-content: center; }
-    button#run-btn, button#reset-btn { padding: 15px 30px; font-size: 18px; font-weight: 700; border: none; border-radius: 10px; transition: all 0.3s ease; font-family: 'Inter', sans-serif; }
-    button#run-btn { background: var(--accent-green); color: #000; box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); }
-    button#run-btn:hover { background-color: #00e67a; transform: translateY(-3px) scale(1.02); box-shadow: 0 0 25px rgba(0, 255, 136, 0.6); }
+    button#run-btn, button#reset-btn, button.landing-scan-btn { padding: 15px 30px; font-size: 18px; font-weight: 700; border: none; border-radius: 10px; transition: all 0.3s ease; font-family: 'Inter', sans-serif; }
+    button#run-btn, button.landing-scan-btn { background: var(--accent-green); color: #000; box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); }
+    button#run-btn:hover, button.landing-scan-btn:hover { background-color: #00e67a; transform: translateY(-3px) scale(1.02); box-shadow: 0 0 25px rgba(0, 255, 136, 0.6); }
     
     button#reset-btn.safe-button { background-image: linear-gradient(45deg, #00ff88, #00e67a); color: #000; box-shadow: 0 0 20px rgba(0, 255, 136, 0.4); }
     button#reset-btn.safe-button:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(0, 255, 136, 0.7); }
@@ -177,6 +199,7 @@
         .details-grid { grid-template-columns: 1fr; text-align: center; }
         .details-grid .label { text-align: center; }
         .details-grid .value { margin-bottom: 16px; }
+        .landing-page-description { font-size: 0.9rem; }
     }
   </style>
 </head>
@@ -195,7 +218,8 @@
     <button id="hamburger-btn" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
     <nav id="main-nav">
         <button id="close-nav-btn" aria-label="Close menu"><i class="fa-solid fa-times"></i></button>
-        <a href="/" class="nav-link">Catcher</a>
+        <a href="/" class="nav-link">Home</a> <!-- New Home link -->
+        <a href="/checker" class="nav-link">Checker</a> <!-- Catcher renamed to Checker -->
         <a href="/faq" class="nav-link">FAQ</a>
         <a href="/privacy" class="nav-link">Privacy</a>
         <a href="/contact" class="nav-link">Contact</a>
@@ -204,9 +228,27 @@
   </header>
 
   <main>
-    <div id="page-catcher" class="page">
-      <div class="container" id="catcher-container">
+    <!-- New Landing Page Content -->
+    <div id="page-landing" class="page">
+      <div class="container">
         <div class="classified-stamp">CLASSIFIED</div>
+        <h1 data-text="SpectraScan: Digital Guardian">SpectraScan: Your Guardian Against Digital Disguises</h1>
+        <p class="tagline">Unmasking the Shadows. Protecting Your Digital Integrity.</p>
+        <p class="landing-page-description">
+            At SpectraScan, we specialize in advanced digital fingerprinting and anomaly detection to safeguard your online presence. Our cutting-edge technology identifies and exposes sophisticated attempts to spoof browser identities and mask true origins.
+            We accurately detect a wide array of anti-detect browsers, including industry-standard tools like <strong>Dolphin Anty</strong>, <strong>GoLogin</strong>, <strong>AdsPower</strong>, <strong>Multilogin</strong>, <strong>Incogniton</strong>, and many others. Beyond browser manipulation, SpectraScan is adept at pinpointing connections originating from <strong>proxies</strong>, <strong>VPNs</strong>, and specialized networks such as <strong>Oxylabs residential proxies</strong> and various <strong>datacenter proxies</strong>. Our mission is to provide unparalleled transparency and security in an increasingly complex digital landscape.
+        </p>
+        <div class="run-btn-wrapper">
+          <button class="landing-scan-btn" onclick="navigateToChecker()">Scan Fingerprint Now</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Original Catcher Page, now renamed to Checker -->
+    <div id="page-checker" class="page">
+      <div class="container" id="checker-container">
+        <div class="classified-stamp">CLASSIFIED</div>
+        <!-- Original intro-content for checker page, now starting the detection flow -->
         <div id="intro-content">
           <h1 data-text="Unmask Your Digital Ghost">Unmask Your Digital Ghost</h1>
           <p class="tagline">Is your browser hiding in the shadows? Let's find out.</p>
@@ -298,7 +340,14 @@
     setBackgroundState('default');
   });
   
-  const pageContent = { '/': 'page-catcher', '/faq': 'page-faq', '/privacy': 'page-privacy', '/contact': 'page-contact' };
+  // Updated pageContent mapping
+  const pageContent = { 
+      '/': 'page-landing', 
+      '/checker': 'page-checker', // New mapping for checker
+      '/faq': 'page-faq', 
+      '/privacy': 'page-privacy', 
+      '/contact': 'page-contact' 
+  };
   
   function showPageContent(pageId) {
     document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
@@ -308,15 +357,23 @@
       link.classList.remove('active');
       const linkPath = link.getAttribute('href');
       const currentPath = window.location.pathname;
-      if (linkPath === currentPath || (currentPath === '/' && linkPath === '/')) {
+      
+      // Special handling for root '/' and '/checker' link
+      if (linkPath === currentPath || 
+          (currentPath === '/' && linkPath === '/') || 
+          (currentPath === '/checker' && linkPath === '/checker')) {
         link.classList.add('active');
       }
     });
+    // Ensure the checker page resets when navigated to
+    if (pageId === 'page-checker') {
+        resetChecker(); 
+    }
   }
 
   const router = () => { 
     const path = window.location.pathname; 
-    const pageId = pageContent[path] || 'page-catcher'; 
+    const pageId = pageContent[path] || 'page-landing'; // Default to landing page
     showPageContent(pageId); 
   };
   
@@ -329,6 +386,12 @@
       router(); 
     }
   });
+
+  // Function to navigate from landing page to checker
+  function navigateToChecker() {
+      history.pushState(null, '', '/checker');
+      router();
+  }
   
   window.addEventListener('popstate', router);
   
@@ -340,13 +403,16 @@
     }
   });
 
-  /* --- CATCHER SCRIPT --- */
-  function resetCatcher() { 
+  /* --- CHECKER SCRIPT (formerly CATCHER) --- */
+  // Renamed resetCatcher to resetChecker
+  function resetChecker() { 
       const intro = document.getElementById('intro-content');
-      if (intro) intro.style.display = 'block';
-      document.getElementById('results-container').innerHTML = ''; 
+      // Ensure intro is part of page-checker's container
+      if (intro && intro.closest('#page-checker')) intro.style.display = 'block';
+      const resultsContainer = document.getElementById('results-container');
+      if (resultsContainer && resultsContainer.closest('#page-checker')) resultsContainer.innerHTML = ''; 
       setBackgroundState('default');
-      const stamp = document.querySelector('.classified-stamp');
+      const stamp = document.querySelector('#page-checker .classified-stamp'); // Target stamp specifically for checker page
       if(stamp) {
         stamp.classList.remove('safe', 'danger');
         stamp.textContent = "CLASSIFIED";
@@ -355,7 +421,7 @@
 
   window.runDetection = async function() {
     const intro = document.getElementById('intro-content');
-    if (intro) intro.style.display = 'none';
+    if (intro && intro.closest('#page-checker')) intro.style.display = 'none'; // Ensure it's the checker's intro
     const resultsEl = document.getElementById('results-container');
     resultsEl.innerHTML = `<div class="loader-wrapper"><div class="scanner-circle"></div><p class="scanner-text">INTERROGATING BROWSER...</p></div>`;
     const minDelay = new Promise(resolve => setTimeout(resolve, 2000));
@@ -446,7 +512,7 @@
         }).join('');
         
         resultsHTML += `<div class="details-grid">${displayableRiskFactors.length > 0 ? detailsGridHTML : '<div style="grid-column: 1 / -1; text-align: center; color: var(--accent-green);">All checks passed.</div>' }</div>`;
-        resultsHTML += `<div class="results-footer"><div class="results-separator ${isBadBrowser ? 'danger' : ''}"></div><div class="run-btn-wrapper"><button id="reset-btn" onclick="resetCatcher()">Run Another Test</button></div></div>`;
+        resultsHTML += `<div class="results-footer"><div class="results-separator ${isBadBrowser ? 'danger' : ''}"></div><div class="run-btn-wrapper"><button id="reset-btn" onclick="resetChecker()">Run Another Test</button></div></div>`;
         
         return {html: resultsHTML, bad: isBadBrowser};
     })();
@@ -583,7 +649,12 @@
 
   function setBackgroundState(state) {
       const watermark = document.getElementById('background-watermark');
-      const classifiedStamp = document.querySelector('.classified-stamp');
+      // Target the classified stamp based on the active page
+      const currentPath = window.location.pathname;
+      const currentPageId = pageContent[currentPath] || 'page-landing'; // Get the actual ID of the active page div
+      const currentPageElement = document.getElementById(currentPageId);
+      const classifiedStamp = currentPageElement ? currentPageElement.querySelector('.classified-stamp') : null;
+
       body.classList.remove('safe-mode', 'danger-mode');
       clearInterval(backgroundInterval);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
