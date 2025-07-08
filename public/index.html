@@ -41,7 +41,7 @@
     footer { text-align: center; padding: 20px; color: var(--text-secondary); font-size: 14px; background-color: transparent; border-top: 1px solid var(--border-color); font-family: 'Roboto Mono', monospace; transition: background-color 0.3s ease, border-color 0.3s ease; }
     footer .footer-icons { margin-top: 10px; display: flex; justify-content: center; gap: 20px; font-size: 18px; color: var(--accent-green); }
     .container { background-color: var(--card-color); padding: 30px 40px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease, border-color 0.3s ease; position: relative; overflow: hidden; }
-    h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; text-align: center; color: var(--text-primary); position: relative; }
+    h1, .static-page h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; text-align: center; color: var(--text-primary); position: relative; }
     .sub-headline { font-family: 'Roboto Mono', monospace; font-size: 16px; color: var(--text-secondary); text-align: center; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; }
     .sub-headline span { color: var(--accent-green); text-shadow: 0 0 5px rgba(0,255,136,0.5); }
     .run-btn-wrapper { margin-top: 40px; text-align:center; }
@@ -211,7 +211,6 @@
         </form>
       </div>
     </div>
-
   </main>
   
   <footer>
@@ -275,6 +274,7 @@
       document.getElementById('intro-content').style.display = 'block';
       document.getElementById('detection-showcase').style.display = 'block';
       document.getElementById('results-wrapper').style.display = 'none';
+      document.getElementById('results-container').innerHTML = ''; // Clear old results
       setBackgroundState('default');
   }
 
@@ -355,7 +355,7 @@
             return labelHTML + valueHTML;
         }).join('');
         resultsHTML += `<div class="details-grid">${displayableRiskFactors.length > 0 ? detailsGrid : '...'}</div>`;
-        resultsHTML += `<div class="results-footer"><button id="reset-btn" onclick="showIntro()">Scan Another Profile</button></div>`;
+        resultsHTML += `<div class="results-footer"><button id="reset-btn">Scan Another Profile</button></div>`;
         
         const fragment = document.createRange().createContextualFragment(resultsHTML);
         return {html: fragment, bad: isBadBrowser};
@@ -367,7 +367,10 @@
     resultsEl.appendChild(result.html);
     setBackgroundState(result.bad ? 'danger' : 'safe');
     const resetButton = document.getElementById('reset-btn');
-    if (resetButton) { resetButton.classList.add(result.bad ? 'danger-button' : 'safe-button'); }
+    if (resetButton) { 
+        resetButton.classList.add(result.bad ? 'danger-button' : 'safe-button');
+        resetButton.addEventListener('click', showIntro); // Re-attach listener here
+    }
   }
   
   function getCanvasEntropy() {try {const c=document.createElement('canvas'); const ctx=c.getContext('2d'); ctx.fillStyle="rgb(255,255,255)"; ctx.fillRect(0,0,c.width,c.height); c.width=200;c.height=50;ctx.textBaseline="top";ctx.font="14px 'Arial'";ctx.fillText("BrowserFP",2,2);return hashString(c.toDataURL())}catch{return null}}
