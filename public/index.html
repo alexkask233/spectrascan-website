@@ -951,7 +951,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setBackgroundState(isBadBrowserOverall ? 'danger' : 'safe');
     
     /* Construct the 'Browser' risk factor message with CORRECTED logic */
-    let finalBrowserLabelValue = 'Normal';
+    let finalBrowserLabelValue = 'Antidetect Browser Detected';
     let finalBrowserLabelIsBad = false;
 
     /* Calculate risk score contribution from browser-only factors */
@@ -992,7 +992,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     riskFactors.push({ label: 'Browser', value: finalBrowserLabelValue, isBad: finalBrowserLabelIsBad, alwaysShow: true });
 
-    const verdict = isBadBrowserOverall ? "High Risk Profile Detected" : "Antidetect Browser Detected";
+    const verdict = isBadBrowserOverall ? "High Risk Profile Detected" : "Profile Appears Normal";
     
     let resultsHTML = `<div class="verdict-box ${isBadBrowserOverall ? 'danger' : 'safe'}"><i class="fa-solid ${isBadBrowserOverall ? 'fa-user-secret' : 'fa-user-check'} fa-lg"></i><span>${verdict}</span></div>`;
     resultsHTML += `<div class="risk-score">Threat Score: <strong>${riskScore}</strong></div>`;
