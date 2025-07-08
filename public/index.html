@@ -329,7 +329,7 @@
     const detectionPromise = (async () => {
         let riskScore = 0;
         const riskFactors = [];
-        const TARGET_CHROME_VERSION = "138"; // Per user request
+        const TARGET_CHROME_VERSION = "138"; 
 
         // --- Server-Side IP Check ---
         try {
@@ -345,14 +345,13 @@
         }
 
         // --- Client-Side Checks ---
-
-        // 1. Strict Browser Version Check
         const ua = navigator.userAgent;
         const majorChromeVersion = (ua.match(/Chrome\/(\d+)/) || [])[1];
+
+        // 1. Strict Browser Version Check (Logic runs, but result is hidden)
         if (!ua.includes("Chrome") || majorChromeVersion !== TARGET_CHROME_VERSION) {
-            riskScore += 4; // Instant high penalty
-            const versionDisplay = majorChromeVersion ? `Chrome ${majorChromeVersion}` : 'Not Chrome';
-            riskFactors.push({ label: 'Version', value: `${versionDisplay} (Mismatch)`, isBad: true });
+            riskScore += 4; // High penalty for wrong version
+            riskFactors.push({ label: 'Version', value: `Mismatch`, isBad: true });
         }
 
         // 2. Automation flags (WebDriver)
@@ -361,18 +360,18 @@
             riskFactors.push({ label: 'Automation', value: 'WebDriver Active', isBad: true });
         }
         
-        // 3. Plugin count heuristic
+        // 3. Plugin count heuristic (Logic runs, but result is hidden)
         if (navigator.plugins && navigator.plugins.length === 5) {
             riskScore += 1;
-            riskFactors.push({ label: 'Plugins', value: '5 (Suspicious count)', isBad: true });
+            riskFactors.push({ label: 'Plugins', value: 'Suspicious count', isBad: true });
         }
         
-        // 4. Screen resolution heuristic
-        const commonResolutions = ['1920x1080', '1366x768', '1536x864', '2560x1440', '1280x720', '3840x2160', '1600x900', '1440x900'];
+        // 4. Inconsistent Profile Check (New rule from user)
+        const proResolutions = ['1920x1080', '2560x1440', '3840x2160'];
         const currentRes = `${window.screen.width}x${window.screen.height}`;
-        if (!commonResolutions.includes(currentRes)) {
-            riskScore += 1;
-            riskFactors.push({ label: 'Screen', value: `${currentRes} (Uncommon)`, isBad: true });
+        if (majorChromeVersion === TARGET_CHROME_VERSION && !proResolutions.includes(currentRes)) {
+            riskScore += 2; // Penalty for having the "right" UA with a "wrong" screen size
+            riskFactors.push({ label: 'Profile Anomaly', value: 'Inconsistent fingerprint signature', isBad: true });
         }
 
         // 5. Canvas fingerprint randomization
@@ -391,7 +390,7 @@
              riskFactors.push({ label: 'WebGL', value: "Software Emulated", isBad: true });
         }
 
-        // Always add FP hash
+        // Always add FP hash for reference
         let thumbmarkFingerprint = 'N/A';
         try { thumbmarkFingerprint = await ThumbmarkJS.getFingerprint(); } catch (err) {}
         riskFactors.push({ label: 'FP Hash', value: thumbmarkFingerprint, isBad: false, isHash: true, alwaysShow: true });
@@ -403,7 +402,12 @@
         let resultsHTML = `<div class="verdict-box ${isBadBrowser ? 'danger' : 'safe'}"><i class="fa-solid ${isBadBrowser ? 'fa-user-secret' : 'fa-user-check'} fa-lg"></i><span>${isBadBrowser ? "High Risk Profile Detected" : "Profile Appears Normal"}</span></div>`;
         resultsHTML += `<div class="risk-score">Threat Score: <strong>${riskScore}</strong></div>`;
         
-        const displayableRiskFactors = riskFactors.filter(factor => factor.isBad || factor.alwaysShow);
+        // Filter out the checks we want to hide (Version, Plugins)
+        const displayableRiskFactors = riskFactors.filter(factor =>
+             (factor.isBad || factor.alwaysShow) &&
+             factor.label !== 'Version' &&
+             factor.label !== 'Plugins'
+        );
 
         let detailsGridHTML = displayableRiskFactors.map((factor, index) => {
             let valueClass = 'value';
