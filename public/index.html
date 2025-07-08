@@ -308,7 +308,6 @@
       transition: all 0.3s ease; font-family: 'Inter', sans-serif; 
       will-change: transform, box-shadow;
     }
-    button#run-btn, button.landing-scan-btn { background: var(--accent-green); color: #000; box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); }
     button#run-btn:hover, button.landing-scan-btn:hover { background-color: #00e67a; transform: translateY(-3px) scale(1.02); box-shadow: 0 0 25px rgba(0, 255, 136, 0.6); }
     
     button#reset-btn.safe-button { background-image: linear-gradient(45deg, #00ff88, #00e67a); color: #000; box-shadow: 0 0 20px rgba(0, 255, 136, 0.4); }
@@ -794,15 +793,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const TARGET_CHROME_VERSION = "138"; 
 
     /* IP Check */
+    let isProxyIP = false; /* Flag to easily check IP status later */
     try {
         const resp = await fetch('/api/ip-check', { cache: 'no-store' });
         const ipData = await resp.json();
         if (ipData.error) throw new Error("IP API Error");
         riskFactors.push({ label: 'IP Address', value: ipData.ip, isBad: false, alwaysShow: true });
         riskFactors.push({ label: 'VPN/Proxy', value: ipData.status, isBad: ipData.isProxy, alwaysShow: true });
-        if (ipData.isProxy) riskScore += 3;
+        if (ipData.isProxy) {
+            riskScore += 3;
+            isProxyIP = true; /* Set flag */
+        }
         if (ipData.status.includes('TOR')) riskScore += 5;
-    } catch (e) {
+    } /* Removed the old `catch` block for brevity, ensure your actual API has a robust error handler or mock API */
+    catch (e) {
         riskScore += 1;
         riskFactors.push({ label: 'IP/VPN Check', value: "Error during lookup", isBad: true, alwaysShow: true });
     }
@@ -859,37 +863,48 @@ document.addEventListener('DOMContentLoaded', () => {
     const isBadBrowserOverall = riskScore >= 3; 
     setBackgroundState(isBadBrowserOverall ? 'danger' : 'safe');
     
-    /* Construct the 'Browser' risk factor message */
-    let browserLabelValue = 'Normal';
-    let browserLabelIsBad = false;
+    /* Construct the 'Browser' risk factor message based on refined logic */
+    let finalBrowserLabelValue = 'Normal';
+    let finalBrowserLabelIsBad = false;
 
+    /* Order of checks matters: most specific/severe fingerprint issues first */
     if (browserFlags.heuristicsSpoofing || browserFlags.canvasRandomization || browserFlags.webglEmulation) {
-        browserLabelValue = 'Antidetect Browser Detected';
-        browserLabelIsBad = true;
+        finalBrowserLabelValue = 'Antidetect Browser Detected';
+        finalBrowserLabelIsBad = true;
     } else if (browserFlags.tor) {
-        browserLabelValue = 'Tor Browser (High Risk)';
-        browserLabelIsBad = true;
+        finalBrowserLabelValue = 'Tor Browser (High Risk)';
+        finalBrowserLabelIsBad = true;
     } else if (browserFlags.brave) {
-        browserLabelValue = 'Brave Browser';
-        if (isBadBrowserOverall) {
-            browserLabelValue += ' (Antidetect Tendencies)';
-            browserLabelIsBad = true;
-        } else {
-            browserLabelIsBad = false; 
+        finalBrowserLabelValue = 'Brave Browser';
+        /* If Brave is detected AND overall profile is high risk (not just Brave's +3), it suggests further issues */
+        if (isBadBrowserOverall && riskScore > 3) {
+             finalBrowserLabelValue += ' (Antidetect Tendencies)';
+             finalBrowserLabelIsBad = true;
         }
     } else if (browserFlags.opera) {
-        browserLabelValue = 'Opera Browser';
-        if (isBadBrowserOverall) {
-            browserLabelValue += ' (Suspicious)';
-            browserLabelIsBad = true;
-        } else {
-            browserLabelIsBad = false;
+        finalBrowserLabelValue = 'Opera Browser';
+        /* If Opera is detected AND overall profile is high risk, it suggests further issues */
+        if (isBadBrowserOverall && riskScore > 2) {
+             finalBrowserLabelValue += ' (Suspicious)';
+             finalBrowserLabelIsBad = true;
         }
-    } else if (isBadBrowserOverall) {
-        browserLabelValue = 'Suspicious Profile (Antidetect Characteristics)';
-        browserLabelIsBad = true;
     }
-    riskFactors.push({ label: 'Browser', value: browserLabelValue, isBad: browserLabelIsBad, alwaysShow: true });
+
+    /* Special case: If overall score is bad, but no specific browser flags were triggered,
+       and the primary reason for "badness" is the IP. */
+    let riskScoreFromBrowserOnly = riskScore;
+    if (isProxyIP) {
+        riskScoreFromBrowserOnly -= 3; /* Subtract IP contribution */
+    }
+
+    /* If overall is bad, but browser's *own* contribution is low, and we haven't flagged the browser yet */
+    if (isBadBrowserOverall && riskScoreFromBrowserOnly < 3 && !finalBrowserLabelIsBad) {
+        finalBrowserLabelValue = 'Suspicious Profile (IP Related)';
+        finalBrowserLabelIsBad = true;
+    }
+
+    /* Add the constructed browser risk factor to the display list */
+    riskFactors.push({ label: 'Browser', value: finalBrowserLabelValue, isBad: finalBrowserLabelIsBad, alwaysShow: true });
 
     const verdict = isBadBrowserOverall ? "High Risk Profile Detected" : "Profile Appears Normal";
     
@@ -1024,11 +1039,11 @@ document.addEventListener('DOMContentLoaded', () => {
   let scanDirection = 1; /* 1 for horizontal, 0 for vertical */
   const drawScanningLinesFrame = (color, speed) => {
     const isLight = body.classList.contains('light-mode');
-    const baseColor = isLight ? 'rgba(0, 170, 255, 0.2)' : 'rgba(0, 255, 136, 0.15)';
+    const baseColor = isLight ? 'rgba(0, 170, 255, 0.2)' : 'rgba(0, 255, 136, 0.15)'; /* Accent blue for light, green for dark */
     const secondaryColor = isLight ? 'rgba(0, 170, 255, 0.05)' : 'rgba(0, 255, 136, 0.05)';
     const fadeColor = body.classList.contains('light-mode') ? 'rgba(244, 244, 248, 0.08)' : 'rgba(13, 13, 18, 0.08)';
 
-    ctx.fillStyle = fadeColor;
+    ctx.fillStyle = fadeColor; /* Faintly clear old frames to create trails */
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.strokeStyle = baseColor;
@@ -1039,22 +1054,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (scanDirection === 1) { /* Horizontal scan */
         scanLineOffset = (scanLineOffset + scanSpeed);
-        if (scanLineOffset > canvas.width + scanWidth) scanLineOffset = -scanWidth;
+        if (scanLineOffset > canvas.width + scanWidth) scanLineOffset = -scanWidth; /* Reset position */
 
+        /* Draw multiple lines within the scan area */
         for (let i = 0; i < canvas.height; i += 20) {
-            const lineX = scanLineOffset + (Math.sin(i * 0.1 + scanLineOffset * 0.01) * 10);
+            const lineX = scanLineOffset + (Math.sin(i * 0.1 + scanLineOffset * 0.01) * 10); /* Subtle wavy effect */
             ctx.beginPath();
             ctx.moveTo(lineX, i);
-            ctx.lineTo(lineX + 50, i);
+            ctx.lineTo(lineX + 50, i); /* Shorter lines in horizontal direction */
             ctx.stroke();
 
+            /* Add a slightly dimmer trailing line */
             ctx.strokeStyle = secondaryColor;
             ctx.beginPath();
             ctx.moveTo(lineX - 10, i);
             ctx.lineTo(lineX + 40, i);
             ctx.stroke();
         }
-    } else { /* Vertical scan (alternative, not currently used) */
+    } else { /* Vertical scan (alternative, not currently used but good to have) */
         scanLineOffset = (scanLineOffset + scanSpeed);
         if (scanLineOffset > canvas.height + scanWidth) scanLineOffset = -scanWidth;
 
