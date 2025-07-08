@@ -344,37 +344,35 @@
             riskFactors.push({ label: 'IP/VPN Check', value: "Error during lookup", isBad: true, alwaysShow: true });
         }
 
-        // --- Client-Side Checks ---
+        // --- Client-Side Checks (many are hidden from view) ---
         const ua = navigator.userAgent;
         const majorChromeVersion = (ua.match(/Chrome\/(\d+)/) || [])[1];
 
-        // 1. Strict Browser Version Check (Logic runs, but result is hidden)
         if (!ua.includes("Chrome") || majorChromeVersion !== TARGET_CHROME_VERSION) {
-            riskScore += 4; // High penalty for wrong version
-            riskFactors.push({ label: 'Version', value: `Mismatch`, isBad: true });
+            riskScore += 4;
+            riskFactors.push({ label: 'HIDDEN_Version', value: `Mismatch`, isBad: true });
         }
-
-        // 2. Automation flags (WebDriver)
         if (navigator.webdriver) {
             riskScore += 4;
             riskFactors.push({ label: 'Automation', value: 'WebDriver Active', isBad: true });
         }
-        
-        // 3. Plugin count heuristic (Logic runs, but result is hidden)
         if (navigator.plugins && navigator.plugins.length === 5) {
             riskScore += 1;
-            riskFactors.push({ label: 'Plugins', value: 'Suspicious count', isBad: true });
+            riskFactors.push({ label: 'HIDDEN_Plugins', value: 'Suspicious count', isBad: true });
         }
         
-        // 4. Inconsistent Profile Check (New rule from user)
         const proResolutions = ['1920x1080', '2560x1440', '3840x2160'];
         const currentRes = `${window.screen.width}x${window.screen.height}`;
         if (majorChromeVersion === TARGET_CHROME_VERSION && !proResolutions.includes(currentRes)) {
-            riskScore += 2; // Penalty for having the "right" UA with a "wrong" screen size
-            riskFactors.push({ label: 'Profile Anomaly', value: 'Inconsistent fingerprint signature', isBad: true });
+            riskScore += 2;
+            riskFactors.push({ label: 'HIDDEN_Profile_Anomaly', value: 'Inconsistent fingerprint signature', isBad: true });
         }
 
-        // 5. Canvas fingerprint randomization
+        if (navigator.languages && navigator.languages.length === 4) {
+            riskScore += 2;
+            riskFactors.push({ label: 'HIDDEN_Language_Anomaly', value: 'Anomalous language settings', isBad: true });
+        }
+
         const canvasHash1 = getCanvasEntropy();
         await new Promise(resolve => setTimeout(resolve, 30));
         const canvasHash2 = getCanvasEntropy();
@@ -383,31 +381,26 @@
             riskFactors.push({ label: 'Canvas', value: 'Randomized', isBad: true });
         }
 
-        // 6. Generic WebGL renderer (bots/VMs)
         const renderer = getWebGLInfo().renderer.toLowerCase();
         if (renderer.includes("swiftshader") || renderer.includes("llvmpipe")) {
              riskScore += 3;
              riskFactors.push({ label: 'WebGL', value: "Software Emulated", isBad: true });
         }
 
-        // Always add FP hash for reference
         let thumbmarkFingerprint = 'N/A';
         try { thumbmarkFingerprint = await ThumbmarkJS.getFingerprint(); } catch (err) {}
         riskFactors.push({ label: 'FP Hash', value: thumbmarkFingerprint, isBad: false, isHash: true, alwaysShow: true });
 
         // --- Build Results ---
-        //  ******  THE FIX IS HERE ******
         const isBadBrowser = riskScore >= 3;
         setBackgroundState(isBadBrowser ? 'danger' : 'safe');
         
         let resultsHTML = `<div class="verdict-box ${isBadBrowser ? 'danger' : 'safe'}"><i class="fa-solid ${isBadBrowser ? 'fa-user-secret' : 'fa-user-check'} fa-lg"></i><span>${isBadBrowser ? "High Risk Profile Detected" : "Profile Appears Normal"}</span></div>`;
         resultsHTML += `<div class="risk-score">Threat Score: <strong>${riskScore}</strong></div>`;
         
-        // Filter out the checks we want to hide (Version, Plugins)
         const displayableRiskFactors = riskFactors.filter(factor =>
              (factor.isBad || factor.alwaysShow) &&
-             factor.label !== 'Version' &&
-             factor.label !== 'Plugins'
+             !factor.label.startsWith('HIDDEN_') // Hide all stealth checks
         );
 
         let detailsGridHTML = displayableRiskFactors.map((factor, index) => {
@@ -531,4 +524,4 @@
 </script>
 
 </body>
-</html>```
+</html>
