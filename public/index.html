@@ -660,1010 +660,337 @@
 </div>
 
 <script>
- var _0xdeadbeef; // Variable declaration for the main string array
-
-// Main String Decryption and Shuffling Logic
-(function(_0xdecafbad, _0xbadf00d) {
-    // This function shuffles the string array at runtime
-    var _0xf00dcafe = function(_0xbaadf00d) {
-        while (--_0xbaadf00d) {
-            _0xdecafbad['push'](_0xdecafbad['shift']());
-        }
-    };
-
-    // This function is the core string decryptor (RC4-like)
-    var _0x10 = function(_0x11, _0x12) {
-        var _0x13 = [], _0x14 = 0x0, _0x15, _0x16 = '', _0x17 = '';
-        var _0x5 = function(_0x6) { // Base64 decode utility
-            var _0x7 = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';
-            var _0x8 = '', _0x9 = '';
-            for (var _0xa = 0x0, _0xb, _0xc, _0xd = 0x0; _0xc = _0x6['charAt'](_0xd++); ~_0xc && (_0xb = _0xa % 0x4 ? _0xb * 0x40 + _0xc : _0xc, _0xa++ % 0x4) ? _0x8 += String['fromCharCode'](0xff & _0xb >> (-0x2 * _0xa & 0x6)) : 0x0) {
-                _0xc = _0x7['indexOf'](_0xc);
-            }
-            for (var _0xe = 0x0, _0xf = _0x8['length']; _0xe < _0xf; _0xe++) {
-                _0x9 += '%' + ('00' + _0x8['charCodeAt'](_0xe)['toString'](0x10))['slice'](-0x2);
-            }
-            return decodeURIComponent(_0x9);
-        };
-        _0x11 = _0x5(_0x11);
-        for (var _0x18 = 0x0, _0x19 = _0x11['length']; _0x18 < _0x19; _0x18++) {
-            _0x17 += '%' + ('00' + _0x11['charCodeAt'](_0x18)['toString'](0x10))['slice'](-0x2);
-        }
-        _0x11 = decodeURIComponent(_0x17);
-        var _0x1a;
-        for (_0x1a = 0x0; _0x1a < 0x100; _0x1a++) {
-            _0x13[_0x1a] = _0x1a;
-        }
-        for (_0x1a = 0x0; _0x1a < 0x100; _0x1a++) {
-            _0x14 = (_0x14 + _0x13[_0x1a] + _0x12['charCodeAt'](_0x1a % _0x12['length'])) % 0x100;
-            _0x15 = _0x13[_0x1a];
-            _0x13[_0x1a] = _0x13[_0x14];
-            _0x13[_0x14] = _0x15;
-        }
-        _0x1a = 0x0;
-        _0x14 = 0x0;
-        for (var _0x1b = 0x0; _0x1b < _0x11['length']; _0x1b++) {
-            _0x1a = (_0x1a + 0x1) % 0x100;
-            _0x14 = (_0x14 + _0x13[_0x1a]) % 0x100;
-            _0x15 = _0x13[_0x1a];
-            _0x13[_0x1a] = _0x13[_0x14];
-            _0x13[_0x14] = _0x15;
-            _0x16 += String['fromCharCode'](_0x11['charCodeAt'](_0x1b) ^ _0x13[(_0x13[_0x1a] + _0x13[_0x14]) % 0x100]);
-        }
-        return _0x16;
-    };
-
-    // The single string decryption function for the entire script
-    var _0x1 = function(_0x2, _0x3) {
-        _0x2 = _0x2 - 0x0; // Offset for array access
-        var _0x4 = _0xdecafbad[_0x2]; // Access the original string array
-        if (_0x1['FpRGik'] === undefined) { // Initialize cache once
-            _0x1['LEwdeC'] = _0x10; // Store the actual decryptor
-            _0x1['coowOi'] = {}; // Cache for decrypted strings
-            _0x1['FpRGik'] = !![];
-        }
-        var _0x1c = _0xdecafbad[0x0]; // Salt (usually the first element, 'toString')
-        var _0x1d = _0x2 + _0x1c;
-        var _0x1e = _0x1['coowOi'][_0x1d]; // Check cache
-        if (_0x1e === undefined) {
-            _0x4 = _0x1['LEwdeC'](_0x4, _0x3); // Decrypt if not in cache
-            _0x1['coowOi'][_0x1d] = _0x4; // Store in cache
-        } else {
-            _0x4 = _0x1e;
-        }
-        return _0x4;
-    };
-
-    // Anti-debugging (Console Hijacking)
-    (function() {
-        var _0x1f = function() {
-            var _0x20;
-            try {
-                _0x20 = Function(_0x1(0x1c1, 'r0nJ') + _0x1(0x1c2, '4!^X') + _0x1(0x1c3, 'vT0N'))(); // 'return (function() {}.constructor("return this")());'
-            } catch (_0x21) {
-                _0x20 = window;
-            }
-            return _0x20;
-        };
-        var _0x22 = _0x1f();
-        var _0x23 = _0x22[_0x1(0x1c4, '9lI!')] = _0x22[_0x1(0x1c4, '9lI!')] || {}; // Access/create console object
-        var _0x24 = [_0x1(0x27, 'T9qZ'), _0x1(0x1af, 'iF#o'), _0x1(0x1b0, '9G#^'), _0x1(0x1b1, 'S@8a'), _0x1(0x1b2, '7o9p'), _0x1(0x1b3, 'nUAF'), _0x1(0x1b4, 'K3yR')]; // 'log', 'warn', 'info', 'error', 'exception', 'table', 'trace'
-        for (var _0x25 = 0x0; _0x25 < _0x24['length']; _0x25++) {
-            var _0x26 = (function(_0x27) {
-                var _0x28 = _0x27['constructor']['prototype']['bind'](_0x27);
-                var _0x29 = _0x24[_0x25];
-                var _0x2a = _0x23[_0x29] || _0x28;
-                _0x28['__proto__'] = _0x27['bind'](_0x27);
-                _0x28['toString'] = _0x2a[_0x1(0x1bc, 'f33R')]['bind'](_0x2a); // Bind original toString
-                return _0x28;
-            } (Function['prototype']['bind']['call'](_0x23)));
-            _0x23[_0x24[_0x25]] = _0x26;
-        }
-    }());
-
-    // Anti-Debugging (Beautifier / Debugger Traps)
-    var _0x2b = function() {
-        var _0x2c = true; // Flag to run once
-        return function(_0x2d, _0x2e) {
-            var _0x2f = _0x2c ? function() {
-                if (_0x2e) {
-                    var _0x30 = _0x2e['apply'](_0x2d, arguments);
-                    _0x2e = null;
-                    return _0x30;
-                }
-            } : function() {};
-            _0x2c = false;
-            return _0x2f;
-        };
-    } ();
-    var _0x38 = function(_0x9c) { // General debugger trap function
-        function _0x9d(_0x9e) {
-            if (typeof _0x9e === 'string') {
-                return function(_0x9f) { }['constructor']('while (true) {}')['apply']('counter'); // Infinite loop for string arg
-            } else {
-                if (('' + _0x9e / _0x9e)['length'] !== 0x1 || _0x9e % 0x14 === 0x0) { // Check for number weirdness (e.g., NaN, multiples of 20)
-                    (function() { return true; } ['constructor']('debugger')['call']('action')); // Trigger debugger
-                } else {
-                    (function() { return false; } ['constructor']('debugger')['apply']('stateObject')); // Trigger debugger
-                }
-            }
-            _0x9d(++_0x9e); // Recursive call
-        }
-        try {
-            if (_0x9c) { return _0x9d; } else { _0x9d(0x0); }
-        } catch (_0xa0) {}
-    };
-    var _0x31 = _0x2b(this, function() {
-        var _0x32 = function() { return 'dev'; }, _0x33 = function() { return 'window'; };
-        var _0x34 = function() {
-            var _0x35 = new RegExp(_0x1(0x1c6, 'R%m9')); // 'function *\\( *\\)'
-            var _0x36 = new RegExp(_0x1(0x1c8, 'p$m#'), 'i'); // '\\+\\+ *(?:_0x(?:[a-f0-9]){4,6})'
-            var _0x37 = _0x38(_0x1(0x1c5, 'pG^m')); // 'init'
-            if (!_0x35['test'](_0x37 + _0x1(0x1c7, 'u@Ql')) || !_0x36['test'](_0x37 + _0x1(0x1c9, 'uX7G'))) { // 'chain', 'input'
-                _0x38('0');
-            } else {
-                _0x38();
-            }
-        };
-        try { _0x34(); } catch (_0x39) {}
-    });
-    _0x31();
-
-    // Secondary Anti-Debugging (similar to above)
-    var _0x3a = (function() {
-        var _0x3b = !![];
-        return function(_0x3c, _0x3d) {
-            var _0x3e = _0x3b ? function() {
-                if (_0x3d) {
-                    var _0x3f = _0x3d[_0x1(0x1b7, 'v@$v')](_0x3c, arguments); // 'apply'
-                    _0x3d = null;
-                    return _0x3f;
-                }
-            } : function() {};
-            _0x3b = ![];
-            return _0x3e;
-        };
-    }());
-    (function() {
-        _0x3a(this, function() {
-            var _0x40 = new RegExp(_0x1(0x1c6, 'R%m9'));
-            var _0x41 = new RegExp(_0x1(0x1c8, 'p$m#'), 'i');
-            var _0x42 = _0x38(_0x1(0x1c5, 'pG^m'));
-            if (!_0x40['test'](_0x42 + _0x1(0x1c7, 'u@Ql')) || !_0x41['test'](_0x42 + _0x1(0x1c9, 'uX7G'))) {
-                _0x38('0');
-            } else {
-                _0x38();
-            }
-        })();
-    }());
-
-    // --- Core Application Logic (Obfuscated) ---
-    // Instead of a VM, we use direct (but mangled) calls and encapsulated helpers.
-
-    // Helper to get global objects/properties safely
-    var _0xgetGlobal = function(_0xname) {
-        return (function(){ return this; })()[_0xname];
-    };
-
-    // Helper to get element by ID
-    var _0xgetEl = function(_0xid) {
-        return _0xgetGlobal(_0x1(0x8f, '0o5I'))[_0x1(0x8b, 'iF#o')](_0xid); // document.getElementById
-    };
-
-    // Helper for adding/removing classes
-    var _0xclassOp = function(_0xelement, _0xmethod, _0xclassName) {
-        _0xelement[_0x1(0x17f, 's&G^')][_0xmethod](_0xclassName); // .classList.method
-    };
-
-    // Helper for event listeners
-    var _0xlisten = function(_0xelement, _0xevent, _0xhandler) {
-        _0xelement[_0x1(0x19a, '$Q5&')](_0xevent, _0xhandler); // .addEventListener
-    };
-
-    // Helper for setting innerHTML
-    var _0xsetHtml = function(_0xelement, _0xhtml) {
-        _0xelement[_0x1(0x8c, 'W^P!')] = _0xhtml; // .innerHTML = html
-    };
-
-    // Helper for setting style display
-    var _0xsetStyleDisp = function(_0xelement, _0xvalue) {
-        if (_0xelement && _0xelement[_0x1(0x11, 'bY7Q')]) { // .style.display
-            _0xelement[_0x1(0x11, 'bY7Q')][_0x1(0x15, 'T9qZ')] = _0xvalue;
-        }
-    };
-
-    // Helper to manipulate attribute
-    var _0xsetAttr = function(_0xelement, _0xattr, _0xvalue) {
-        _0xelement[_0x1(0x187, 'f33R')](_0xattr, _0xvalue); // .setAttribute(attr, value)
-    };
-
-    // String constants (decrypted once)
-    const _0xstr = {
-        _hamburgerBtn: _0x1(0x1c8, 'p$m#'), // 'hamburger-btn'
-        _closeNavBtn: _0x1(0x1cc, '!9r('), // 'close-nav-btn'
-        _mainNav: _0x1(0x1cd, 'bY7Q'),     // 'main-nav'
-        _click: _0x1(0x1ce, 'E]s9'),       // 'click'
-        _isOpen: _0x1(0x94, 'K3yR'),       // 'is-open'
-        _themeToggleBtn: _0x1(0x1cf, 'oF9$'), // 'theme-toggle-btn'
-        _body: _0x1(0xad, 'w^P!'),           // 'body'
-        _lightMode: _0x1(0x97, 'C^7$'),      // 'light-mode'
-        _savedTheme: _0x1(0x1b, '4!^X'),      // 'theme' (for localStorage)
-        _localStorage: _0x1(0x1a, '4!^X'),    // 'localStorage'
-        _getItem: _0x1(0x92, '9lI!'),      // 'getItem'
-        _setItem: _0x1(0x91, 'S@8a'),      // 'setItem'
-        _sunIcon: _0x1(0x98, 'U@Q*'),      // '<i class="fa-solid fa-sun"></i>'
-        _moonIcon: _0x1(0x99, 'nUAF'),     // '<i class="fa-solid fa-moon"></i>'
-        _page: _0x1(0x9f, 'S@8a'),         // '.page'
-        _active: _0x1(0x8e, 'oF9$'),       // 'active'
-        _navLink: _0x1(0xa4, 'nUAF'),      // '.nav-link'
-        _href: _0x1(0x1f, 'E]s9'),         // 'href'
-        _logoLink: _0x1(0xa6, 'oF9$'),     // '.logo-link'
-        _pageContent: { // Page routes
-            _slash: _0x1(0x9a, 'C^7$'), // '/' -> 'page-landing'
-            _checker: _0x1(0x9b, 'L3p!'), // '/checker' -> 'page-checker'
-            _emailFraud: _0x1(0x9c, 'S@8a'), // '/email-fraud' -> 'page-email-fraud'
-            _faq: _0x1(0x9d, 'K3yR'),     // '/faq' -> 'page-faq'
-            _privacy: _0x1(0x9e, 's&G^'), // '/privacy' -> 'page-privacy'
-            _contact: _0x1(0x9f, 'K3yR'), // '/contact' -> 'page-contact'
-        },
-        _resetChecker: _0x1(0xa9, 'K&Vq'), // 'resetChecker'
-        _resetEmailFraudChecker: _0x1(0xaa, 'tY7S'), // 'resetEmailFraudChecker'
-        _contactForm: _0x1(0x1ae, 'r0nJ'), // 'contact-form'
-        _initializeContactForm: _0x1(0xab, 'T9qZ'), // 'initializeContactForm'
-        _introContent: _0x1(0xac, 'T9qZ'), // 'intro-content'
-        _resultsContainer: _0x1(0xae, 'W^P!'), // 'results-container'
-        _display: _0x1(0x15, 'T9qZ'), // 'display'
-        _block: _0x1(0x16, 'tY7S'), // 'block'
-        _innerHTML: _0x1(0x8c, 'W^P!'), // 'innerHTML'
-        _empty: '',
-        _classifiedStamp: _0x1(0x10, 'bY7Q'), // '.classified-stamp'
-        _safe: _0x1(0x12, 'W^P!'), // 'safe'
-        _danger: _0x1(0x13, 'tY7S'), // 'danger'
-        _classified: _0x1(0x14, 'tY7S'), // 'CLASSIFIED'
-        _runDetection: _0x1(0x18, 'K&Vq'), // 'runDetection'
-        _style: _0x1(0x11, 'bY7Q'), // 'style'
-        _none: _0x1(0x40, 'K3yR'), // 'none'
-        _loaderHtml: _0x1(0x42, '9lI!'), // Loader HTML string
-        _promise: _0x1(0x43, 'C^7$'), // 'Promise'
-        _resolve: _0x1(0x44, 'tY7S'), // 'resolve'
-        _setTimeout: _0x1(0x45, '9lI!'), // 'setTimeout'
-        _ipCheckApi: _0x1(0x48, 'S@8a'), // '/api/ip-check'
-        _noStore: _0x1(0x49, 'K&Vq'), // 'no-store'
-        _json: _0x1(0x4a, '9lI!'), // 'json'
-        _error: _0x1(0x27, 'T9qZ'), // 'error'
-        _ipAddress: _0x1(0x4c, '9lI!'), // 'IP Address'
-        _value: _0x1(0x4d, 'tY7S'), // 'value'
-        _isBad: _0x1(0x4e, '9lI!'), // 'isBad'
-        _alwaysShow: _0x1(0x4f, 'C^7$'), // 'alwaysShow'
-        _vpnProxy: _0x1(0x50, 'tY7S'), // 'VPN/Proxy'
-        _status: _0x1(0x51, '9lI!'), // 'status'
-        _isProxy: _0x1(0x52, 'tY7S'), // 'isProxy'
-        _includes: _0x1(0x53, 'tY7S'), // 'includes'
-        _tor: _0x1(0x54, '9lI!'), // 'TOR'
-        _ipVpnCheck: _0x1(0x55, 'C^7$'), // 'IP/VPN Check'
-        _errorLookup: _0x1(0x56, 'tY7S'), // 'Error during lookup'
-        _navigator: _0x1(0x57, 'K3yR'), // 'navigator'
-        _userAgent: _0x1(0x58, 'C^7$'), // 'userAgent'
-        _match: _0x1(0x59, '9lI!'), // 'match'
-        _chromeVersionRegex: _0x1(0x5a, 'tY7S'), // 'Chrome/(\\d+)'
-        _brave: _0x1(0x5b, '9lI!'), // 'brave'
-        _isBrave: _0x1(0x5c, 'C^7$'), // 'isBrave'
-        _getCanvasEntropy: _0x1(0x5d, 'tY7S'), // 'getCanvasEntropy'
-        _opr: _0x1(0x5e, '9lI!'), // 'opr'
-        _webdriver: _0x1(0x5f, 'C^7$'), // 'webdriver'
-        _plugins: _0x1(0x60, 'tY7S'), // 'plugins'
-        _languages: _0x1(0x62, '9lI!'), // 'languages'
-        _1920x1080: _0x1(0x64, 'C^7$'), // '1920x1080'
-        _2560x1440: _0x1(0x65, 'tY7S'), // '2560x1440'
-        _3840x2160: _0x1(0x66, '9lI!'), // '3840x2160'
-        _screen: _0x1(0x67, 'C^7$'), // 'screen'
-        _width: _0x1(0x68, 'tY7S'), // 'width'
-        _height: _0x1(0x69, '9lI!'), // 'height'
-        _getWebGLInfo: _0x1(0x6a, 'C^7$'), // 'getWebGLInfo'
-        _renderer: _0x1(0x6b, 'tY7S'), // 'renderer'
-        _toLowerCase: _0x1(0x6c, '9lI!'), // 'toLowerCase'
-        _swiftshader: _0x1(0x6d, 'C^7$'), // 'swiftshader'
-        _llvmpipe: _0x1(0x6e, 'tY7S'), // 'llvmpipe'
-        _normal: _0x1(0x6f, '9lI!'), // 'Normal'
-        _antidetect: _0x1(0x70, 'C^7$'), // 'Antidetect Browser Detected'
-        _torBrowser: _0x1(0x71, 'tY7S'), // 'Tor Browser (High Risk)'
-        _braveBrowser: _0x1(0x72, '9lI!'), // 'Brave Browser'
-        _antidetectTendencies: _0x1(0x73, 'C^7$'), // ' (Antidetect Tendencies)'
-        _operaBrowser: _0x1(0x74, 'tY7S'), // 'Opera Browser'
-        _suspicious: _0x1(0x75, '9lI!'), // ' (Suspicious)'
-        _suspiciousProfile: _0x1(0x76, 'C^7$'), // 'Suspicious Profile (Antidetect Characteristics)'
-        _browser: _0x1(0x77, 'tY7S'), // 'Browser'
-        _highRiskVerdict: _0x1(0x78, '9lI!'), // 'High Risk Profile Detected'
-        _normalVerdict: _0x1(0x79, 'C^7$'), // 'Profile Appears Normal'
-        _verdictBoxPrefix: _0x1(0x7a, 'tY7S'), // '<div class="verdict-box '
-        _faSolidPrefix: _0x1(0x7b, '9lI!'), // '"><i class="fa-solid '
-        _faUserSecret: _0x1(0x1d, 'K&Vq'), // 'fa-user-secret'
-        _faUserCheck: _0x1(0x1c5, 'pG^m'), // 'fa-user-check'
-        _faSuffix: _0x1(0x7c, 'C^7$'), // ' fa-lg"></i><span>'
-        _spanSuffix: _0x1(0x7d, 'tY7S'), // '</span></div>'
-        _riskScorePrefix: _0x1(0x7e, '9lI!'), // '<div class="risk-score">Threat Score: <strong>'
-        _riskScoreSuffix: _0x1(0x7f, 'C^7$'), // '</strong></div>'
-        _filter: _0x1(0x80, 'tY7S'), // 'filter'
-        _label: _0x1(0x81, '9lI!'), // 'label'
-        _valueDanger: _0x1(0x82, 'C^7$'), // 'value danger'
-        _valueSafe: _0x1(0x83, 'tY7S'), // 'value safe'
-        _fingerprintHash: _0x1(0x84, '9lI!'), // ' fingerprint-hash'
-        _labelDivPrefix: _0x1(0x85, 'C^7$'), // '<div class="label" style="animation-delay: '
-        _sSuffix: _0x1(0x86, 'tY7S'), // 's">'
-        _labelSuffix: _0x1(0x87, '9lI!'), // ':</div><div class="'
-        _valueSuffix: _0x1(0x88, 'C^7$'), // '" style="animation-delay: '
-        _divSuffix: _0x1(0x89, 'tY7S'), // '</div>'
-        _join: _0x1(0x8a, '9lI!'), // 'join'
-        _detailsGridPrefix: _0x1(0x8b, 'C^7$'), // '<div class="details-grid">'
-        _detailsGridSuffix: _0x1(0x8e, 'oF9$'), // '</div>'
-        _allChecksPassed: _0x1(0x8c, 'W^P!'), // All checks passed message
-        _resultsFooterPrefix: _0x1(0x8d, 'C^7$'), // '<div class="results-footer"><div class="results-separator '
-        _resultsFooterSuffix: _0x1(0x91, 'S@8a'), // '</div></div>'
-        _runAnotherTest: _0x1(0x94, 'K3yR'), // 'Run Another Test'
-        _dangerButton: _0x1(0x92, '9lI!'), // 'danger-button'
-        _safeButton: _0x1(0x93, 'C^7$'), // 'safe-button'
-        _resetBtn: _0x1(0x90, 'tY7S'), // 'reset-btn'
-        _onclickReset: _0x1(0x8f, '0o5I'), // 'onclick="resetChecker()"'
-
-        // Email fraud checker strings
-        _emailFraudIntro: _0x1(0x95, 'tY7S'), // 'email-fraud-intro'
-        _emailFraudInput: _0x1(0x96, '9lI!'), // 'email-fraud-input'
-        _emailFraudResults: _0x1(0x97, 'C^7$'), // 'email-fraud-results'
-        _emailFraudValidMsg: _0x1(0x98, 'tY7S'), // "Please enter a valid email address."
-        _analyzingEmail: _0x1(0x99, '9lI!'), // "ANALYZING EMAIL REPUTATION..."
-        _emailApi: _0x1(0x9a, 'C^7$'), // '/api/email-check?email='
-        _message: _0x1(0x9d, 'K3yR'), // 'message'
-        _couldNotRetrieve: _0x1(0x9e, 's&G^'), // 'Could not retrieve score.'
-        _errorApi: _0x1(0x9f, 'K3yR'), // "Error: "
-        _tryAgainBtn: _0x1(0xa0, 'tY7S'), // Try Again button HTML
-        _displayFraudScore: _0x1(0xa1, '9lI!'), // 'displayFraudScore'
-        _highRisk: _0x1(0xa2, 'C^7$'), // 'High Risk'
-        _accentRed: _0x1(0xa3, 'tY7S'), // 'var(--accent-red)'
-        _suspiciousEmail: _0x1(0xa5, '9lI!'), // 'Suspicious'
-        _orangeYellow: _0x1(0xa4, 'nUAF'), // '#ffc107'
-        _lowRisk: _0x1(0xa6, 'C^7$'), // 'Low Risk'
-        _accentGreen: _0x1(0xa7, 'tY7S'), // 'var(--accent-green)'
-        _emailResultHtml: _0x1(0xa8, '9lI!'), // Big email result HTML string
-        _checkAnotherEmail: _0x1(0xa9, 'K&Vq'), // 'Check Another Email'
-        _fraudScoreContainer: _0x1(0xaa, 'tY7S'), // '.fraud-score-container'
-        _opacity: _0x1(0xab, '9lI!'), // 'opacity'
-
-        // Utility functions (canvas, webgl, hash)
-        _canvas: _0x1(0xac, 'C^7$'), // 'canvas'
-        _getContext: _0x1(0xad, 'tY7S'), // 'getContext'
-        _2d: _0x1(0xae, '9lI!'), // '2d'
-        _widthProp: _0x1(0xaf, 'C^7$'), // 'width'
-        _heightProp: _0x1(0xb0, 'tY7S'), // 'height'
-        _textBaseline: _0x1(0xb1, '9lI!'), // 'textBaseline'
-        _top: _0x1(0xb2, 'C^7$'), // 'top'
-        _font: _0x1(0xb3, 'tY7S'), // 'font'
-        _fontValue: _0x1(0xb4, '9lI!'), // "14px 'Arial'"
-        _fillStyle: _0x1(0xb5, 'C^7$'), // 'fillStyle'
-        _rgbWhite: _0x1(0xb6, 'tY7S'), // "rgb(255,255,255)"
-        _fillRect: _0x1(0xb7, '9lI!'), // 'fillRect'
-        _rgbBlack: _0x1(0xb8, 'C^7$'), // "rgb(0,0,0)"
-        _fillText: _0x1(0xb9, 'tY7S'), // 'fillText'
-        _browserFp: _0x1(0xba, '9lI!'), // "BrowserFP"
-        _toDataURL: _0x1(0xbb, 'C^7$'), // 'toDataURL'
-        _hashString: _0x1(0xbc, 'tY7S'), // 'hashString'
-        _charCodeAt: _0x1(0xbd, '9lI!'), // 'charCodeAt'
-        _webgl: _0x1(0xbe, 'C^7$'), // 'webgl'
-        _experimentalWebgl: _0x1(0xbf, 'tY7S'), // 'experimental-webgl'
-        _getExtension: _0x1(0xc0, '9lI!'), // 'getExtension'
-        _webglDebugInfo: _0x1(0xc1, 'C^7$'), // 'WEBGL_debug_renderer_info'
-        _getParameter: _0x1(0xc2, 'tY7S'), // 'getParameter'
-        _unmaskedVendor: _0x1(0xc3, '9lI!'), // 'UNMASKED_VENDOR_WEBGL'
-        _unmaskedRenderer: _0x1(0xc4, 'C^7$'), // 'UNMASKED_RENDERER_WEBGL'
-        _n_a: "N/A",
-
-        // Contact form strings
-        _contactFormEl: _0x1(0xc5, 'tY7S'), // 'contact-form'
-        _captchaLabel: _0x1(0xc8, '9lI!'), // 'captcha-label'
-        _captchaInput: _0x1(0xc9, 'C^7$'), // 'captcha-input'
-        _submitBtn: _0x1(0xca, 'tY7S'), // 'submit-btn'
-        _formResponse: _0x1(0xcb, '9lI!'), // 'form-response'
-        _floor: _0x1(0xcc, 'C^7$'), // 'floor'
-        _random: _0x1(0xcd, 'tY7S'), // 'random'
-        _calculate: _0x1(0xce, '9lI!'), // "Calculate: "
-        _plus: _0x1(0xcf, 'C^7$'), // " + "
-        _equals: _0x1(0xd0, 'tY7S'), // " ="
-        _parseInt: _0x1(0xd1, '9lI!'), // 'parseInt'
-        _incorrectCode: _0x1(0xd2, 'C^7$'), // 'ERROR: Incorrect Security Code'
-        _className: _0x1(0xd3, 'tY7S'), // 'className'
-        _disabled: _0x1(0xd4, '9lI!'), // 'disabled'
-        _transmitting: _0x1(0xd5, 'C^7$'), // 'TRANSMITTING...'
-        _contactName: _0x1(0xd6, 'tY7S'), // 'contact-name'
-        _contactEmail: _0x1(0xd7, '9lI!'), // 'contact-email'
-        _contactTitle: _0x1(0xd8, 'C^7$'), // 'contact-title'
-        _contactDesc: _0x1(0xd9, 'tY7S'), // 'contact-description'
-        _apiContact: _0x1(0xda, '9lI!'), // '/api/contact'
-        _method: _0x1(0xdb, 'C^7$'), // 'method'
-        _post: _0x1(0xdc, 'tY7S'), // 'POST'
-        _headers: _0x1(0xdd, '9lI!'), // 'headers'
-        _contentType: _0x1(0xde, 'C^7$'), // 'Content-Type'
-        _appJson: _0x1(0xdf, 'tY7S'), // 'application/json'
-        _bodyProp: _0x1(0xe0, '9lI!'), // 'body'
-        _stringify: _0x1(0xe1, 'C^7$'), // 'stringify'
-        _ok: _0x1(0xe2, 'tY7S'), // 'ok'
-        _successTicket: _0x1(0xe3, '9lI!'), // "SUCCESS: Your ticket ID is "
-        _ticketId: _0x1(0xe4, 'C^7$'), // 'ticketId'
-        _serverRejected: _0x1(0xe5, 'tY7S'), // 'Server rejected the transmission.'
-        _transmissionFailed: _0x1(0xe6, '9lI!'), // 'TRANSMISSION FAILED: '
-        _transmitSecurely: _0x1(0xe7, 'C^7$'), // 'Transmit Securely'
-
-        // Dynamic background strings
-        _matrixBg: _0x1(0xe8, 'tY7S'), // 'matrix-bg'
-        _innerWidth: _0x1(0xec, '9lI!'), // 'innerWidth'
-        _innerHeight: _0x1(0xed, 'C^7$'), // 'innerHeight'
-        _drawMatrix: _0x1(0xee, 'tY7S'), // 'drawMatrix'
-        _matrixBgColor: _0x1(0xef, '9lI!'), // 'rgba(13, 13, 18, 0.05)'
-        _setInterval: _0x1(0xf0, 'C^7$'), // 'setInterval'
-        _fillRectFunc: _0x1(0xf1, 'tY7S'), // 'fillRect'
-        _fontProp: _0x1(0xf2, '9lI!'), // 'font'
-        _robotoMono: _0x1(0xf3, 'C^7$'), // 'Roboto Mono'
-        _fillTextFunc: _0x1(0xf4, 'tY7S'), // 'fillText'
-        _drawBlueGrid: _0x1(0xf5, '9lI!'), // 'drawBlueGrid'
-        _gridColor: _0x1(0xf6, 'C^7$'), // 'rgba(0, 170, 255, 0.15)'
-        _clearRect: _0x1(0xf7, 'tY7S'), // 'clearRect'
-        _strokeStyle: _0x1(0xf8, '9lI!'), // 'strokeStyle'
-        _lineWidth: _0x1(0xf9, 'C^7$'), // 'lineWidth'
-        _beginPath: _0x1(0xfa, 'tY7S'), // 'beginPath'
-        _moveTo: _0x1(0xfb, '9lI!'), // 'moveTo'
-        _lineTo: _0x1(0xfc, 'C^7$'), // 'lineTo'
-        _stroke: _0x1(0xfd, 'tY7S'), // 'stroke'
-        _setBackgroundState: _0x1(0xfe, '9lI!'), // 'setBackgroundState'
-        _backgroundWatermark: _0x1(0xff, 'C^7$'), // 'background-watermark'
-        _id: _0x1(0x100, 'tY7S'), // 'id'
-        _pageChecker: _0x1(0x101, '9lI!'), // 'page-checker'
-        _classList: _0x1(0x102, 'C^7$'), // 'classList'
-        _safeMode: _0x1(0x103, 'tY7S'), // 'safe-mode'
-        _dangerMode: _0x1(0x104, '9lI!'), // 'danger-mode'
-        _clearInterval: _0x1(0x105, 'C^7$'), // 'clearInterval'
-        _lightModeClass: _0x1(0x97, 'C^7$'), // 'light-mode'
-        _dangerBgColor: _0x1(0x106, 'tY7S'), // 'rgba(255, 71, 87, 0.7)'
-        _dataText: _0x1(0x108, '9lI!'), // 'data-text'
-        _compromised: _0x1(0x109, 'C^7$'), // 'COMPROMISED'
-        _textContent: _0x1(0x10a, 'tY7S'), // 'textContent'
-        _unclassified: _0x1(0x10d, '9lI!'), // 'UNCLASSIFIED'
-        _defaultMatrixColor: _0x1(0x10e, 'C^7$'), // 'rgba(0, 255, 136, 0.7)'
-        _charsetAlphaNum: _0x1(0x10f, 'tY7S'), // 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-        _resize: _0x1(0x110, '9lI!'), // 'resize'
-        _setupCanvas: _0x1(0x111, 'C^7$'), // 'setupCanvas'
-        _applySavedTheme: _0x1(0x112, 'tY7S'), // 'applySavedTheme'
-        _window: _0x1(0x22, '9lI!') // 'window'
-    };
-
-    // --- Start of Obfuscated Application Code ---
-
-    // Cache common DOM elements once for performance and readability
-    const _elementCache = {};
-    const _getOrCacheEl = (_id) => {
-        if (!_elementCache[_id]) {
-            _elementCache[_id] = _0xgetEl(_id);
-        }
-        return _elementCache[_id];
-    };
-
-    const _hBtn = _getOrCacheEl(_0xstr._hamburgerBtn);
-    const _cBtn = _getOrCacheEl(_0xstr._closeNavBtn);
-    const _mNav = _getOrCacheEl(_0xstr._mainNav);
-    const _tBtn = _getOrCacheEl(_0xstr._themeToggleBtn);
-    const _body = _0xgetGlobal(_0xstr._body); // window.document.body or similar, or direct document.body
-
-    // NAVIGATION
-    _0xlisten(_hBtn, _0xstr._click, () => _0xclassOp(_mNav, _0xstr._add, _0xstr._isOpen));
-    _0xlisten(_cBtn, _0xstr._click, () => _0xclassOp(_mNav, _0xstr._remove, _0xstr._isOpen));
-
-    // THEME TOGGLE
-    function _applySavedTheme() {
-        const _savedTheme = _0xgetGlobal(_0xstr._localStorage)[_0xstr._getItem](_0xstr._savedTheme);
-        if (_savedTheme === _0x1(0x96, '9lI!')) { // 'light'
-            _0xclassOp(_body, _0xstr._add, _0xstr._lightMode);
-            _0xsetHtml(_tBtn, _0xstr._sunIcon);
-        } else {
-            _0xclassOp(_body, _0xstr._remove, _0xstr._lightMode);
-            _0xsetHtml(_tBtn, _0xstr._moonIcon);
-        }
-    }
-
-    _0xlisten(_tBtn, _0xstr._click, () => {
-        _0xclassOp(_body, _0x1(0x90, 'tY7S'), _0xstr._lightMode); // toggle 'light-mode'
-        const _isLight = _0xbody[_0xstr._classList][_0x1(0x91, 'S@8a')](_0xstr._lightMode); // contains 'light-mode'
-        _0xgetGlobal(_0xstr._localStorage)[_0xstr._setItem](_0xstr._savedTheme, _isLight ? _0x1(0x96, '9lI!') : _0x1(0x97, 'C^7$')); // 'light' : 'dark'
-        _0xsetHtml(_tBtn, _isLight ? _0xstr._sunIcon : _0xstr._moonIcon);
-        _0xsetBackgroundState(_0xstr._default);
-    });
-
-    // ROUTER
-    const _pageContent = {
-        [_0x1(0x9a, 'C^7$')]: _0x1(0x9a, 'C^7$'), // '/': 'page-landing' (corrected to map to page-landing as default)
-        [_0x1(0x9b, 'L3p!')]: _0x1(0x9b, 'L3p!'), // '/checker': 'page-checker'
-        [_0x1(0x9c, 'S@8a')]: _0x1(0x9c, 'S@8a'), // '/email-fraud': 'page-email-fraud'
-        [_0x1(0x9d, 'K3yR')]: _0x1(0x9d, 'K3yR'), // '/faq': 'page-faq'
-        [_0x1(0x9e, 's&G^')]: _0x1(0x9e, 's&G^'), // '/privacy': 'page-privacy'
-        [_0x1(0x9f, 'K3yR')]: _0x1(0x9f, 'K3yR')  // '/contact': 'page-contact'
-    };
-
-    function _showPageContent(_pageId) {
-        _0xgetGlobal(_0x1(0x8f, '0o5I'))[_0x1(0xa0, 'nUAF')](_0xstr._page)[_0x1(0xa1, 'nUAF')](_page => _0xclassOp(_page, _0xstr._remove, _0xstr._active)); // document.querySelectorAll('.page').forEach(page => page.classList.remove('active'))
-        const _pageEl = _0xgetEl(_pageId);
-        if (_pageEl) _0xclassOp(_pageEl, _0xstr._add, _0xstr._active);
-
-        const _currentPath = Object[_0x1(0xa3, 'nUAF')](_pageContent)[_0x1(0xa2, 'nUAF')](_key => _pageContent[_key] === _pageId); // Object.keys(pageContent).find(...)
-        _0xgetGlobal(_0x1(0x8f, '0o5I'))[_0x1(0xa0, 'nUAF')](_0xstr._navLink)[_0x1(0xa1, 'nUAF')](_link => {
-            _link[_0xstr._classList][_0x1(0x90, 'tY7S')](_0xstr._active, _link[_0x1(0xa5, 'oF9$')](_0xstr._href) === _currentPath); // link.classList.toggle('active', link.getAttribute('href') === currentPath)
-        });
-
-        if (_pageId === _0x1(0x9b, 'L3p!')) _0xgetGlobal(_0xstr._window)[_0xstr._resetChecker](); // resetChecker()
-        if (_pageId === _0x1(0x9c, 'S@8a')) _0xgetGlobal(_0xstr._window)[_0xstr._resetEmailFraudChecker](); // resetEmailFraudChecker()
-    }
-
-    const _router = () => {
-        const _path = _0xgetGlobal(_0xstr._window)[_0x1(0x19, '4!^X')]; // window.location.pathname
-        const _pageId = _pageContent[_path] || _0x1(0x9a, 'C^7$'); // 'page-landing'
-        _showPageContent(_pageId);
-    };
-
-    _0xgetGlobal(_0x1(0x8f, '0o5I'))[_0x1(0x19a, '$Q5&')](_0xstr._click, (_e) => { // document.addEventListener('click', ...)
-        const _a = _e[_0x1(0xa7, 'oF9$')](_0x1(0x19d, '$Q5&')); // e.target.closest('a')
-        if (_a && (_a[_0x1(0xa8, 'nUAF')](_0xstr._navLink) || _a[_0x1(0xa8, 'nUAF')](_0xstr._logoLink))) { // a.matches('.nav-link') || a.matches('.logo-link')
-            _e[_0x1(0xa9, 'K&Vq')](); // e.preventDefault()
-            _0xgetGlobal(_0x1(0x1f, 'E]s9'))[_0x1(0x1a, '4!^X')](null, _0xstr._empty, _a[_0xstr._href]); // history.pushState(null, '', a.href)
-            _0xclassOp(_mNav, _0xstr._remove, _0xstr._isOpen); // mainNav.classList.remove('is-open')
-            _router();
-        }
-    });
-
-    function _navigateTo(_path) {
-        _0xgetGlobal(_0x1(0x1f, 'E]s9'))[_0x1(0x1a, '4!^X')](null, _0xstr._empty, _path); // history.pushState(null, '', path)
-        _router();
-    }
-
-    _0xgetGlobal(_0xstr._window)[_0x1(0xaa, 'tY7S')](_0x1(0xab, 'T9qZ'), _router); // window.addEventListener('popstate', router)
-
-    _0xgetGlobal(_0x1(0x8f, '0o5I'))[_0x1(0x19a, '$Q5&')](_0x1(0x1b, '4!^X'), () => { // document.addEventListener('DOMContentLoaded', ...)
-        _applySavedTheme();
-        _router();
-        if (_0xgetEl(_0xstr._contactForm)) { // document.getElementById('contact-form')
-            _0xgetGlobal(_0xstr._window)[_0xstr._initializeContactForm](); // initializeContactForm()
-        }
-    });
-
-    // BROWSER FINGERPRINT CHECKER SCRIPT
-    function _resetChecker() {
-        const _intro = _getOrCacheEl(_0xstr._introContent);
-        if (_intro && _intro[_0x1(0xd, 'E]s9')](_0x1(0x101, '9lI!'))) _0xsetStyleDisp(_intro, _0xstr._block); // intro.closest('#page-checker')
-        const _resultsContainer = _getOrCacheEl(_0xstr._resultsContainer);
-        if (_resultsContainer && _resultsContainer[_0x1(0xd, 'E]s9')](_0x1(0x101, '9lI!'))) _0xsetHtml(_resultsContainer, _0xstr._empty); // resultsContainer.innerHTML = ''
-        _0xsetBackgroundState(_0xstr._default);
-        const _stamp = _0xgetGlobal(_0x1(0x8f, '0o5I'))[_0x1(0x10, 'bY7Q')](_0x1(0x1b7, 'v@$v')); // document.querySelector('#page-checker .classified-stamp')
-        if (_stamp) {
-            _0xclassOp(_stamp, _0xstr._remove, _0xstr._safe);
-            _0xclassOp(_stamp, _0xstr._remove, _0xstr._danger);
-            _stamp[_0xstr._textContent] = _0xstr._classified;
-        }
-    }
-
-    _0xgetGlobal(_0xstr._window)[_0xstr._runDetection] = async function() {
-        const _intro = _getOrCacheEl(_0xstr._introContent);
-        if (_intro) _0xsetStyleDisp(_intro, _0xstr._none);
-        const _resultsEl = _getOrCacheEl(_0xstr._resultsContainer);
-        _0xsetHtml(_resultsEl, _0xstr._loaderHtml);
-        const _minDelay = new (_0xgetGlobal(_0xstr._promise))(_resolve => _0xgetGlobal(_0xstr._window)[_0xstr._setTimeout](_resolve, 2000)); // new Promise(resolve => setTimeout(resolve, 2000))
-        let _riskScore = 0;
-        const _riskFactors = [];
-        const _browserFlags = { brave: false, tor: false, opera: false, heuristicsSpoofing: false, canvasRandomization: false, webglEmulation: false };
-        const _targetChromeVersion = "138";
-
-        try {
-            const _resp = await _0xgetGlobal(_0xstr._window)[_0x1(0x9b, 'L3p!')](_0xstr._ipCheckApi, { cache: _0xstr._noStore }); // fetch('/api/ip-check', { cache: 'no-store' })
-            const _ipData = await _resp[_0xstr._json]();
-            if (_ipData[_0xstr._error]) throw new _0xgetGlobal(_0xstr._window)[_0xstr._error](_0x1(0x4b, 'K3yR')); // throw new Error("IP API Error")
-            _riskFactors[_0x1(0xe, 'E]s9')]({ label: _0xstr._ipAddress, value: _ipData[_0xstr._ipAddress.split(' ')[1]], isBad: false, alwaysShow: true }); // ipData.ip
-            _riskFactors[_0x1(0xe, 'E]s9')]({ label: _0xstr._vpnProxy, value: _ipData[_0xstr._status], isBad: _ipData[_0xstr._isProxy], alwaysShow: true });
-            if (_ipData[_0xstr._isProxy]) _riskScore += 3;
-            if (_ipData[_0xstr._status][_0xstr._includes](_0xstr._tor)) _riskScore += 5;
-        } catch (_e) {
-            _riskScore += 1;
-            _riskFactors[_0x1(0xe, 'E]s9')]({ label: _0xstr._ipVpnCheck, value: _0xstr._errorLookup, isBad: true, alwaysShow: true });
-        }
-
-        const _ua = _0xgetGlobal(_0xstr._navigator)[_0xstr._userAgent];
-        const _majorChromeVersion = (_ua[_0xstr._match](_0xstr._chromeVersionRegex) || [])[1];
-        if (_0xgetGlobal(_0xstr._navigator)[_0xstr._brave] && await _0xgetGlobal(_0xstr._navigator)[_0xstr._brave][_0xstr._isBrave]()) {
-            _riskScore += 3; _browserFlags.brave = true;
-        }
-        if (_0xgetGlobal(_0xstr._window)[_0xstr._getCanvasEntropy]() === 2001009873) {
-            _riskScore += 5; _browserFlags.tor = true;
-        }
-        if (typeof _0xgetGlobal(_0xstr._window)[_0xstr._opr] !== _0x1(0xad, 'w^P!') || _ua[_0xstr._includes]("OPR")) { // 'undefined'
-            _riskScore += 2; _browserFlags.opera = true;
-        }
-
-        let _currentHeuristicsScore = 0;
-        if (!_ua[_0xstr._includes]("Chrome") || _majorChromeVersion !== _targetChromeVersion) {
-            _currentHeuristicsScore += 4;
-        }
-        if (_0xgetGlobal(_0xstr._navigator)[_0xstr._webdriver]) {
-            _currentHeuristicsScore += 4;
-        }
-        if (_0xgetGlobal(_0xstr._navigator)[_0xstr._plugins] && _0xgetGlobal(_0xstr._navigator)[_0xstr._plugins][_0xstr._length] === 5) { // .length
-            _currentHeuristicsScore += 1;
-        }
-        if (_0xgetGlobal(_0xstr._navigator)[_0xstr._languages] && _0xgetGlobal(_0xstr._navigator)[_0xstr._languages][_0xstr._length] === 4) {
-            _currentHeuristicsScore += 2;
-        }
-        const _proResolutions = [_0xstr._1920x1080, _0xstr._2560x1440, _0xstr._3840x2160];
-        const _currentRes = `${_0xgetGlobal(_0xstr._window)[_0xstr._screen][_0xstr._width]}x${_0xgetGlobal(_0xstr._window)[_0xstr._screen][_0xstr._height]}`;
-        if (_majorChromeVersion === _targetChromeVersion && !_proResolutions[_0xstr._includes](_currentRes)) {
-            _currentHeuristicsScore += 2;
-        }
-        _riskScore += _currentHeuristicsScore;
-        if (_currentHeuristicsScore >= 4) _browserFlags.heuristicsSpoofing = true;
-
-        const _canvasHash1 = _0xgetGlobal(_0xstr._window)[_0xstr._getCanvasEntropy]();
-        await new (_0xgetGlobal(_0xstr._promise))(_resolve => _0xgetGlobal(_0xstr._window)[_0xstr._setTimeout](_resolve, 30));
-        if (_canvasHash1 !== _0xgetGlobal(_0xstr._window)[_0xstr._getCanvasEntropy]()) {
-            _riskScore += 2; _browserFlags.canvasRandomization = true;
-        }
-
-        const _renderer = _0xgetGlobal(_0xstr._window)[_0xstr._getWebGLInfo]()[_0xstr._renderer][_0xstr._toLowerCase]();
-        if (_renderer[_0xstr._includes](_0xstr._swiftshader) || _renderer[_0xstr._includes](_0xstr._llvmpipe)) {
-            _riskScore += 3; _browserFlags.webglEmulation = true;
-        }
-
-        const _isBadBrowserOverall = _riskScore >= 3;
-        _0xsetBackgroundState(_isBadBrowserOverall ? _0xstr._danger : _0xstr._safe);
-
-        let _browserLabelValue = _0xstr._normal, _browserLabelIsBad = false;
-        if (_browserFlags.heuristicsSpoofing || _browserFlags.canvasRandomization || _browserFlags.webglEmulation) {
-            _browserLabelValue = _0xstr._antidetect; _browserLabelIsBad = true;
-        } else if (_browserFlags.tor) {
-            _browserLabelValue = _0xstr._torBrowser; _browserLabelIsBad = true;
-        } else if (_browserFlags.brave) {
-            _browserLabelValue = _0xstr._braveBrowser;
-            if (_isBadBrowserOverall) { _browserLabelValue += _0xstr._antidetectTendencies; _browserLabelIsBad = true; }
-        } else if (_browserFlags.opera) {
-            _browserLabelValue = _0xstr._operaBrowser;
-            if (_isBadBrowserOverall) { _browserLabelValue += _0xstr._suspicious; _browserLabelIsBad = true; }
-        } else if (_isBadBrowserOverall) {
-            _browserLabelValue = _0xstr._suspiciousProfile; _browserLabelIsBad = true;
-        }
-        _riskFactors[_0x1(0xe, 'E]s9')]({ label: _0xstr._browser, value: _browserLabelValue, isBad: _browserLabelIsBad, alwaysShow: true });
-
-        const _verdict = _isBadBrowserOverall ? _0xstr._highRiskVerdict : _0xstr._normalVerdict;
-        let _resultsHTML = _0xstr._verdictBoxPrefix + (_isBadBrowserOverall ? _0xstr._danger : _0xstr._safe) + _0xstr._faSolidPrefix + (_isBadBrowserOverall ? _0xstr._faUserSecret : _0xstr._faUserCheck) + _0xstr._faSuffix + _verdict + _0xstr._spanSuffix;
-        _resultsHTML += _0xstr._riskScorePrefix + _riskScore + _0xstr._riskScoreSuffix;
-
-        let _detailsGridHTML = _riskFactors[_0xstr._filter](_f => _f[_0xstr._isBad] || _f[_0xstr._alwaysShow])[_0xstr._join]((_factor, _index) => {
-            let _valueClass = _factor[_0xstr._isBad] ? _0xstr._valueDanger : _0xstr._valueSafe;
-            if (_factor.isHash) _valueClass += _0xstr._fingerprintHash;
-            return _0xstr._labelDivPrefix + (_index * 0.05) + _0xstr._sSuffix + _factor[_0xstr._label] + _0xstr._labelSuffix + _valueClass + _0xstr._valueSuffix + (_index * 0.05) + _0xstr._sSuffix + _factor[_0xstr._value] + _0xstr._divSuffix;
-        });
-        _resultsHTML += _0xstr._detailsGridPrefix + (_detailsGridHTML || _0xstr._allChecksPassed) + _0xstr._detailsGridSuffix;
-        _resultsHTML += _0xstr._resultsFooterPrefix + (_isBadBrowserOverall ? _0xstr._danger : _0xstr._empty) + _0xstr._resultsFooterSuffix.replace('Run Another Test', `<button id="${_0xstr._resetBtn}" onclick="${_0xstr._onclickReset}" class="${_isBadBrowserOverall ? _0xstr._dangerButton : _0xstr._safeButton}">${_0xstr._runAnotherTest}</button>`);
-
-
-        await _minDelay;
-        _0xsetHtml(_resultsEl, _resultsHTML);
-    };
-
-    // EMAIL FRAUD CHECKER SCRIPT
-    function _resetEmailFraudChecker() {
-        const _intro = _getOrCacheEl(_0xstr._emailFraudIntro);
-        if (_intro) _0xsetStyleDisp(_intro, _0xstr._block);
-
-        const _input = _getOrCacheEl(_0xstr._emailFraudInput);
-        if (_input) _input[_0x1(0x97, 'C^7$')] = _0xstr._empty; // .value
-
-        const _resultsContainer = _getOrCacheEl(_0xstr._emailFraudResults);
-        if (_resultsContainer) _0xsetHtml(_resultsContainer, _0xstr._empty);
-
-        const _stamp = _0xgetGlobal(_0x1(0x8f, '0o5I'))[_0x1(0x10, 'bY7Q')](_0x1(0x1b8, 'v@$v')); // document.querySelector('#page-email-fraud .classified-stamp')
-        if (_stamp) _stamp[_0xstr._textContent] = _0xstr._intel; // 'INTEL'
-    }
-
-    _0xgetGlobal(_0xstr._window)[_0x1(0x9a, 'C^7$')] = async function() { // checkEmailFraud
-        const _emailInput = _getOrCacheEl(_0xstr._emailFraudInput);
-        const _email = _emailInput[_0x1(0x97, 'C^7$')][_0x1(0x9a, 'C^7$')](); // .value.trim()
-        const _introEl = _getOrCacheEl(_0xstr._emailFraudIntro);
-        const _resultsEl = _getOrCacheEl(_0xstr._emailFraudResults);
-
-        if (!_email || !_0x1(0x11, 'bY7Q')['test'](_email)) { // /\S+@\S+\.\S+/.test(email)
-            _0xsetHtml(_resultsEl, _0xstr._emailFraudValidMsg);
-            return;
-        }
-
-        if (_introEl) _0xsetStyleDisp(_introEl, _0xstr._none);
-        _0xsetHtml(_resultsEl, _0xstr._analyzingEmail);
-
-        const _url = _0xstr._emailApi + _0xgetGlobal(_0xstr._window)[_0x1(0x9c, 'S@8a')](_email); // encodeURIComponent(email)
-
-        try {
-            const _response = await _0xgetGlobal(_0xstr._window)[_0x1(0x9b, 'L3p!')](_url, { cache: _0xstr._noStore });
-            const _data = await _response[_0xstr._json]();
-
-            if (_data[_0x1(0x9c, 'S@8a')] === true) { // success
-                _0xgetGlobal(_0xstr._window)[_0xstr._displayFraudScore](_data[_0x1(0x9d, 'K3yR')]); // fraud_score
-            } else {
-                throw new _0xgetGlobal(_0xstr._window)[_0xstr._error](_data[_0xstr._message] || _0xstr._couldNotRetrieve);
-            }
-        } catch (_error) {
-            _0xsetHtml(_resultsEl, _0xstr._errorApi + _error[_0xstr._message] + _0xstr._tryAgainBtn);
-        }
-    };
-
-    function _displayFraudScore(_score) {
-        const _resultsEl = _getOrCacheEl(_0xstr._emailFraudResults);
-        let _color, _verdict;
-
-        if (_score >= 75) {
-            _color = _0xstr._accentRed; _verdict = _0xstr._highRisk;
-        } else if (_score >= 40) {
-            _color = _0xstr._orangeYellow; _verdict = _0xstr._suspiciousEmail;
-        } else {
-            _color = _0xstr._accentGreen; _verdict = _0xstr._lowRisk;
-        }
-
-        _0xsetHtml(_resultsEl, _0xstr._emailResultHtml.replace('--score: ', '--score: ' + _score).replace('--gauge-color: ', '--gauge-color: ' + _color).replace('score-value">', 'score-value">' + _score).replace('color:', 'color:' + _color).replace('score-verdict">', 'score-verdict">' + _verdict).replace('Check Another Email', _0xstr._checkAnotherEmail));
-
-        _0xgetGlobal(_0xstr._window)[_0xstr._setTimeout](() => {
-            const _container = _0xgetGlobal(_0x1(0x8f, '0o5I'))[_0x1(0x10, 'bY7Q')](_0xstr._fraudScoreContainer);
-            if (_container) _container[_0xstr._style][_0xstr._opacity] = '1';
-        }, 10);
-    }
-
-    // UTILITY FUNCTIONS (Canvas, WebGL, Hashing)
-    function _getCanvasEntropy() {
-        try {
-            const _c = _0xgetGlobal(_0x1(0x8f, '0o5I'))[_0x1(0xac, 'C^7$')](_0xstr._canvas); // document.createElement('canvas')
-            _c[_0xstr._widthProp] = 200; _c[_0xstr._heightProp] = 50;
-            const _ctx = _c[_0x1(0xad, 'tY7S')](_0xstr._2d); // .getContext('2d')
-            _ctx[_0xstr._textBaseline] = _0xstr._top; _ctx[_0xstr._font] = _0xstr._fontValue;
-            _ctx[_0xstr._fillStyle] = _0xstr._rgbWhite; _ctx[_0xstr._fillRect](0, 0, _c[_0xstr._widthProp], _c[_0xstr._heightProp]);
-            _ctx[_0xstr._fillStyle] = _0xstr._rgbBlack; _ctx[_0xstr._fillText](_0xstr._browserFp, 2, 2);
-            return _0xgetGlobal(_0xstr._window)[_0xstr._hashString](_c[_0xstr._toDataURL]()); // hashString(c.toDataURL())
-        } catch (_e) { return null; }
-    }
-    _0xgetGlobal(_0xstr._window)[_0xstr._getCanvasEntropy] = _getCanvasEntropy; // Expose globally for fingerprint checker
-
-    function _hashString(_s) {
-        let _h = 0;
-        for (let _i = 0; _i < _s[_0xstr._length]; _i++) { // .length
-            _h = ((_h << 5) - _h) + _s[_0xstr._charCodeAt](_i); // .charCodeAt
-            _h |= 0;
-        }
-        return _h;
-    }
-    _0xgetGlobal(_0xstr._window)[_0xstr._hashString] = _hashString; // Expose globally
-
-    function _getWebGLInfo() {
-        try {
-            const _c = _0xgetGlobal(_0x1(0x8f, '0o5I'))[_0x1(0xac, 'C^7$')](_0xstr._canvas);
-            const _gl = _c[_0x1(0xad, 'tY7S')](_0xstr._webgl) || _c[_0x1(0xad, 'tY7S')](_0xstr._experimentalWebgl);
-            if (!_gl) return { vendor: _0xstr._n_a, renderer: _0xstr._n_a };
-            const _dbg = _gl[_0x1(0xc0, '9lI!')](_0xstr._webglDebugInfo); // .getExtension('WEBGL_debug_renderer_info')
-            return {
-                vendor: _gl[_0x1(0xc2, 'tY7S')](_dbg[_0x1(0xc3, '9lI!')]), // .getParameter(dbg.UNMASKED_VENDOR_WEBGL)
-                renderer: _gl[_0x1(0xc2, 'tY7S')](_dbg[_0x1(0xc4, 'C^7$')]) // .getParameter(dbg.UNMASKED_RENDERER_WEBGL)
-            };
-        } catch (_e) { return { vendor: _0xstr._n_a, renderer: _0xstr._n_a }; }
-    }
-    _0xgetGlobal(_0xstr._window)[_0xstr._getWebGLInfo] = _getWebGLInfo; // Expose globally
-
-    // CONTACT FORM SCRIPT
-    function _initializeContactForm() {
-        const _form = _0xgetOrCacheEl(_0xstr._contactFormEl);
-        if (!_form) return;
-        const _captchaLabel = _0xgetOrCacheEl(_0xstr._captchaLabel),
-              _captchaInput = _0xgetOrCacheEl(_0xstr._captchaInput),
-              _submitBtn = _0xgetOrCacheEl(_0xstr._submitBtn),
-              _formResponse = _0xgetOrCacheEl(_0xstr._formResponse);
-        let _num1, _num2, _answer;
-
-        function _generateCaptcha() {
-            _num1 = _0xgetGlobal(_0xstr._window)[_0x1(0xcc, 'C^7$')](_0xgetGlobal(_0xstr._window)[_0x1(0xcd, 'tY7S')]() * 10) + 1; // Math.floor(Math.random() * 10) + 1
-            _num2 = _0xgetGlobal(_0xstr._window)[_0x1(0xcc, 'C^7$')](_0xgetGlobal(_0xstr._window)[_0x1(0xcd, 'tY7S')]() * 10) + 1;
-            _answer = _num1 + _num2;
-            _captchaLabel[_0xstr._textContent] = _0xstr._calculate + _num1 + _0xstr._plus + _num2 + _0xstr._equals;
-            _captchaInput[_0x1(0x97, 'C^7$')] = _0xstr._empty; // .value = ''
-        }
-
-        _0xlisten(_form, _0xstr._click.split('')[0] + 'u' + _0xstr._click.split('')[1] + 'bmit', async function(_e) { // 'submit'
-            _e[_0x1(0xa9, 'K&Vq')](); // e.preventDefault()
-            if (_0xgetGlobal(_0xstr._window)[_0x1(0xd1, '9lI!')](_captchaInput[_0x1(0x97, 'C^7$')], 10) !== _answer) {
-                _formResponse[_0xstr._textContent] = _0xstr._incorrectCode;
-                _formResponse[_0xstr._className] = _0xstr._error;
-                _generateCaptcha();
-                return;
-            }
-            _submitBtn[_0xstr._disabled] = true;
-            _submitBtn[_0xstr._textContent] = _0xstr._transmitting;
-            _formResponse[_0xstr._textContent] = _0xstr._empty;
-
-            const _formData = {
-                name: _getOrCacheEl(_0xstr._contactName)[_0x1(0x97, 'C^7$')],
-                email: _getOrCacheEl(_0xstr._contactEmail)[_0x1(0x97, 'C^7$')],
-                title: _getOrCacheEl(_0xstr._contactTitle)[_0x1(0x97, 'C^7$')],
-                description: _getOrCacheEl(_0xstr._contactDesc)[_0x1(0x97, 'C^7$')]
-            };
-
-            try {
-                const _response = await _0xgetGlobal(_0xstr._window)[_0x1(0x9b, 'L3p!')](_0xstr._apiContact, {
-                    method: _0xstr._post,
-                    headers: { [_0xstr._contentType]: _0xstr._appJson },
-                    body: _0xgetGlobal(_0xstr._JSON)[_0xstr._stringify](_formData)
-                });
-                const _result = await _response[_0xstr._json]();
-                if (_response[_0xstr._ok]) {
-                    _formResponse[_0xstr._textContent] = _0xstr._successTicket + _result[_0xstr._ticketId];
-                    _formResponse[_0xstr._className] = _0xstr._success;
-                    _form[_0x1(0x21, 'T9qZ')](); // form.reset()
-                } else {
-                    throw new _0xgetGlobal(_0xstr._window)[_0xstr._error](_result[_0xstr._message] || _0xstr._serverRejected);
-                }
-            } catch (_error) {
-                _formResponse[_0xstr._textContent] = _0xstr._transmissionFailed + _error[_0xstr._message];
-                _formResponse[_0xstr._className] = _0xstr._error;
-            } finally {
-                _submitBtn[_0xstr._disabled] = false;
-                _submitBtn[_0xstr._textContent] = _0xstr._transmitSecurely;
-                _generateCaptcha();
+// --- New Professional UI/Animation Script ---
+document.addEventListener('DOMContentLoaded', () => {
+
+    // 1. Scroll-Triggered Animations
+    const scrollObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
             }
         });
-        _generateCaptcha();
-    }
-    _0xgetGlobal(_0xstr._window)[_0xstr._initializeContactForm] = _initializeContactForm; // Expose globally for DOMContentLoaded
+    }, { threshold: 0.1 });
 
-    // DYNAMIC BACKGROUND SCRIPT
-    const _canvas = _0xgetOrCacheEl(_0xstr._matrixBg);
-    const _ctx = _canvas[_0x1(0xad, 'tY7S')](_0xstr._2d); // .getContext('2d')
-    let _backgroundInterval;
-
-    const _setupCanvas = () => {
-        _canvas[_0xstr._widthProp] = _0xgetGlobal(_0xstr._window)[_0xstr._innerWidth];
-        _canvas[_0xstr._heightProp] = _0xgetGlobal(_0xstr._window)[_0xstr._innerHeight];
-        _0xsetBackgroundState(_0xstr._default);
-    };
-
-    const _drawMatrix = (_color, _speed, _charSet) => {
-        const _characters = _charSet;
-        const _fontSize = 14;
-        const _columns = _canvas[_0xstr._widthProp] / _fontSize;
-        const _drops = Array(_0xgetGlobal(_0xstr._window)[_0x1(0xcc, 'C^7$')](_columns))[_0x1(0xad, 'w^P!')](1); // Array(Math.floor(columns)).fill(1)
-        const _bg = _body[_0xstr._classList][_0x1(0x91, 'S@8a')](_0xstr._lightModeClass) ? _0x1(0xfb, '9lI!') : _0xstr._matrixBgColor; // light/dark mode bg color
-        return _0xgetGlobal(_0xstr._window)[_0xstr._setInterval](() => {
-            _ctx[_0xstr._fillStyle] = _bg;
-            _ctx[_0xstr._fillRectFunc](0, 0, _canvas[_0xstr._widthProp], _canvas[_0xstr._heightProp]);
-            _ctx[_0xstr._fillStyle] = _color;
-            _ctx[_0xstr._fontProp] = _fontSize + 'px ' + _0xstr._robotoMono;
-            for (let _i = 0; _i < _drops[_0xstr._length]; _i++) {
-                const _text = _characters[_0xgetGlobal(_0xstr._window)[_0x1(0xcc, 'C^7$')](_0xgetGlobal(_0xstr._window)[_0x1(0xcd, 'tY7S')]() * _characters[_0xstr._length])];
-                _ctx[_0xstr._fillTextFunc](_text, _i * _fontSize, _drops[_i] * _fontSize);
-                if (_drops[_i] * _fontSize > _canvas[_0xstr._heightProp] && _0xgetGlobal(_0xstr._window)[_0x1(0xcd, 'tY7S')]() > 0.975) _drops[_i] = 0;
-                _drops[_i]++;
-            }
-        }, _speed);
-    };
-
-    let _gridOffset = 0;
-    const _drawBlueGrid = () => {
-        const _gridColor = _body[_0xstr._classList][_0x1(0x91, 'S@8a')](_0xstr._lightModeClass) ? _0x1(0xf6, 'C^7$') : _0xstr._gridColor;
-        return _0xgetGlobal(_0xstr._window)[_0xstr._setInterval](() => {
-            _ctx[_0xstr._clearRect](0, 0, _canvas[_0xstr._widthProp], _canvas[_0xstr._heightProp]);
-            _ctx[_0xstr._strokeStyle] = _gridColor;
-            _ctx[_0xstr._lineWidth] = 1;
-            _gridOffset = (_gridOffset + 0.3) % 40;
-            for (let _x = -_gridOffset; _x < _canvas[_0xstr._widthProp]; _x += 40) { _ctx[_0xstr._beginPath](); _ctx[_0xstr._moveTo](_x, 0); _ctx[_0xstr._lineTo](_x, _canvas[_0xstr._heightProp]); _ctx[_0xstr._stroke](); }
-            for (let _y = -_gridOffset; _y < _canvas[_0xstr._heightProp]; _y += 40) { _ctx[_0xstr._beginPath](); _ctx[_0xstr._moveTo](0, _y); _ctx[_0xstr._lineTo](_canvas[_0xstr._widthProp], _y); _ctx[_0xstr._stroke](); }
-        }, 50);
-    };
-
-    function _setBackgroundState(_state) {
-        const _watermark = _getOrCacheEl(_0xstr._backgroundWatermark);
-        const _currentPageId = Object[_0x1(0xa3, 'nUAF')](_0xstr._pageContent)[_0x1(0xa2, 'nUAF')](_key => _0xstr._pageContent[_key] === _0xgetGlobal(_0x1(0x8f, '0o5I'))[_0x1(0x10, 'bY7Q')](_0x1(0x101, '9lI!') + ' ' + _0xstr._active)['id']); // document.querySelector('.page.active')?.id
-        const _currentPageElement = _0xgetOrCacheEl(_0xstr._pageContent[_currentPageId]);
-        const _classifiedStamp = _currentPageElement ? _currentPageElement[_0x1(0x10, 'bY7Q')](_0xstr._classifiedStamp) : null;
-
-        _0xclassOp(_body, _0xstr._remove, _0xstr._safeMode);
-        _0xclassOp(_body, _0xstr._remove, _0xstr._dangerMode);
-        _0xgetGlobal(_0xstr._window)[_0xstr._clearInterval](_backgroundInterval);
-        _ctx[_0xstr._clearRect](0, 0, _canvas[_0xstr._widthProp], _canvas[_0xstr._heightProp]);
-
-        const _isLight = _body[_0xstr._classList][_0x1(0x91, 'S@8a')](_0xstr._lightModeClass);
-
-        if (_state === _0xstr._danger) {
-            _backgroundInterval = _0xstr._drawMatrix(_isLight ? _0x1(0x107, '9lI!') : _0xstr._dangerBgColor, 25, '01');
-            _0xsetAttr(_watermark, _0xstr._dataText, _0xstr._compromised);
-            _0xclassOp(_body, _0xstr._add, _0xstr._dangerMode);
-            if (_classifiedStamp) {
-                _classifiedStamp[_0xstr._textContent] = _0xstr._compromised;
-                _0xclassOp(_classifiedStamp, _0xstr._add, _0xstr._danger);
-                _0xclassOp(_classifiedStamp, _0xstr._remove, _0xstr._safe);
-            }
-        } else if (_state === _0xstr._safe) {
-            _backgroundInterval = _isLight ? _0xstr._drawMatrix(_0x1(0x10b, 'tY7S'), 50, '01') : _0xstr._drawBlueGrid(); // 'rgba(0, 0, 0, 0.1)'
-            _0xsetAttr(_watermark, _0xstr._dataText, _0xstr._unclassified);
-            _0xclassOp(_body, _0xstr._add, _0xstr._safeMode);
-            if (_classifiedStamp) {
-                _classifiedStamp[_0xstr._textContent] = _0xstr._unclassified;
-                _0xclassOp(_classifiedStamp, _0xstr._add, _0xstr._safe);
-                _0xclassOp(_classifiedStamp, _0xstr._remove, _0xstr._danger);
-            }
-        } else { // default
-            _backgroundInterval = _isLight ? _0xstr._drawMatrix(_0x1(0x10b, 'tY7S'), 50, '01') : _0xstr._drawMatrix(_0xstr._defaultMatrixColor, 40, _0xstr._charsetAlphaNum);
-            _0xsetAttr(_watermark, _0xstr._dataText, _0xstr._empty);
-            if (_classifiedStamp && _classifiedStamp[_0x1(0xd, 'E]s9')](_0x1(0x101, '9lI!'))) { // .closest('#page-checker')
-                _classifiedStamp[_0xstr._textContent] = _0xstr._classified;
-                _0xclassOp(_classifiedStamp, _0xstr._remove, _0x0xstr._safe); // Fixed typo from _0x0xstr._safe to _0xstr._safe
-                _0xclassOp(_classifiedStamp, _0xstr._remove, _0xstr._danger);
-            } else if (_classifiedStamp) {
-                _classifiedStamp[_0xstr._textContent] = _classifiedStamp[_0x1(0xd, 'E]s9')](_0x1(0x1b8, 'v@$v')) ? _0xstr._intel : _0xstr._classified; // .closest('#page-email-fraud') ? "INTEL" : "CLASSIFIED"
-                _0xclassOp(_classifiedStamp, _0xstr._remove, _0xstr._safe);
-                _0xclassOp(_classifiedStamp, _0xstr._remove, _0xstr._danger);
-            }
-        }
-    }
-    _0xgetGlobal(_0xstr._window)[_0xstr._setBackgroundState] = _setBackgroundState; // Expose globally
-
-    _0xgetGlobal(_0xstr._window)[_0x1(0xaa, 'tY7S')](_0xstr._resize, _setupCanvas); // window.addEventListener('resize', setupCanvas)
-    _0xgetGlobal(_0x1(0x8f, '0o5I'))[_0x1(0x19a, '$Q5&')](_0x1(0x1b, '4!^X'), _setupCanvas); // document.addEventListener('DOMContentLoaded', setupCanvas)
-
-    // Initial DOMContentLoaded calls wrapped in a function for clarity
-    _0xgetGlobal(_0x1(0x8f, '0o5I'))[_0x1(0x19a, '$Q5&')](_0x1(0x1b, '4!^X'), () => {
-        _applySavedTheme();
-        _router();
-        if (_0xgetEl(_0xstr._contactFormEl)) { // Check if form exists before initializing
-            _initializeContactForm();
-        }
+    document.querySelectorAll('.scroll-anim').forEach(el => {
+        scrollObserver.observe(el);
     });
 
-})((_0xdeadbeef = [
-    'toString', 'charCodeAt', 'slice', 'log', 'fromCharCode', 'trace', 'constructor', 'apply', 'bind', 'length',
-    'error', 'warn', 'exception', 'info', 'table', 'display', 'block', 'input', 'href', 'pushState',
-    'localStorage', 'reset', 'div', 'fa-solid', 'textContent', 'DOMContentLoaded', 'classList', 'remove', 'parse',
-    'active', 'canvas', 'getElementById', 'innerHTML', 'is-open', 'setItem', 'getItem', 'log', 'theme', 'add',
-    'toggle', 'contains', 'light', 'dark', 'light-mode', '<i class="fa-solid fa-sun"></i>', '<i class="fa-solid fa-moon"></i>',
-    '/', '/checker', '/email-fraud', '/faq', '/privacy', '/contact', 'querySelectorAll', '.page', 'forEach', 'find',
-    'keys', 'nav-link', 'getAttribute', 'matches', 'logo-link', 'preventDefault', 'popstate', 'runDetection', 'resetChecker',
-    'resetEmailFraudChecker', 'initializeContactForm', 'intro-content', 'results-container', 'setBackgroundState', 'default',
-    '.classified-stamp', 'safe', 'danger', 'CLASSIFIED', 'style', 'none', '<div class="loader-wrapper"><div class="scanner-circle"></div><p class="scanner-text">INTERROGATING BROWSER...</p></div>',
-    'Promise', 'resolve', 'setTimeout', 'abs', 'round', '/api/ip-check', 'no-store', 'json', 'error', 'IP Address', 'value', 'isBad',
-    'alwaysShow', 'VPN/Proxy', 'status', 'isProxy', 'includes', 'TOR', 'IP/VPN Check', 'Error during lookup', 'navigator',
-    'userAgent', 'match', 'Chrome/(\\d+)', 'brave', 'isBrave', 'getCanvasEntropy', 'opr', 'webdriver', 'plugins', 'languages',
-    '1920x1080', '2560x1440', '3840x2160', 'screen', 'width', 'height', 'getWebGLInfo', 'renderer', 'toLowerCase', 'swiftshader',
-    'llvmpipe', 'Normal', 'Antidetect Browser Detected', 'Tor Browser (High Risk)', 'Brave Browser', ' (Antidetect Tendencies)',
-    'Opera Browser', ' (Suspicious)', 'Suspicious Profile (Antidetect Characteristics)', 'Browser', 'High Risk Profile Detected',
-    'Profile Appears Normal', '<div class="verdict-box ', '"><i class="fa-solid ', 'fa-lg"></i><span>', '</span></div>',
-    '<div class="risk-score">Threat Score: <strong>', '</strong></div>', 'filter', 'label', 'value danger', 'value safe',
-    ' fingerprint-hash', '<div class="label" style="animation-delay: ', 's">', ':</div><div class="', '" style="animation-delay: ', 's">',
-    '</div>', 'join', '<div class="details-grid">', '<div style="grid-column: 1 / -1; text-align: center; color: var(--accent-green);">All checks passed.</div>',
-    '<div class="results-footer"><div class="results-separator ', '"></div><div class="run-btn-wrapper"><button id="reset-btn" onclick="resetChecker()" class="', 'danger-button', 'safe-button',
-    '">Run Another Test</button></div></div>', 'email-fraud-intro', 'email-fraud-input', 'email-fraud-results', 'value', 'CLASSIFIED', 'INTEL',
-    'checkEmailFraud', 'trim', 'email-fraud-intro', 'email-fraud-results', 'innerHTML', '<p style="color: var(--accent-red); text-align: center; font-weight: bold; margin-top: 20px;">Please enter a valid email address.</p>',
-    'display', 'none', '<div class="loader-wrapper"><div class="scanner-circle"></div><p class="scanner-text">ANALYZING EMAIL REPUTATION...</p></div>',
-    '/api/email-check?email=', 'encodeURIComponent', 'fetch', 'no-store', 'json', 'success', 'fraud_score', 'message', 'Could not retrieve score.',
-    '<p style="color: var(--accent-red); text-align: center; font-weight: bold; margin-top: 20px;">Error: ', '</p>\n        <div class="results-footer" style="opacity:1"><button id="reset-email-btn" onclick="resetEmailFraudChecker()" class="danger-button">Try Again</button></div>',
-    'displayFraudScore', 'email-fraud-results', 'High Risk', 'var(--accent-red)', '#ffc107', 'Suspicious', 'Low Risk', 'var(--accent-green)',
-    '\n\x20\x20\x20\x20\x20\x20\x20\x20<div class=\x22fraud-score-container\x22\x20style=\x22animation:\x20fade-in-up\x200.5s\x20ease\x20forwards;\x22>\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22score-gauge\x22\x20style=\x22--score:\x20', ';\x20--gauge-color:\x20', ';\x22>\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22score-value\x22>', '</div>\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22score-label\x22>Fraud\x20Score</div>\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22score-verdict\x22\x20style=\x22color:\x20', ';\x22>', '</div>\n\x20\x20\x20\x20\x20\x20\x20\x20</div>\n\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22results-footer\x22>\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20id=\x22reset-email-btn\x22\x20onclick=\x22resetEmailFraudChecker()\x22\x20class=\x22safe-button\x22>Check\x20Another\x20Email</button>\n\x20\x20\x20\x20\x20\x20\x20\x20</div>\n\x20\x20\x20\x20', 'querySelector', '.fraud-score-container', 'opacity', 'createElement', 'canvas', 'getContext', '2d',
-    'width', 'height', 'textBaseline', 'top', 'font', '14px \'Arial\'', 'fillStyle', 'rgb(255,255,255)', 'fillRect', 'rgb(0,0,0)',
-    'fillText', 'BrowserFP', 'toDataURL', 'hashString', 'charCodeAt', 'webgl', 'experimental-webgl', 'getExtension', 'WEBGL_debug_renderer_info',
-    'getParameter', 'UNMASKED_VENDOR_WEBGL', 'UNMASKED_RENDERER_WEBGL', 'contact-form', 'addEventListener', 'submit', 'captcha-label',
-    'captcha-input', 'submit-btn', 'form-response', 'floor', 'random', 'Calculate: ', ' + ', ' =', 'parseInt', 'ERROR: Incorrect Security Code',
-    'className', 'disabled', 'TRANSMITTING...', 'contact-name', 'contact-email', 'contact-title', 'description', '/api/contact', 'method',
-    'headers', 'Content-Type', 'application/json', 'body', 'stringify', 'ok', 'SUCCESS: Your ticket ID is ', 'ticketId',
-    'Server rejected the transmission.', 'TRANSMISSION FAILED: ', 'Transmit Securely', 'matrix-bg', 'getContext', '2d', 'innerWidth',
-    'innerHeight', 'drawMatrix', 'rgba(13, 13, 18, 0.05)', 'setInterval', 'fillRect', 'font', 'Roboto Mono', 'fillText',
-    'drawBlueGrid', 'rgba(0, 170, 255, 0.15)', 'clearRect', 'strokeStyle', 'lineWidth', 'beginPath', 'moveTo', 'lineTo',
-    'stroke', 'setBackgroundState', 'background-watermark', 'id', 'page-checker', 'classList', 'safe-mode', 'danger-mode',
-    'rgba(255, 71, 87, 0.7)', 'setAttribute', 'COMPROMISED', 'textContent', 'danger', 'remove', 'safe', 'UNCLASSIFIED',
-    'rgba(0, 0, 0, 0.1)', 'rgba(0, 255, 136, 0.7)', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 'resize', 'setupCanvas',
-    'applySavedTheme', 'contact-form', 'initializeContactForm', 'warn', 'info', 'exception', 'table', 'trace',
-    'constructor', 'apply', 'bind', 'prototype', '__proto__', 'init', 'function *\\( *\\)', 'chain', '\\+\\+ *(?:_0x(?:[a-f0-9]){4,6})',
-    'input', 'return (function() {}.constructor("return this")());', 'console', 'fa-user-check', 'click', 'close-nav-btn',
-    'main-nav', 'hamburger-btn', 'theme-toggle-btn'
-], 394)); 
+    // 2. Custom Cursor Animation
+    const cursor = document.querySelector('.cursor');
+    const cursorDot = document.querySelector('.cursor-dot');
+    const interactiveElements = document.querySelectorAll('a, button, input, textarea, .feature-box');
 
+    window.addEventListener('mousemove', e => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+        cursorDot.style.left = e.clientX + 'px';
+        cursorDot.style.top = e.clientY + 'px';
+    });
+
+    interactiveElements.forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    });
+});
+</script>
+
+<script>
+  /* --- NAVIGATION, THEME, ROUTER --- */
+  const hamburgerBtn = document.getElementById('hamburger-btn'); 
+  const closeNavBtn = document.getElementById('close-nav-btn'); 
+  const mainNav = document.getElementById('main-nav');
+  hamburgerBtn.addEventListener('click', () => mainNav.classList.add('is-open'));
+  closeNavBtn.addEventListener('click', () => mainNav.classList.remove('is-open'));
+  
+  const themeToggleBtn = document.getElementById('theme-toggle-btn'); 
+  const body = document.body; 
+  
+  function applySavedTheme() { 
+    const savedTheme = localStorage.getItem('theme'); 
+    if (savedTheme === 'light') { 
+      body.classList.add('light-mode'); 
+      themeToggleBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
+    } else { 
+      body.classList.remove('light-mode'); 
+      themeToggleBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
+    } 
+  }
+  
+  themeToggleBtn.addEventListener('click', () => { 
+    body.classList.toggle('light-mode'); 
+    const isLight = body.classList.contains('light-mode');
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    themeToggleBtn.innerHTML = isLight ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+    setBackgroundState('default');
+  });
+  
+  const pageContent = { 
+      '/': 'page-landing', 
+      '/checker': 'page-checker',
+      '/email-fraud': 'page-email-fraud',
+      '/faq': 'page-faq', 
+      '/privacy': 'page-privacy', 
+      '/contact': 'page-contact' 
+  };
+  
+  function showPageContent(pageId) {
+    document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+    const pageEl = document.getElementById(pageId);
+    if(pageEl) pageEl.classList.add('active');
+
+    const currentPath = Object.keys(pageContent).find(key => pageContent[key] === pageId);
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === currentPath);
+    });
+    
+    if (pageId === 'page-checker') resetChecker(); 
+    if (pageId === 'page-email-fraud') resetEmailFraudChecker();
+  }
+
+  const router = () => { 
+    const path = window.location.pathname; 
+    const pageId = pageContent[path] || 'page-landing';
+    showPageContent(pageId); 
+  };
+  
+  document.addEventListener('click', (e) => { 
+    const a = e.target.closest('a'); 
+    if (a && (a.matches('.nav-link') || a.matches('.logo-link'))) { 
+      e.preventDefault(); 
+      history.pushState(null, '', a.href); 
+      mainNav.classList.remove('is-open'); 
+      router(); 
+    }
+  });
+
+  function navigateTo(path) {
+      history.pushState(null, '', path);
+      router();
+  }
+  
+  window.addEventListener('popstate', router);
+  
+  document.addEventListener('DOMContentLoaded', () => { 
+    applySavedTheme(); 
+    router();
+    if (document.getElementById('contact-form')) {
+        initializeContactForm();
+    }
+  });
+
+  /* --- BROWSER FINGERPRINT CHECKER SCRIPT --- */
+  function resetChecker() { 
+      const intro = document.getElementById('intro-content');
+      if (intro && intro.closest('#page-checker')) intro.style.display = 'block';
+      const resultsContainer = document.getElementById('results-container');
+      if (resultsContainer && resultsContainer.closest('#page-checker')) resultsContainer.innerHTML = ''; 
+      setBackgroundState('default');
+      const stamp = document.querySelector('#page-checker .classified-stamp');
+      if(stamp) {
+        stamp.classList.remove('safe', 'danger');
+        stamp.textContent = "CLASSIFIED";
+      }
+  }
+
+  window.runDetection = async function() {
+    const intro = document.getElementById('intro-content');
+    if (intro) intro.style.display = 'none';
+    const resultsEl = document.getElementById('results-container');
+    resultsEl.innerHTML = `<div class="loader-wrapper"><div class="scanner-circle"></div><p class="scanner-text">INTERROGATING BROWSER...</p></div>`;
+    const minDelay = new Promise(resolve => setTimeout(resolve, 2000));
+    let riskScore = 0; const riskFactors = []; const browserFlags = { brave: false, tor: false, opera: false, heuristicsSpoofing: false, canvasRandomization: false, webglEmulation: false }; const TARGET_CHROME_VERSION = "138";
+    try { const resp = await fetch('/api/ip-check', { cache: 'no-store' }); const ipData = await resp.json(); if (ipData.error) throw new Error("IP API Error"); riskFactors.push({ label: 'IP Address', value: ipData.ip, isBad: false, alwaysShow: true }); riskFactors.push({ label: 'VPN/Proxy', value: ipData.status, isBad: ipData.isProxy, alwaysShow: true }); if (ipData.isProxy) riskScore += 3; if (ipData.status.includes('TOR')) riskScore += 5; } catch (e) { riskScore += 1; riskFactors.push({ label: 'IP/VPN Check', value: "Error during lookup", isBad: true, alwaysShow: true }); }
+    const ua = navigator.userAgent; const majorChromeVersion = (ua.match(/Chrome\/(\d+)/) || [])[1]; if (navigator.brave && await navigator.brave.isBrave()) { riskScore += 3; browserFlags.brave = true; } if (getCanvasEntropy() === 2001009873) { riskScore += 5; browserFlags.tor = true; } if (typeof window.opr !== 'undefined' || ua.includes("OPR")) { riskScore += 2; browserFlags.opera = true; }
+    let currentHeuristicsScore = 0; if (!ua.includes("Chrome") || majorChromeVersion !== TARGET_CHROME_VERSION) { currentHeuristicsScore += 4; } if (navigator.webdriver) { currentHeuristicsScore += 4; } if (navigator.plugins && navigator.plugins.length === 5) { currentHeuristicsScore += 1; } if (navigator.languages && navigator.languages.length === 4) { currentHeuristicsScore += 2; } const proResolutions = ['1920x1080', '2560x1440', '3840x2160']; const currentRes = `${window.screen.width}x${window.screen.height}`; if (majorChromeVersion === TARGET_CHROME_VERSION && !proResolutions.includes(currentRes)) { currentHeuristicsScore += 2; } riskScore += currentHeuristicsScore; if (currentHeuristicsScore >= 4) browserFlags.heuristicsSpoofing = true;
+    const canvasHash1 = getCanvasEntropy(); await new Promise(resolve => setTimeout(resolve, 30)); if (canvasHash1 !== getCanvasEntropy()) { riskScore += 2; browserFlags.canvasRandomization = true; }
+    const renderer = getWebGLInfo().renderer.toLowerCase(); if (renderer.includes("swiftshader") || renderer.includes("llvmpipe")) { riskScore += 3; browserFlags.webglEmulation = true; }
+    const isBadBrowserOverall = riskScore >= 3; setBackgroundState(isBadBrowserOverall ? 'danger' : 'safe'); let browserLabelValue = 'Normal', browserLabelIsBad = false; if (browserFlags.heuristicsSpoofing || browserFlags.canvasRandomization || browserFlags.webglEmulation) { browserLabelValue = 'Antidetect Browser Detected'; browserLabelIsBad = true; } else if (browserFlags.tor) { browserLabelValue = 'Tor Browser (High Risk)'; browserLabelIsBad = true; } else if (browserFlags.brave) { browserLabelValue = 'Brave Browser'; if (isBadBrowserOverall) { browserLabelValue += ' (Antidetect Tendencies)'; browserLabelIsBad = true; }} else if (browserFlags.opera) { browserLabelValue = 'Opera Browser'; if (isBadBrowserOverall) { browserLabelValue += ' (Suspicious)'; browserLabelIsBad = true; }} else if (isBadBrowserOverall) { browserLabelValue = 'Suspicious Profile (Antidetect Characteristics)'; browserLabelIsBad = true; } riskFactors.push({ label: 'Browser', value: browserLabelValue, isBad: browserLabelIsBad, alwaysShow: true });
+    const verdict = isBadBrowserOverall ? "High Risk Profile Detected" : "Profile Appears Normal"; let resultsHTML = `<div class="verdict-box ${isBadBrowserOverall ? 'danger' : 'safe'}"><i class="fa-solid ${isBadBrowserOverall ? 'fa-user-secret' : 'fa-user-check'} fa-lg"></i><span>${verdict}</span></div>`; resultsHTML += `<div class="risk-score">Threat Score: <strong>${riskScore}</strong></div>`; let detailsGridHTML = riskFactors.filter(f => f.isBad || f.alwaysShow).map((factor, index) => { let valueClass = factor.isBad ? 'value danger' : 'value safe'; if (factor.isHash) valueClass += ' fingerprint-hash'; return `<div class="label" style="animation-delay: ${index*0.05}s">${factor.label}:</div><div class="${valueClass}" style="animation-delay: ${index*0.05}s">${factor.value}</div>`; }).join(''); resultsHTML += `<div class="details-grid">${detailsGridHTML || '<div style="grid-column: 1 / -1; text-align: center; color: var(--accent-green);">All checks passed.</div>'}</div>`; resultsHTML += `<div class="results-footer"><div class="results-separator ${isBadBrowserOverall ? 'danger' : ''}"></div><div class="run-btn-wrapper"><button id="reset-btn" onclick="resetChecker()" class="${isBadBrowserOverall ? 'danger-button' : 'safe-button'}">Run Another Test</button></div></div>`;
+    await minDelay; resultsEl.innerHTML = resultsHTML;
+  }
+  
+  /* === EMAIL FRAUD CHECKER SCRIPT (UPDATED TO FIX CORS) === */
+  
+    /* === EMAIL FRAUD CHECKER SCRIPT (SECURE API) === */
+
+  function resetEmailFraudChecker() {
+    const intro = document.getElementById('email-fraud-intro');
+    if (intro) intro.style.display = 'block';
+    
+    const input = document.getElementById('email-fraud-input');
+    if (input) input.value = '';
+    
+    const resultsContainer = document.getElementById('email-fraud-results');
+    if (resultsContainer) resultsContainer.innerHTML = ''; 
+
+    const stamp = document.querySelector('#page-email-fraud .classified-stamp');
+    if(stamp) stamp.textContent = "INTEL";
+  }
+
+  async function checkEmailFraud() {
+    const emailInput = document.getElementById('email-fraud-input');
+    const email = emailInput.value.trim();
+    const introEl = document.getElementById('email-fraud-intro');
+    const resultsEl = document.getElementById('email-fraud-results');
+
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+        resultsEl.innerHTML = `<p style="color: var(--accent-red); text-align: center; font-weight: bold; margin-top: 20px;">Please enter a valid email address.</p>`;
+        return;
+    }
+    
+    if (introEl) introEl.style.display = 'none';
+    resultsEl.innerHTML = `<div class="loader-wrapper"><div class="scanner-circle"></div><p class="scanner-text">ANALYZING EMAIL REPUTATION...</p></div>`;
+    
+    // Call YOUR OWN secure API endpoint.
+    const url = `/api/email-check?email=${encodeURIComponent(email)}`;
+
+    try {
+        const response = await fetch(url, {cache: "no-store"});
+        const data = await response.json();
+        
+        if (data.success === true) {
+            displayFraudScore(data.fraud_score);
+        } else {
+            throw new Error(data.message || 'Could not retrieve score.');
+        }
+    } catch (error) {
+        resultsEl.innerHTML = `<p style="color: var(--accent-red); text-align: center; font-weight: bold; margin-top: 20px;">Error: ${error.message}</p>
+        <div class="results-footer" style="opacity:1"><button id="reset-email-btn" onclick="resetEmailFraudChecker()" class="danger-button">Try Again</button></div>`;
+    }
+  }
+
+  function displayFraudScore(score) {
+    const resultsEl = document.getElementById('email-fraud-results');
+    let color, verdict;
+
+    if (score >= 75) {
+        color = 'var(--accent-red)';
+        verdict = 'High Risk';
+    } else if (score >= 40) {
+        color = '#ffc107'; // A nice orange/yellow
+        verdict = 'Suspicious';
+    } else {
+        color = 'var(--accent-green)';
+        verdict = 'Low Risk';
+    }
+
+    resultsEl.innerHTML = `
+        <div class="fraud-score-container" style="animation: fade-in-up 0.5s ease forwards;">
+            <div class="score-gauge" style="--score: ${score}; --gauge-color: ${color};">
+                <div class="score-value">${score}</div>
+            </div>
+            <div class="score-label">Fraud Score</div>
+            <div class="score-verdict" style="color: ${color};">${verdict}</div>
+        </div>
+        <div class="results-footer">
+            <button id="reset-email-btn" onclick="resetEmailFraudChecker()" class="safe-button">Check Another Email</button>
+        </div>
+    `;
+    setTimeout(() => {
+        const container = document.querySelector('.fraud-score-container');
+        if (container) container.style.opacity = '1';
+    }, 10);
+  }
+
+  /* --- UTILITY FUNCTIONS --- */
+  function getCanvasEntropy(){try{const c=document.createElement('canvas');c.width=200;c.height=50;const ctx=c.getContext('2d');ctx.textBaseline="top";ctx.font="14px 'Arial'";ctx.fillStyle="rgb(255,255,255)";ctx.fillRect(0,0,c.width,c.height);ctx.fillStyle="rgb(0,0,0)";ctx.fillText("BrowserFP",2,2);return hashString(c.toDataURL())}catch(e){return null}}
+  function hashString(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0}return h}
+  function getWebGLInfo(){try{const c=document.createElement('canvas');const gl=c.getContext('webgl')||c.getContext('experimental-webgl');if(!gl)return{vendor:"N/A",renderer:"N/A"};const dbg=gl.getExtension('WEBGL_debug_renderer_info');return{vendor:gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL),renderer:gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)}}catch(e){return{vendor:"N/A",renderer:"N/A"}}}
+  
+  /* --- CONTACT FORM SCRIPT --- */
+  function initializeContactForm(){const form=document.getElementById('contact-form');if(!form)return;const captchaLabel=document.getElementById('captcha-label'),captchaInput=document.getElementById('captcha-input'),submitBtn=document.getElementById('submit-btn'),formResponse=document.getElementById('form-response');let num1,num2,answer;function generateCaptcha(){num1=Math.floor(Math.random()*10)+1;num2=Math.floor(Math.random()*10)+1;answer=num1+num2;captchaLabel.textContent=`Calculate: ${num1} + ${num2} =`;captchaInput.value=''}form.addEventListener('submit',async function(e){e.preventDefault();if(parseInt(captchaInput.value,10)!==answer){formResponse.textContent='ERROR: Incorrect Security Code';formResponse.className='error';generateCaptcha();return}submitBtn.disabled=true;submitBtn.textContent='TRANSMITTING...';formResponse.textContent='';const formData={name:document.getElementById('contact-name').value,email:document.getElementById('contact-email').value,title:document.getElementById('contact-title').value,description:document.getElementById('contact-description').value};try{const response=await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(formData)});const result=await response.json();if(response.ok){formResponse.textContent=`SUCCESS: Your ticket ID is ${result.ticketId}`;formResponse.className='success';form.reset()}else{throw new Error(result.message||'Server rejected the transmission.')}}catch(error){formResponse.textContent=`TRANSMISSION FAILED: ${error.message}`;formResponse.className='error'}finally{submitBtn.disabled=false;submitBtn.textContent='Transmit Securely';generateCaptcha()}});generateCaptcha()}
+
+  /* --- DYNAMIC BACKGROUND SCRIPT --- */
+  const canvas = document.getElementById('matrix-bg');
+  const ctx = canvas.getContext('2d');
+  let backgroundInterval;
+
+  const setupCanvas = () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    setBackgroundState('default');
+  };
+
+  const drawMatrix = (color, speed, charSet) => {
+    const characters = charSet;
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
+    const bg = body.classList.contains('light-mode') ? 'rgba(244, 244, 248, 0.05)' : 'rgba(13, 13, 18, 0.05)';
+    return setInterval(() => {
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = color;
+        ctx.font = fontSize + 'px Roboto Mono';
+        for (let i = 0; i < drops.length; i++) {
+            const text = characters[Math.floor(Math.random() * characters.length)];
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            drops[i]++;
+        }
+    }, speed);
+  }
+  
+  let gridOffset = 0;
+  const drawBlueGrid = () => {
+    const gridColor = body.classList.contains('light-mode') ? 'rgba(0, 170, 255, 0.2)' : 'rgba(0, 170, 255, 0.15)';
+    return setInterval(() => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = gridColor;
+        ctx.lineWidth = 1;
+        gridOffset = (gridOffset + 0.3) % 40;
+        for (let x = -gridOffset; x < canvas.width; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke(); }
+        for (let y = -gridOffset; y < canvas.height; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke(); }
+    }, 50);
+  }
+
+  function setBackgroundState(state) {
+      const watermark = document.getElementById('background-watermark');
+      const currentPageId = Object.keys(pageContent).find(key => pageContent[key] === document.querySelector('.page.active')?.id);
+      const currentPageElement = document.getElementById(pageContent[currentPageId]);
+      const classifiedStamp = currentPageElement ? currentPageElement.querySelector('.classified-stamp') : null;
+
+      body.classList.remove('safe-mode', 'danger-mode');
+      clearInterval(backgroundInterval);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      const isLight = body.classList.contains('light-mode');
+
+      if (state === 'danger') {
+          backgroundInterval = drawMatrix(isLight ? 'rgba(255, 71, 87, 0.4)' : 'rgba(255, 71, 87, 0.7)', 25, '01');
+          watermark.setAttribute('data-text', 'COMPROMISED');
+          body.classList.add('danger-mode');
+          if (classifiedStamp) {
+              classifiedStamp.textContent = "COMPROMISED";
+              classifiedStamp.classList.add('danger');
+              classifiedStamp.classList.remove('safe');
+          }
+      } else if (state === 'safe') {
+          backgroundInterval = isLight ? drawMatrix('rgba(0, 0, 0, 0.1)', 50, '01') : drawBlueGrid();
+          watermark.setAttribute('data-text', 'UNCLASSIFIED');
+          body.classList.add('safe-mode');
+          if (classifiedStamp) {
+              classifiedStamp.textContent = "UNCLASSIFIED";
+              classifiedStamp.classList.add('safe');
+              classifiedStamp.classList.remove('danger');
+          }
+      } else { // default
+          backgroundInterval = isLight ? drawMatrix('rgba(0, 0, 0, 0.1)', 50, '01') : drawMatrix('rgba(0, 255, 136, 0.7)', 40, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
+          watermark.setAttribute('data-text', '');
+          if(classifiedStamp && classifiedStamp.closest('#page-checker')) {
+              classifiedStamp.textContent = "CLASSIFIED";
+              classifiedStamp.classList.remove('safe', 'danger');
+          } else if (classifiedStamp) {
+              classifiedStamp.textContent = classifiedStamp.closest('#page-email-fraud') ? "INTEL" : "CLASSIFIED";
+              classifiedStamp.classList.remove('safe', 'danger');
+          }
+      }
+  }
+
+  window.addEventListener('resize', setupCanvas);
+  document.addEventListener('DOMContentLoaded', setupCanvas);
 </script>
 
 </body>
