@@ -12,23 +12,27 @@ export default async function handler(req, res) {
   if (!name || !email || !title || !description) {
     return res.status(400).json({ message: 'All fields are required.' });
   }
+  
+  // SECURE HARDCODED SMTP DETAILS
+  // This is safe because this file only runs on the server.
+  const smtpConfig = {
+      host: 'smtp.protonmail.ch',
+      port: 587,
+      secure: false, // true for 465, false for other ports like 587
+      auth: {
+        user: 'support@spectrascan.org',
+        pass: '2UV1EP1FU1SWGWQS',
+      },
+  };
 
-  // Create a transporter object using the secure environment variables
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: process.env.SMTP_PORT,
-    secure: process.env.SMTP_PORT == 465, // true for 465, false for other ports
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-  });
+  // Create a transporter object using the hardcoded config
+  const transporter = nodemailer.createTransport(smtpConfig);
 
   try {
     // Send the email
     await transporter.sendMail({
-      from: `"SpectraScan Contact" <${process.env.SMTP_USER}>`, // Sender address
-      to: process.env.SMTP_USER, // The email address that receives the contact form submission
+      from: `"SpectraScan Contact" <${smtpConfig.auth.user}>`, // Sender address
+      to: smtpConfig.auth.user, // The email address that receives the contact form submission
       replyTo: email, // Set the reply-to field to the user's email
       subject: `New Contact Form Message: ${title}`,
       text: `You have received a new message from your contact form.\n\n` +
