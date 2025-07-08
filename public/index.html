@@ -27,7 +27,8 @@
       --bg-grid-color: rgba(42, 42, 48, 0.7);
       --header-bg-color: rgba(18, 18, 23, 0.98);
       --nav-overlay-bg: rgba(18, 18, 23, 0.98);
-
+      --cursor-color: rgba(0, 255, 136, 0.5);
+      --cursor-dot-color: #00ff88;
       --scroll-anim-delay: 0s;
       --scroll-anim-duration: 0.8s;
       --scroll-anim-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -43,6 +44,8 @@
       --bg-grid-color: rgba(220, 224, 230, 0.8);
       --header-bg-color: #ffffff;
       --nav-overlay-bg: rgba(255, 255, 255, 0.98);
+      --cursor-color: rgba(0, 170, 255, 0.3);
+      --cursor-dot-color: #00aaff;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -57,6 +60,7 @@
       position: relative; 
       overflow-x: hidden;
       transition: background-color 0.3s ease, color 0.3s ease;
+      cursor: none;
     }
     
     body::before {
@@ -82,9 +86,37 @@
       width: 100%; 
       height: 100%; 
       z-index: -2; 
-      opacity: 0.02; /* Very subtle matrix remains */
+      opacity: 0.02;
       transition: opacity 0.5s ease-in-out; 
       mix-blend-mode: screen;
+    }
+
+    .cursor {
+        width: 40px;
+        height: 40px;
+        border: 2px solid var(--cursor-color);
+        border-radius: 50%;
+        position: fixed;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+        z-index: 9999;
+    }
+    .cursor-dot {
+        width: 8px;
+        height: 8px;
+        background-color: var(--cursor-dot-color);
+        border-radius: 50%;
+        position: fixed;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        transition: transform 0.1s ease-out;
+        z-index: 9998;
+    }
+    .cursor.hover {
+        width: 60px;
+        height: 60px;
+        background-color: var(--cursor-color);
     }
     
     .page-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
@@ -131,7 +163,6 @@
       top: 0; 
       z-index: 100; 
       transition: background-color 0.3s ease, border-color 0.3s ease; 
-      will-change: background-color, border-color; /* Hint for smoother transitions */
     }
     .logo-link { text-decoration: none; }
     .logo { 
@@ -142,7 +173,6 @@
       gap: 10px; 
       color: var(--text-primary);
       transition: color 0.3s ease, transform 0.3s ease;
-      will-change: color, transform;
     }
     .logo:hover {
       transform: scale(1.05);
@@ -160,7 +190,6 @@
       font-weight: 500; 
       transition: color 0.2s ease, text-shadow 0.2s ease; 
       position: relative;
-      will-change: color, text-shadow, transform;
     }
     nav .nav-link::after {
       content: '';
@@ -179,11 +208,7 @@
       transform-origin: bottom left;
     }
     nav .nav-link:hover, nav .nav-link.active { color: var(--text-primary); text-shadow: 0 0 5px var(--accent-green);}
-    #theme-toggle-btn { 
-      background: none; border: none; color: var(--text-secondary); font-size: 20px; cursor: pointer; 
-      transition: color 0.2s ease, transform 0.2s ease; 
-      will-change: color, transform;
-    }
+    #theme-toggle-btn { background: none; border: none; color: var(--text-secondary); font-size: 20px; cursor: pointer; transition: color 0.2s ease, transform 0.2s ease; }
     #theme-toggle-btn:hover { color: var(--text-primary); transform: rotate(15deg); }
     
     #hamburger-btn, #close-nav-btn { display: none; background: none; border: none; font-size: 24px; color: var(--text-primary); cursor: pointer; }
@@ -191,16 +216,10 @@
     
     footer { text-align: center; padding: 20px; color: var(--text-secondary); font-size: 14px; background-color: var(--card-color); border-top: 1px solid var(--border-color); transition: background-color 0.3s ease, border-color 0.3s ease; font-family: 'Roboto Mono', monospace; }
     footer .footer-icons { margin-top: 10px; display: flex; justify-content: center; gap: 20px; font-size: 18px; color: var(--accent-green); }
-    footer .footer-icons i { transition: transform 0.3s ease; will-change: transform; }
+    footer .footer-icons i { transition: transform 0.3s ease; }
     footer .footer-icons i:hover { transform: translateY(-3px) scale(1.1); }
     
-    .container { 
-      background-color: var(--card-color); padding: 30px 40px; border-radius: 16px; border: 1px solid var(--border-color); 
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); 
-      transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; 
-      position: relative; overflow: hidden; 
-      will-change: background-color, border-color, box-shadow, transform, opacity;
-    }
+    .container { background-color: var(--card-color); padding: 30px 40px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease, border-color 0.3s ease; position: relative; overflow: hidden; }
     
     .classified-stamp {
         position: absolute; top: 25px; right: 25px;
@@ -209,7 +228,6 @@
         font-family: 'Roboto Mono', monospace; font-weight: 700;
         font-size: 18px; opacity: 0.7; user-select: none;
         transition: all 0.4s ease;
-        will-change: transform, opacity;
     }
     .classified-stamp.safe { border-color: var(--accent-blue); color: var(--accent-blue); }
     .classified-stamp.danger { border-color: var(--accent-red); color: var(--accent-red); }
@@ -278,7 +296,6 @@
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
         text-align: center;
         transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-        will-change: transform, box-shadow, border-color;
     }
     .feature-box:hover {
         transform: translateY(-5px);
@@ -303,11 +320,8 @@
     }
     
     .run-btn-wrapper { display: flex; justify-content: center; }
-    button#run-btn, button#reset-btn, button.landing-scan-btn { 
-      padding: 15px 30px; font-size: 18px; font-weight: 700; border: none; border-radius: 10px; 
-      transition: all 0.3s ease; font-family: 'Inter', sans-serif; 
-      will-change: transform, box-shadow;
-    }
+    button#run-btn, button#reset-btn, button.landing-scan-btn { padding: 15px 30px; font-size: 18px; font-weight: 700; border: none; border-radius: 10px; transition: all 0.3s ease; font-family: 'Inter', sans-serif; }
+    button#run-btn, button.landing-scan-btn { background: var(--accent-green); color: #000; box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); }
     button#run-btn:hover, button.landing-scan-btn:hover { background-color: #00e67a; transform: translateY(-3px) scale(1.02); box-shadow: 0 0 25px rgba(0, 255, 136, 0.6); }
     
     button#reset-btn.safe-button { background-image: linear-gradient(45deg, #00ff88, #00e67a); color: #000; box-shadow: 0 0 20px rgba(0, 255, 136, 0.4); }
@@ -317,12 +331,12 @@
     
     #results-container { margin-top: 30px; text-align: left; }
     .loader-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 0; animation: page-transition-in 0.5s; }
-    .scanner-circle { width: 60px; height: 60px; border: 4px solid var(--border-color); border-top-color: var(--accent-green); border-radius: 50%; animation: spin 1s linear infinite, pulse 2s ease-in-out infinite; will-change: transform, box-shadow; }
+    .scanner-circle { width: 60px; height: 60px; border: 4px solid var(--border-color); border-top-color: var(--accent-green); border-radius: 50%; animation: spin 1s linear infinite, pulse 2s ease-in-out infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
     @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(0, 255, 138, 0.4); } 50% { box-shadow: 0 0 0 10px rgba(0, 255, 138, 0); } }
     .scanner-text { margin-top: 20px; color: var(--text-secondary); font-weight: 500; letter-spacing: 1px; text-transform: uppercase; }
     
-    .verdict-box { padding: 20px; font-size: 22px; font-weight: 700; border-radius: 12px; border: 2px solid; display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 25px; animation: pulse-border 2s infinite; will-change: transform, box-shadow; }
+    .verdict-box { padding: 20px; font-size: 22px; font-weight: 700; border-radius: 12px; border: 2px solid; display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 25px; animation: pulse-border 2s infinite; }
     .verdict-box.safe { background-color: var(--success-bg); border-color: var(--accent-green); color: var(--accent-green); box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); }
     .verdict-box.danger { background-color: var(--danger-bg); border-color: var(--accent-red); color: var(--accent-red); box-shadow: 0 0 20px rgba(255, 71, 87, 0.4); }
     @keyframes pulse-border { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.01); } }
@@ -331,7 +345,7 @@
     .risk-score strong { color: var(--text-primary); font-weight: 700; font-size: 18px; }
     
     .details-grid { display: grid; grid-template-columns: auto 1fr; gap: 12px 20px; padding: 20px 0; border-top: 1px solid var(--border-color); font-family: 'Roboto Mono', monospace; align-items: baseline; }
-    .details-grid > * { opacity: 0; animation: fade-in-up 0.5s ease forwards; will-change: opacity, transform; }
+    .details-grid > * { opacity: 0; animation: fade-in-up 0.5s ease forwards; }
     @keyframes fade-in-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
     .details-grid .label { color: var(--text-secondary); text-align: right; white-space: pre; font-size: 14px; }
@@ -340,7 +354,7 @@
     .details-grid .value.safe { color: var(--accent-green); }
     .details-grid .value.fingerprint-hash { color: var(--accent-blue); font-size: 13px;}
 
-    .results-footer { text-align: center; padding-top: 30px; animation: fade-in-up 0.5s 0.5s ease forwards; opacity: 0; will-change: opacity, transform; }
+    .results-footer { text-align: center; padding-top: 30px; animation: fade-in-up 0.5s 0.5s ease forwards; opacity: 0; }
     .results-separator {
         width: 60%; margin: 0 auto 25px auto; height: 1px; 
         background-image: linear-gradient(to right, transparent, var(--border-color), transparent);
@@ -351,7 +365,7 @@
         content: '\f1e2';
         font-size: 16px; color: var(--accent-green);
         background: var(--card-color); padding: 0 15px;
-        animation: pulse-icon-safe 2s infinite ease-in-out; will-change: transform, text-shadow;
+        animation: pulse-icon-safe 2s infinite ease-in-out;
     }
     .results-separator.danger::after { color: var(--accent-red); animation-name: pulse-icon-danger; }
     @keyframes pulse-icon-safe { 0%, 100% { transform: scale(1); text-shadow: 0 0 5px var(--accent-green); } 50% { transform: scale(1.1); text-shadow: 0 0 15px var(--accent-green); } }
@@ -374,154 +388,21 @@
     #form-response.success { color: var(--accent-green); }
     #form-response.error { color: var(--accent-red); }
 
-    /* Scroll Animation */
     .scroll-anim {
       opacity: 0;
       transform: translateY(30px);
       transition: opacity var(--scroll-anim-duration) var(--scroll-anim-ease),
                   transform var(--scroll-anim-duration) var(--scroll-anim-ease);
       transition-delay: var(--scroll-anim-delay);
-      will-change: opacity, transform;
     }
     .scroll-anim.is-visible {
       opacity: 1;
       transform: translateY(0);
     }
-    /* End Scroll Animation */
-
-    /* Background Detected Targets for Landing Page */
-    #page-landing .detected-targets-background {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        pointer-events: none;
-        z-index: -1; /* Behind the container, but above canvas bg */
-    }
-
-    .detected-target {
-        position: absolute;
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center;
-        filter: grayscale(100%) brightness(50%) contrast(150%) blur(1px); /* Detected look */
-        opacity: 0.08; /* Subtle presence */
-        transform: rotate(var(--rotate-deg, 0deg)); /* Rotation for flair */
-        animation: glitch-flicker 4s infinite alternate ease-in-out;
-        will-change: transform, opacity, filter;
-    }
-
-    .detected-target::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        /* Creates a red X */
-        background: 
-            linear-gradient(to top left, transparent calc(50% - 1px), var(--accent-red) calc(50% - 1px), var(--accent-red) calc(50% + 1px), transparent calc(50% + 1px)), 
-            linear-gradient(to top right, transparent calc(50% - 1px), var(--accent-red) calc(50% - 1px), var(--accent-red) calc(50% + 1px), transparent calc(50% + 1px));
-        opacity: 0.8; /* Stronger red X */
-        mix-blend-mode: multiply; /* Blends nicely with the filtered image */
-        transform: scale(0.9); /* Slightly smaller X than the image itself */
-        animation: cross-flicker 3s infinite alternate ease-in-out;
-        will-change: opacity, transform;
-    }
-
-    /* Specific positioning and size for each target */
-    .detected-target-iproyal {
-        background-image: url('https://i.imgur.com/Hpq0kXx.png'); /* INTEGRATED */
-        width: 25vw;
-        height: 8.3vw;
-        top: 15%;
-        left: 5%;
-        --rotate-deg: -10deg;
-        animation-delay: 0.5s;
-    }
-    .detected-target-adspower {
-        background-image: url('https://via.placeholder.com/200x50/333/00aaff?text=ADSPOWER'); /* Placeholder */
-        width: 30vw;
-        height: 7.5vw;
-        bottom: 10%;
-        right: 10%;
-        --rotate-deg: 15deg;
-        animation-delay: 1.2s;
-    }
-    .detected-target-nordvpn {
-        background-image: url('https://i.imgur.com/YiVqy4D.png'); /* INTEGRATED */
-        width: 28vw;
-        height: 7.7vw;
-        top: 50%;
-        left: 5%;
-        transform: translateY(-50%) rotate(5deg);
-        --rotate-deg: 5deg;
-        animation-delay: 0.8s;
-    }
-    .detected-target-protonvpn {
-        background-image: url('https://via.placeholder.com/190x50/333/00ffff?text=PROTONVPN'); /* Placeholder */
-        width: 29vw;
-        height: 7.6vw;
-        top: 25%;
-        right: 0%;
-        transform: translateY(-50%) rotate(-8deg);
-        --rotate-deg: -8deg;
-        animation-delay: 1.5s;
-    }
-
-    @keyframes glitch-flicker {
-        0%, 100% { opacity: 0.08; transform: rotate(var(--rotate-deg, 0deg)) scale(1); }
-        50% { opacity: 0.05; transform: rotate(var(--rotate-deg, 0deg)) scale(0.99); filter: grayscale(100%) brightness(40%) contrast(200%) blur(0.5px); }
-        90% { opacity: 0.09; transform: rotate(var(--rotate-deg, 0deg)) scale(1.01); }
-    }
-
-    @keyframes cross-flicker {
-        0%, 100% { opacity: 0.8; }
-        25% { opacity: 0.6; }
-        75% { opacity: 0.9; }
-    }
-    /* End Background Detected Targets */
-
-    /* Mouse Follower Effect */
-    .mouse-follower {
-        position: fixed;
-        width: 150px;
-        height: 150px;
-        background-color: var(--accent-green);
-        border-radius: 50%;
-        pointer-events: none;
-        transform: translate(-50%, -50%);
-        mix-blend-mode: overlay;
-        filter: blur(80px);
-        opacity: 0.1;
-        transition: opacity 0.2s ease-out;
-        z-index: 1; /* Below content, above canvas */
-        will-change: transform, opacity;
-    }
-    body.light-mode .mouse-follower {
-        background-color: var(--accent-blue);
-        mix-blend-mode: multiply;
-        opacity: 0.15;
-    }
-    /* End Mouse Follower Effect */
-
-    /* General Responsiveness */
-    @media (max-width: 1024px) {
-        header { padding: 0 30px; }
-        main { padding: 40px 20px; }
-        .container { padding: 25px 30px; }
-        h1, .static-page h2 { font-size: 2rem; }
-        .feature-box h3 { font-size: 1.4rem; }
-        .feature-box .icon-wrapper { font-size: 3.5rem; }
-
-        .detected-target-iproyal { width: 35vw; height: 11.6vw; top: 10%; left: 3%; }
-        .detected-target-adspower { width: 40vw; height: 10vw; bottom: 8%; right: 5%; }
-        .detected-target-nordvpn { width: 38vw; height: 10.5vw; top: 50%; left: 3%; }
-        .detected-target-protonvpn { width: 40vw; height: 10.5vw; top: 25%; right: 3%; }
-
-        .mouse-follower { width: 100px; height: 100px; filter: blur(60px); }
-    }
 
     @media (max-width: 768px) {
+        body { cursor: auto; }
+        .cursor, .cursor-dot { display: none; }
         header { padding: 0 20px; }
         nav .nav-link, nav #theme-toggle-btn { display: none; }
         #hamburger-btn { display: block; }
@@ -543,37 +424,16 @@
         .feature-box { min-width: unset; }
         .feature-box h3 { font-size: 1.3rem; }
         .feature-box .icon-wrapper { font-size: 3rem; }
-        .classified-stamp { font-size: 16px; padding: 4px 8px; top: 15px; right: 15px; }
-
-        .detected-target-iproyal { width: 45vw; height: 15vw; top: 15%; left: 0%; }
-        .detected-target-adspower { width: 55vw; height: 13.75vw; bottom: 5%; right: 0%; }
-        .detected-target-nordvpn { width: 50vw; height: 13.8vw; top: 50%; left: 0%; }
-        .detected-target-protonvpn { width: 55vw; height: 14.5vw; top: 25%; right: 0%; }
-
-        .mouse-follower { display: none; }
-    }
-
-    @media (max-width: 480px) {
-        h1, .static-page h2 { font-size: 20px; }
-        .tagline { font-size: 14px; }
-        .feature-box { padding: 20px; }
-        .feature-box h3 { font-size: 1.2rem; }
-        button#run-btn, button#reset-btn, button.landing-scan-btn { padding: 12px 25px; font-size: 16px; }
-        .verdict-box { font-size: 18px; padding: 15px; }
-        .details-grid .label, .details-grid .value { font-size: 13px; }
-
-        .detected-target-iproyal { width: 60vw; height: 20vw; top: 10%; left: -5%; }
-        .detected-target-adspower { width: 70vw; height: 17.5vw; bottom: 0%; right: -5%; }
-        .detected-target-nordvpn { width: 65vw; height: 18vw; top: 50%; left: -5%; }
-        .detected-target-protonvpn { width: 70vw; height: 18.4vw; top: 25%; right: -5%; }
     }
   </style>
 </head>
 <body>
 
+<div class="cursor"></div>
+<div class="cursor-dot"></div>
+
 <canvas id="matrix-bg"></canvas>
 <div id="background-watermark"></div>
-<div class="mouse-follower"></div>
 
 <div class="page-wrapper">
   <header class="scroll-anim">
@@ -597,15 +457,6 @@
 
   <main>
     <div id="page-landing" class="page">
-      <!-- Detected Targets Background -->
-      <div class="detected-targets-background">
-        <div class="detected-target detected-target-iproyal"></div>
-        <div class="detected-target detected-target-adspower"></div>
-        <div class="detected-target detected-target-nordvpn"></div>
-        <div class="detected-target detected-target-protonvpn"></div>
-      </div>
-      <!-- End Detected Targets Background -->
-
       <div class="container scroll-anim">
         <div class="classified-stamp">CLASSIFIED</div>
         <h1>SpectraScan: Your Guardian Against Digital Disguises</h1>
@@ -630,6 +481,7 @@
       </div>
     </div>
 
+    <!-- Original Catcher Page, now renamed to Checker -->
     <div id="page-checker" class="page">
       <div class="container scroll-anim" id="checker-container">
         <div class="classified-stamp">CLASSIFIED</div>
@@ -694,9 +546,10 @@
 </div>
 
 <script>
+// --- New Professional UI/Animation Script ---
 document.addEventListener('DOMContentLoaded', () => {
 
-    /* --- Scroll-Triggered Animations --- */
+    // 1. Scroll-Triggered Animations
     const scrollObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -710,45 +563,22 @@ document.addEventListener('DOMContentLoaded', () => {
         scrollObserver.observe(el);
     });
 
-    /* --- Mouse Follower Effect --- */
-    const mouseFollower = document.querySelector('.mouse-follower');
+    // 2. Custom Cursor Animation
+    const cursor = document.querySelector('.cursor');
+    const cursorDot = document.querySelector('.cursor-dot');
+    const interactiveElements = document.querySelectorAll('a, button, input, textarea, .feature-box');
 
-    if (mouseFollower) { /* Ensure element exists and only run on desktop */
-        let mouseX = 0;
-        let mouseY = 0;
-        let followerX = 0;
-        let followerY = 0;
-        const speed = 0.1; /* Adjust for responsiveness */
+    window.addEventListener('mousemove', e => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+        cursorDot.style.left = e.clientX + 'px';
+        cursorDot.style.top = e.clientY + 'px';
+    });
 
-        function animateFollower() {
-            followerX += (mouseX - followerX) * speed;
-            followerY += (mouseY - followerY) * speed;
-
-            mouseFollower.style.transform = `translate(${followerX}px, ${followerY}px) translate(-50%, -50%)`;
-            requestAnimationFrame(animateFollower);
-        }
-
-        window.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-        });
-
-        /* Start the animation loop only on screens larger than 768px */
-        if (window.innerWidth > 768) {
-            animateFollower();
-        } else {
-            mouseFollower.style.display = 'none'; /* Hide on small screens */
-        }
-
-        /* Re-enable/disable on resize for responsiveness */
-        window.addEventListener('resize', () => {
-            if (window.innerWidth <= 768) {
-                mouseFollower.style.display = 'none';
-            } else {
-                mouseFollower.style.display = 'block';
-            }
-        });
-    }
+    interactiveElements.forEach(el => {
+        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    });
 });
 </script>
 
@@ -757,12 +587,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const hamburgerBtn = document.getElementById('hamburger-btn'); 
   const closeNavBtn = document.getElementById('close-nav-btn'); 
   const mainNav = document.getElementById('main-nav');
-  const body = document.body; /* Defined globally for background state changes */
-
   hamburgerBtn.addEventListener('click', () => mainNav.classList.add('is-open'));
   closeNavBtn.addEventListener('click', () => mainNav.classList.remove('is-open'));
   
   const themeToggleBtn = document.getElementById('theme-toggle-btn'); 
+  const body = document.body; 
   
   function applySavedTheme() { 
     const savedTheme = localStorage.getItem('theme'); 
@@ -780,12 +609,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const isLight = body.classList.contains('light-mode');
     localStorage.setItem('theme', isLight ? 'light' : 'dark');
     themeToggleBtn.innerHTML = isLight ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
-    setBackgroundState('default'); /* Re-apply background based on new theme */
+    setBackgroundState('default');
   });
   
+  // Updated pageContent mapping
   const pageContent = { 
       '/': 'page-landing', 
-      '/checker': 'page-checker', 
+      '/checker': 'page-checker', // New mapping for checker
       '/faq': 'page-faq', 
       '/privacy': 'page-privacy', 
       '/contact': 'page-contact' 
@@ -795,30 +625,27 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
     const pageEl = document.getElementById(pageId);
     if(pageEl) pageEl.classList.add('active');
-
     document.querySelectorAll('.nav-link').forEach(link => {
       link.classList.remove('active');
       const linkPath = link.getAttribute('href');
       const currentPath = window.location.pathname;
       
+      // Special handling for root '/' and '/checker' link
       if (linkPath === currentPath || 
           (currentPath === '/' && linkPath === '/') || 
           (currentPath === '/checker' && linkPath === '/checker')) {
         link.classList.add('active');
       }
     });
-
+    // Ensure the checker page resets when navigated to
     if (pageId === 'page-checker') {
         resetChecker(); 
-    } else {
-        /* Ensure background is reset if navigating away from checker */
-        setBackgroundState('default'); 
     }
   }
 
   const router = () => { 
     const path = window.location.pathname; 
-    const pageId = pageContent[path] || 'page-landing';
+    const pageId = pageContent[path] || 'page-landing'; // Default to landing page
     showPageContent(pageId); 
   };
   
@@ -832,6 +659,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Function to navigate from landing page to checker
   function navigateToChecker() {
       history.pushState(null, '', '/checker');
       router();
@@ -847,14 +675,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  /* --- CHECKER SCRIPT --- */
+  /* --- CHECKER SCRIPT (formerly CATCHER) --- */
+  // Renamed resetCatcher to resetChecker
   function resetChecker() { 
       const intro = document.getElementById('intro-content');
+      // Ensure intro is part of page-checker's container
       if (intro && intro.closest('#page-checker')) intro.style.display = 'block';
       const resultsContainer = document.getElementById('results-container');
       if (resultsContainer && resultsContainer.closest('#page-checker')) resultsContainer.innerHTML = ''; 
-      setBackgroundState('default');
-      const stamp = document.querySelector('#page-checker .classified-stamp');
+      setBackgroundState('default'); // Reset background to default for the checker page
+      const stamp = document.querySelector('#page-checker .classified-stamp'); // Target stamp specifically for checker page
       if(stamp) {
         stamp.classList.remove('safe', 'danger');
         stamp.textContent = "CLASSIFIED";
@@ -863,59 +693,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.runDetection = async function() {
     const intro = document.getElementById('intro-content');
-    if (intro && intro.closest('#page-checker')) intro.style.display = 'none';
+    if (intro && intro.closest('#page-checker')) intro.style.display = 'none'; // Ensure it's the checker's intro
     const resultsEl = document.getElementById('results-container');
     resultsEl.innerHTML = `<div class="loader-wrapper"><div class="scanner-circle"></div><p class="scanner-text">INTERROGATING BROWSER...</p></div>`;
     const minDelay = new Promise(resolve => setTimeout(resolve, 2000));
     
+    // START: Refactored Browser Detection Logic
     let riskScore = 0;
     const riskFactors = [];
+    // Flags to capture specific browser-related findings
     const browserFlags = {
         brave: false,
         tor: false,
         opera: false,
-        heuristicsSpoofing: false,
+        heuristicsSpoofing: false, // General spoofing signs (e.g., webdriver, weird UA, resolutions)
         canvasRandomization: false,
-        webglEmulation: false,
-        isProxyIP: false
+        webglEmulation: false
     };
     const TARGET_CHROME_VERSION = "138"; 
 
-    /* IP Check */
+    // --- IP Check ---
     try {
         const resp = await fetch('/api/ip-check', { cache: 'no-store' });
         const ipData = await resp.json();
         if (ipData.error) throw new Error("IP API Error");
         riskFactors.push({ label: 'IP Address', value: ipData.ip, isBad: false, alwaysShow: true });
         riskFactors.push({ label: 'VPN/Proxy', value: ipData.status, isBad: ipData.isProxy, alwaysShow: true });
-        if (ipData.isProxy) {
-            riskScore += 3;
-            browserFlags.isProxyIP = true;
-        }
-        if (ipData.status.includes('TOR')) riskScore += 5;
+        if (ipData.isProxy) riskScore += 3;
+        if (ipData.status.includes('TOR')) riskScore += 5; // TOR adds significant risk
     } catch (e) {
-        riskScore += 1;
+        riskScore += 1; // Minor penalty for failed IP lookup
         riskFactors.push({ label: 'IP/VPN Check', value: "Error during lookup", isBad: true, alwaysShow: true });
     }
 
-    /* Browser Specific Detections */
+    // --- Browser Specific Detections ---
     const ua = navigator.userAgent;
     const majorChromeVersion = (ua.match(/Chrome\/(\d+)/) || [])[1];
     
     if (navigator.brave && await navigator.brave.isBrave()) {
-        riskScore += 3;
+        riskScore += 3; // Brave adds risk
         browserFlags.brave = true;
     }
-    if (getCanvasEntropy() === 2001009873) { /* Known Tor Browser canvas entropy */
-        riskScore += 5;
+    if (getCanvasEntropy() === 2001009873) { // Known Tor Browser canvas entropy
+        riskScore += 5; // Tor adds significant risk
         browserFlags.tor = true;
     }
     if (typeof window.opr !== 'undefined' || ua.includes("OPR")) {
-        riskScore += 2;
+        riskScore += 2; // Opera adds slight risk
         browserFlags.opera = true;
     }
 
-    /* Heuristics-based Spoofing Detection */
+    // --- Heuristics-based Spoofing Detection ---
     let currentHeuristicsScore = 0;
     if (!ua.includes("Chrome") || majorChromeVersion !== TARGET_CHROME_VERSION) { currentHeuristicsScore += 4; }
     if (navigator.webdriver) { currentHeuristicsScore += 4; }
@@ -926,71 +754,67 @@ document.addEventListener('DOMContentLoaded', () => {
     if (majorChromeVersion === TARGET_CHROME_VERSION && !proResolutions.includes(currentRes)) { currentHeuristicsScore += 2; }
     
     riskScore += currentHeuristicsScore;
-    if (currentHeuristicsScore >= 4) {
+    if (currentHeuristicsScore >= 4) { // If heuristics indicate strong spoofing
         browserFlags.heuristicsSpoofing = true;
     }
     
-    /* Canvas Fingerprint Randomization */
+    // --- Canvas Fingerprint Randomization ---
     const canvasHash1 = getCanvasEntropy();
-    await new Promise(resolve => setTimeout(resolve, 30));
+    await new Promise(resolve => setTimeout(resolve, 30)); // Small delay to check for randomization
     const canvasHash2 = getCanvasEntropy();
     if (canvasHash1 !== canvasHash2) {
         riskScore += 2;
         browserFlags.canvasRandomization = true;
     }
 
-    /* WebGL Emulation */
+    // --- WebGL Emulation ---
     const renderer = getWebGLInfo().renderer.toLowerCase();
     if (renderer.includes("swiftshader") || renderer.includes("llvmpipe")) {
         riskScore += 3;
         browserFlags.webglEmulation = true;
     }
 
-    /* Determine overall verdict based on total riskScore */
+    // --- Determine overall verdict based on total riskScore ---
     const isBadBrowserOverall = riskScore >= 3; 
     setBackgroundState(isBadBrowserOverall ? 'danger' : 'safe');
     
-    /* Construct the 'Browser' risk factor message with CORRECTED logic */
-    let finalBrowserLabelValue = 'Antidetect Browser Detected';
-    let finalBrowserLabelIsBad = false;
+    // --- Construct the 'Browser' risk factor message based on specific flags and overall verdict ---
+    let browserLabelValue = 'Normal';
+    let browserLabelIsBad = false;
 
-    /* Calculate risk score contribution from browser-only factors */
-    let browserRiskContribution = 0;
-    if (browserFlags.heuristicsSpoofing) browserRiskContribution += 4;
-    if (browserFlags.canvasRandomization) browserRiskContribution += 2;
-    if (browserFlags.webglEmulation) browserRiskContribution += 3;
-    if (browserFlags.tor) browserRiskContribution += 5;
-    if (browserFlags.brave) browserRiskContribution += 3;
-    if (browserFlags.opera) browserRiskContribution += 2;
-
-    /* Order of checks for the final label: most specific/severe fingerprint issues first */
     if (browserFlags.heuristicsSpoofing || browserFlags.canvasRandomization || browserFlags.webglEmulation) {
-        finalBrowserLabelValue = 'Antidetect Browser Detected';
-        finalBrowserLabelIsBad = true;
+        browserLabelValue = 'Antidetect Browser Detected';
+        browserLabelIsBad = true;
     } else if (browserFlags.tor) {
-        finalBrowserLabelValue = 'Tor Browser (High Risk)';
-        finalBrowserLabelIsBad = true;
+        browserLabelValue = 'Tor Browser (High Risk)';
+        browserLabelIsBad = true;
     } else if (browserFlags.brave) {
-        finalBrowserLabelValue = 'Brave Browser';
-        if (isBadBrowserOverall && riskScore > 3 && browserRiskContribution > 3) {
-             finalBrowserLabelValue += ' (Antidetect Tendencies)';
-             finalBrowserLabelIsBad = true;
+        browserLabelValue = 'Brave Browser';
+        if (isBadBrowserOverall) {
+            browserLabelValue += ' (Antidetect Tendencies)';
+            browserLabelIsBad = true;
+        } else {
+            // If Brave is detected but overall risk is low, don't mark as bad in value class
+            browserLabelIsBad = false; 
         }
     } else if (browserFlags.opera) {
-        finalBrowserLabelValue = 'Opera Browser';
-        if (isBadBrowserOverall && riskScore > 2 && browserRiskContribution > 2) {
-             finalBrowserLabelValue += ' (Suspicious)';
-             finalBrowserLabelIsBad = true;
+        browserLabelValue = 'Opera Browser';
+        if (isBadBrowserOverall) {
+            browserLabelValue += ' (Suspicious)';
+            browserLabelIsBad = true;
+        } else {
+            browserLabelIsBad = false;
         }
-    } else if (isBadBrowserOverall && browserFlags.isProxyIP && browserRiskContribution < 3) {
-        finalBrowserLabelValue = 'Suspicious Profile (IP Related)';
-        finalBrowserLabelIsBad = true;
-    } else if (isBadBrowserOverall && browserRiskContribution >= 3) {
-        finalBrowserLabelValue = 'Suspicious Profile (Antidetect Characteristics)';
-        finalBrowserLabelIsBad = true;
+    } else if (isBadBrowserOverall) {
+        // If overall risk is high due to other factors (e.g., IP/VPN),
+        // but no specific privacy browser or strong fingerprint spoofing was detected,
+        // then the browser itself is part of a "Suspicious Profile".
+        browserLabelValue = 'Suspicious Profile (Antidetect Characteristics)';
+        browserLabelIsBad = true;
     }
-
-    riskFactors.push({ label: 'Browser', value: finalBrowserLabelValue, isBad: finalBrowserLabelIsBad, alwaysShow: true });
+    // Add the 'Browser' risk factor to the display list
+    riskFactors.push({ label: 'Browser', value: browserLabelValue, isBad: browserLabelIsBad, alwaysShow: true });
+    // END: Refactored Browser Detection Logic
 
     const verdict = isBadBrowserOverall ? "High Risk Profile Detected" : "Profile Appears Normal";
     
@@ -1096,116 +920,67 @@ document.addEventListener('DOMContentLoaded', () => {
   /* --- DYNAMIC BACKGROUND SCRIPT --- */
   const canvas = document.getElementById('matrix-bg');
   const ctx = canvas.getContext('2d');
-  let animationFrameId; /* To store the requestAnimationFrame ID for stopping the loop */
+  let backgroundInterval;
 
   const setupCanvas = () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    /* Re-call setBackgroundState to restart animation with new dimensions */
-    setBackgroundState(body.classList.contains('danger-mode') ? 'danger' : (body.classList.contains('safe-mode') ? 'safe' : 'default'));
+    setBackgroundState('default');
   };
 
-  const drawMatrixFrame = (color, fontSize, drops, characters) => {
+  const drawMatrix = (color, speed, charSet) => {
+    const characters = charSet;
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
     const bg = body.classList.contains('light-mode') ? 'rgba(244, 244, 248, 0.05)' : 'rgba(13, 13, 18, 0.05)';
-    ctx.fillStyle = bg;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = color;
-    ctx.font = fontSize + 'px Roboto Mono';
-
-    for (let i = 0; i < drops.length; i++) {
-        const text = characters[Math.floor(Math.random() * characters.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-        drops[i]++;
-    }
-    animationFrameId = requestAnimationFrame(() => drawMatrixFrame(color, fontSize, drops, characters));
-  };
-
-  let scanLineOffset = 0;
-  let scanDirection = 1; /* 1 for horizontal, 0 for vertical */
-  const drawScanningLinesFrame = () => {
-    const isLight = body.classList.contains('light-mode');
-    const baseColor = isLight ? 'rgba(0, 170, 255, 0.2)' : 'rgba(0, 255, 136, 0.15)'; /* Accent blue for light, green for dark */
-    const secondaryColor = isLight ? 'rgba(0, 170, 255, 0.05)' : 'rgba(0, 255, 136, 0.05)';
-    const fadeColor = body.classList.contains('light-mode') ? 'rgba(244, 244, 248, 0.08)' : 'rgba(13, 13, 18, 0.08)';
-
-    ctx.fillStyle = fadeColor; /* Faintly clear old frames to create trails */
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.strokeStyle = baseColor;
-    ctx.lineWidth = 1;
-
-    const scanSpeed = 1.5; /* Pixels per frame */
-    const scanWidth = 100; /* Width of the "scan" area */
-
-    if (scanDirection === 1) { /* Horizontal scan */
-        scanLineOffset = (scanLineOffset + scanSpeed);
-        if (scanLineOffset > canvas.width + scanWidth) scanLineOffset = -scanWidth; /* Reset position */
-
-        for (let i = 0; i < canvas.height; i += 20) {
-            const lineX = scanLineOffset + (Math.sin(i * 0.1 + scanLineOffset * 0.01) * 10); /* Subtle wavy effect */
-            ctx.beginPath();
-            ctx.moveTo(lineX, i);
-            ctx.lineTo(lineX + 50, i); /* Shorter lines in horizontal direction */
-            ctx.stroke();
-
-            ctx.strokeStyle = secondaryColor;
-            ctx.beginPath();
-            ctx.moveTo(lineX - 10, i);
-            ctx.lineTo(lineX + 40, i);
-            ctx.stroke();
+    return setInterval(() => {
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = color;
+        ctx.font = fontSize + 'px Roboto Mono';
+        for (let i = 0; i < drops.length; i++) {
+            const text = characters[Math.floor(Math.random() * characters.length)];
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            drops[i]++;
         }
-    } else { /* Vertical scan (alternative, not currently used but good to have) */
-        scanLineOffset = (scanLineOffset + scanSpeed);
-        if (scanLineOffset > canvas.height + scanWidth) scanLineOffset = -scanWidth;
-
-        for (let i = 0; i < canvas.width; i += 20) {
-            const lineY = scanLineOffset + (Math.sin(i * 0.1 + scanLineOffset * 0.01) * 10);
-            ctx.beginPath();
-            ctx.moveTo(i, lineY);
-            ctx.lineTo(i, lineY + 50);
-            ctx.stroke();
-
-            ctx.strokeStyle = secondaryColor;
-            ctx.beginPath();
-            ctx.moveTo(i, lineY - 10);
-            ctx.lineTo(i, lineY + 40);
-            ctx.stroke();
+    }, speed);
+  }
+  
+  let gridOffset = 0;
+  const drawBlueGrid = () => {
+    const gridColor = body.classList.contains('light-mode') ? 'rgba(0, 170, 255, 0.2)' : 'rgba(0, 170, 255, 0.15)';
+    return setInterval(() => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeStyle = gridColor;
+        ctx.lineWidth = 1;
+        gridOffset = (gridOffset + 0.3) % 40;
+        for (let x = -gridOffset; x < canvas.width; x += 40) {
+            ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
         }
-    }
-    animationFrameId = requestAnimationFrame(drawScanningLinesFrame);
-  };
+        for (let y = -gridOffset; y < canvas.height; y += 40) {
+            ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+        }
+    }, 50);
+  }
 
   function setBackgroundState(state) {
       const watermark = document.getElementById('background-watermark');
+      // Target the classified stamp based on the active page
       const currentPath = window.location.pathname;
-      const currentPageId = pageContent[currentPath] || 'page-landing';
+      const currentPageId = pageContent[currentPath] || 'page-landing'; // Get the actual ID of the active page div
       const currentPageElement = document.getElementById(currentPageId);
       const classifiedStamp = currentPageElement ? currentPageElement.querySelector('.classified-stamp') : null;
 
-      /* Stop any ongoing animation frame loop */
-      if (animationFrameId) {
-          cancelAnimationFrame(animationFrameId);
-      }
+      body.classList.remove('safe-mode', 'danger-mode');
+      clearInterval(backgroundInterval);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
       const isLight = body.classList.contains('light-mode');
 
-      /* Hide/show detected target images based on page */
-      const detectedTargetsBg = document.querySelector('#page-landing .detected-targets-background');
-      if (detectedTargetsBg) {
-          detectedTargetsBg.style.display = (currentPageId === 'page-landing') ? 'block' : 'none';
-      }
-
-      body.classList.remove('safe-mode', 'danger-mode');
-
       if (state === 'danger') {
-          const matrixColor = isLight ? 'rgba(255, 71, 87, 0.4)' : 'rgba(255, 71, 87, 0.7)';
-          const fontSize = 14;
-          const columns = canvas.width / fontSize;
-          const drops = Array(Math.floor(columns)).fill(1);
-          animationFrameId = requestAnimationFrame(() => drawMatrixFrame(matrixColor, fontSize, drops, '01'));
-
+          backgroundInterval = drawMatrix(isLight ? 'rgba(255, 71, 87, 0.4)' : 'rgba(255, 71, 87, 0.7)', 25, '01');
           watermark.setAttribute('data-text', 'COMPROMISED');
           body.classList.add('danger-mode');
           if (classifiedStamp) {
@@ -1214,7 +989,7 @@ document.addEventListener('DOMContentLoaded', () => {
               classifiedStamp.classList.remove('safe');
           }
       } else if (state === 'safe') {
-          animationFrameId = requestAnimationFrame(drawScanningLinesFrame);
+          backgroundInterval = isLight ? drawMatrix('rgba(0, 0, 0, 0.1)', 50, '01') : drawBlueGrid();
           watermark.setAttribute('data-text', 'UNCLASSIFIED');
           body.classList.add('safe-mode');
           if (classifiedStamp) {
@@ -1222,8 +997,8 @@ document.addEventListener('DOMContentLoaded', () => {
               classifiedStamp.classList.add('safe');
               classifiedStamp.classList.remove('danger');
           }
-      } else { /* default */
-          animationFrameId = requestAnimationFrame(drawScanningLinesFrame);
+      } else { // default
+          backgroundInterval = isLight ? drawMatrix('rgba(0, 0, 0, 0.1)', 50, '01') : drawMatrix('rgba(0, 255, 136, 0.7)', 40, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
           watermark.setAttribute('data-text', '');
           if(classifiedStamp) {
               classifiedStamp.textContent = "CLASSIFIED";
@@ -1232,13 +1007,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
   }
 
-  /* Debounce resize events for performance */
-  let resizeTimer;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(setupCanvas, 250); /* Wait 250ms after resizing stops */
-  });
-  
+  window.addEventListener('resize', setupCanvas);
   document.addEventListener('DOMContentLoaded', setupCanvas);
 </script>
 
