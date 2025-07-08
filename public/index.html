@@ -329,6 +329,7 @@
     const detectionPromise = (async () => {
         let riskScore = 0;
         const riskFactors = [];
+        let verdict = "Profile Appears Normal";
         const TARGET_CHROME_VERSION = "138"; 
 
         // --- Server-Side IP Check ---
@@ -339,6 +340,11 @@
             riskFactors.push({ label: 'IP Address', value: ipData.ip, isBad: false, alwaysShow: true });
             riskFactors.push({ label: 'VPN/Proxy', value: ipData.status, isBad: ipData.isProxy, alwaysShow: true });
             if (ipData.isProxy) riskScore += 3;
+            if (ipData.status.includes('TOR')) {
+                riskScore += 5;
+                verdict = "Tor Anonymizer Detected";
+                riskFactors.push({ label: 'Browser Type', value: 'Tor Network', isBad: true });
+            }
         } catch (e) {
             riskScore += 1;
             riskFactors.push({ label: 'IP/VPN Check', value: "Error during lookup", isBad: true, alwaysShow: true });
@@ -348,31 +354,46 @@
         const ua = navigator.userAgent;
         const majorChromeVersion = (ua.match(/Chrome\/(\d+)/) || [])[1];
 
+        // 1. HIDDEN: Strict Browser Version Check
         if (!ua.includes("Chrome") || majorChromeVersion !== TARGET_CHROME_VERSION) {
             riskScore += 4;
-            riskFactors.push({ label: 'HIDDEN_Version', value: `Mismatch`, isBad: true });
         }
+        // 2. EXPLICIT: Brave, Opera, Tor Client Detection
+        if (navigator.brave && await navigator.brave.isBrave()) {
+            riskScore += 2;
+            verdict = "Privacy Browser Detected";
+            riskFactors.push({ label: 'Browser Type', value: 'Brave', isBad: true });
+        }
+        if (typeof window.opr !== 'undefined' || ua.includes("OPR")) {
+             riskScore += 1;
+             verdict = "Proxy-Enabled Browser Detected";
+             riskFactors.push({ label: 'Browser Type', value: 'Opera', isBad: true });
+        }
+        if (getCanvasEntropy() === 2001009873) { // Hash for blank canvas from Tor
+             riskScore += 5;
+             verdict = "Tor Anonymizer Detected";
+             riskFactors.push({ label: 'Browser Type', value: 'Tor Client', isBad: true });
+        }
+
+        // 3. HIDDEN: Automation
         if (navigator.webdriver) {
             riskScore += 4;
-            riskFactors.push({ label: 'Automation', value: 'WebDriver Active', isBad: true });
         }
+        // 4. HIDDEN: Plugin count
         if (navigator.plugins && navigator.plugins.length === 5) {
             riskScore += 1;
-            riskFactors.push({ label: 'HIDDEN_Plugins', value: 'Suspicious count', isBad: true });
         }
-        
+        // 5. HIDDEN: Profile Anomaly (Resolution vs. UA)
         const proResolutions = ['1920x1080', '2560x1440', '3840x2160'];
         const currentRes = `${window.screen.width}x${window.screen.height}`;
         if (majorChromeVersion === TARGET_CHROME_VERSION && !proResolutions.includes(currentRes)) {
             riskScore += 2;
-            riskFactors.push({ label: 'HIDDEN_Profile_Anomaly', value: 'Inconsistent fingerprint signature', isBad: true });
         }
-
+        // 6. HIDDEN: Language Anomaly
         if (navigator.languages && navigator.languages.length === 4) {
             riskScore += 2;
-            riskFactors.push({ label: 'HIDDEN_Language_Anomaly', value: 'Anomalous language settings', isBad: true });
         }
-
+        // 7. EXPLICIT: Canvas Randomization
         const canvasHash1 = getCanvasEntropy();
         await new Promise(resolve => setTimeout(resolve, 30));
         const canvasHash2 = getCanvasEntropy();
@@ -380,7 +401,7 @@
             riskScore += 2;
             riskFactors.push({ label: 'Canvas', value: 'Randomized', isBad: true });
         }
-
+        // 8. EXPLICIT: WebGL Software Emulation
         const renderer = getWebGLInfo().renderer.toLowerCase();
         if (renderer.includes("swiftshader") || renderer.includes("llvmpipe")) {
              riskScore += 3;
@@ -393,15 +414,13 @@
 
         // --- Build Results ---
         const isBadBrowser = riskScore >= 3;
+        if(isBadBrowser && verdict === "Profile Appears Normal") { verdict = "High Risk Profile Detected"; }
         setBackgroundState(isBadBrowser ? 'danger' : 'safe');
         
-        let resultsHTML = `<div class="verdict-box ${isBadBrowser ? 'danger' : 'safe'}"><i class="fa-solid ${isBadBrowser ? 'fa-user-secret' : 'fa-user-check'} fa-lg"></i><span>${isBadBrowser ? "High Risk Profile Detected" : "Profile Appears Normal"}</span></div>`;
+        let resultsHTML = `<div class="verdict-box ${isBadBrowser ? 'danger' : 'safe'}"><i class="fa-solid ${isBadBrowser ? 'fa-user-secret' : 'fa-user-check'} fa-lg"></i><span>${verdict}</span></div>`;
         resultsHTML += `<div class="risk-score">Threat Score: <strong>${riskScore}</strong></div>`;
         
-        const displayableRiskFactors = riskFactors.filter(factor =>
-             (factor.isBad || factor.alwaysShow) &&
-             !factor.label.startsWith('HIDDEN_') // Hide all stealth checks
-        );
+        const displayableRiskFactors = riskFactors.filter(factor => (factor.isBad && factor.label !== 'Browser Type') || factor.alwaysShow);
 
         let detailsGridHTML = displayableRiskFactors.map((factor, index) => {
             let valueClass = 'value';
@@ -430,7 +449,7 @@
     }
   }
   
-  function getCanvasEntropy() {try {const c=document.createElement('canvas');const ctx=c.getContext('2d');ctx.textBaseline="top";ctx.font="14px 'Arial'";ctx.fillText("BrowserFP",2,2);return hashString(c.toDataURL())}catch{return null}}
+  function getCanvasEntropy() {try {const c=document.createElement('canvas'); const ctx=c.getContext('2d'); ctx.fillStyle="rgb(255,255,255)"; ctx.fillRect(0,0,c.width,c.height); c.width=200;c.height=50;ctx.textBaseline="top";ctx.font="14px 'Arial'";ctx.fillText("BrowserFP",2,2);return hashString(c.toDataURL())}catch{return null}}
   function hashString(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0}return h}
   function getWebGLInfo(){try{const c=document.createElement('canvas');const gl=c.getContext('webgl')||c.getContext('experimental-webgl');if(!gl){return{vendor:"N/A",renderer:"N/A"}}const dbg=gl.getExtension('WEBGL_debug_renderer_info');return{vendor:gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL),renderer:gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)}}catch{return{vendor:"N/A",renderer:"N/A"}}}
 
