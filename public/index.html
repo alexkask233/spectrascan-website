@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🛡️ SpectraScan - Unmask Your Digital Ghost</title>
+  <title>🛡️ SpectraScan - Expose Fraud & Antidetect Browsers</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20384%20512'%3E%3Cpath%20fill='%23000000'%20d='M256%200C114.6%200%200%20114.6%200%20256s114.6%20256%20256%20256s256-114.6%20256-256S397.4%200%20256%200zM192%20160a32%2032%200%201%201-64%200%2032%2032%200%201%201%2064%200zm128%200a32%2032%200%201%201-64%200%2032%2032%200%201%201%2064%200zM160%20336H352c8.8%200%2016%207.2%2016%2016s-7.2%2016-16%2016H160c-8.8%200-16-7.2-16-16s7.2-16%2016-16z'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,37 +19,15 @@
     body.light-mode {
       --bg-color: #f4f4f8; --card-color: #ffffff; --border-color: #e0e0e6; --text-primary: #121217; --text-secondary: #66666e; --success-bg: rgba(0, 200, 110, 0.1); --danger-bg: rgba(255, 71, 87, 0.1); --bg-grid-color: rgba(220, 224, 230, 0.8);
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    
     html { height: 100%; }
     body { height: 100%; background-color: var(--bg-color); color: var(--text-primary); font-family: 'Inter', sans-serif; line-height: 1.6; position: relative; }
-    
     #matrix-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; transition: opacity 0.5s ease-in-out; }
-    
     .page-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
-    main { flex-grow: 1; display: flex; justify-content: center; align-items: center; padding: 40px 20px; }
-
-    #background-watermark {
-        content: attr(data-text); position: fixed; top: 50%; left: 50%;
-        transform: translate(-50%, -50%) rotate(-15deg);
-        font-size: 15vw; font-family: 'Roboto Mono', monospace; font-weight: 700;
-        opacity: 0; pointer-events: none; z-index: -1; transition: opacity 0.5s ease;
-    }
-    body.danger-mode #background-watermark {
-        color: var(--accent-red); text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-        opacity: 0.1; animation: watermark-flicker 2s infinite alternate;
-    }
-    body.safe-mode #background-watermark {
-        color: var(--accent-blue); text-shadow: 0 0 10px rgba(0, 170, 255, 0.5);
-        opacity: 0.05; animation: watermark-flicker 4s infinite alternate;
-    }
-    @keyframes watermark-flicker { 0%, 90% { opacity: 0.1; } 95% { opacity: 0.05; } 100% { opacity: 0.12; } }
-
-    .page { display: none; width: 100%; max-width: 700px; }
+    main { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px 20px; }
+    .page { display: none; width: 100%; max-width: 800px; }
     .page.active { display: block; animation: page-transition-in 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
     @keyframes page-transition-in { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
-
     header { background-color: rgba(18, 18, 23, 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); padding: 0 40px; display: flex; justify-content: space-between; align-items: center; height: 70px; position: sticky; top: 0; z-index: 100; transition: background-color 0.3s ease, border-color 0.3s ease; }
     .logo-link { text-decoration: none; }
     .logo { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 10px; color: var(--text-primary); }
@@ -60,97 +38,44 @@
     #theme-toggle-btn { background: none; border: none; color: var(--text-secondary); font-size: 20px; cursor: pointer; transition: color 0.2s ease, transform 0.2s ease; }
     #hamburger-btn, #close-nav-btn { display: none; background: none; border: none; font-size: 24px; color: var(--text-primary); cursor: pointer; }
     #close-nav-btn { position: absolute; top: 20px; right: 20px; }
-    
     footer { text-align: center; padding: 20px; color: var(--text-secondary); font-size: 14px; background-color: var(--card-color); border-top: 1px solid var(--border-color); transition: background-color 0.3s ease, border-color 0.3s ease; font-family: 'Roboto Mono', monospace; }
     footer .footer-icons { margin-top: 10px; display: flex; justify-content: center; gap: 20px; font-size: 18px; color: var(--accent-green); }
-    
     .container { background-color: var(--card-color); padding: 30px 40px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease, border-color 0.3s ease; position: relative; overflow: hidden; }
-    
-    .classified-stamp {
-        position: absolute; top: 25px; right: 25px;
-        transform: rotate(10deg); color: var(--accent-red);
-        border: 3px solid var(--accent-red); padding: 5px 10px;
-        font-family: 'Roboto Mono', monospace; font-weight: 700;
-        font-size: 18px; opacity: 0.7; user-select: none;
-        transition: all 0.4s ease;
-    }
-    .classified-stamp.safe { border-color: var(--accent-blue); color: var(--accent-blue); }
-    .classified-stamp.danger { border-color: var(--accent-red); color: var(--accent-red); }
+    h1, .static-page h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; text-align: center; color: var(--text-primary); position: relative; }
+    .sub-headline { font-family: 'Roboto Mono', monospace; font-size: 16px; color: var(--text-secondary); text-align: center; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; }
+    .sub-headline span { color: var(--accent-green); }
+    .run-btn-wrapper { margin-top: 40px; text-align:center; }
+    button#run-btn { background: var(--accent-green); color: #000; box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); padding: 15px 35px; font-size: 18px; font-weight: 700; border: none; border-radius: 10px; animation: pulse-glow 2s infinite alternate; cursor:pointer; }
+    button#run-btn:hover { background-color: #00e67a; transform: translateY(-3px) scale(1.02); box-shadow: 0 0 25px rgba(0, 255, 136, 0.6); animation-play-state: paused; }
+    @keyframes pulse-glow { from { box-shadow: 0 0 10px rgba(0, 255, 136, 0.3); } to { box-shadow: 0 0 25px rgba(0, 255, 136, 0.7); } }
 
-    h1, .static-page h2 {
-        font-size: 2.2rem; font-weight: 700; margin-bottom: 10px; text-align: center; color: var(--text-primary);
-        position: relative; animation: text-shadow-flicker 4s linear infinite;
-    }
-    @keyframes text-shadow-flicker {
-        0%, 100% { text-shadow: 2px 2px 0 var(--accent-green), -2px -2px 0 var(--accent-red); }
-        25% { text-shadow: -2px 2px 0 var(--accent-green), 2px -2px 0 var(--accent-red); }
-        50% { text-shadow: 2px -2px 0 var(--accent-green), -2px 2px 0 var(--accent-red); }
-        75% { text-shadow: -2px -2px 0 var(--accent-green), 2px 2px 0 var(--accent-red); }
-    }
+    .detection-showcase { padding: 40px 0; border-top: 1px solid var(--border-color); margin-top: 40px; }
+    .showcase-title { text-align: center; font-family: 'Roboto Mono', monospace; font-size: 1.5rem; color: var(--text-primary); margin-bottom: 30px; }
+    .showcase-title .fa-crosshairs { color: var(--accent-red); margin-right: 10px; }
+    .detection-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; }
+    .detection-card { background: rgba(30, 30, 36, 0.7); backdrop-filter: blur(5px); border: 1px solid var(--border-color); border-radius: 12px; padding: 25px; text-align: center; transition: all 0.3s ease-in-out; }
+    .detection-card:hover { transform: translateY(-5px); border-color: var(--accent-green); box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); }
+    .detection-card .fa-icon { font-size: 2rem; color: var(--accent-green); margin-bottom: 15px; }
+    .detection-card h3 { font-family: 'Inter', sans-serif; font-size: 1.2rem; color: var(--text-primary); margin-bottom: 15px; }
+    .detection-card ul { list-style: none; padding: 0; }
+    .detection-card ul li { font-family: 'Roboto Mono', monospace; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.8; }
     
-    .tagline { 
-      color: var(--text-secondary); margin-bottom: 30px; font-size: 16px; text-align: center;
-      font-family: 'Roboto Mono', monospace; white-space: nowrap; overflow: hidden;
-      border-right: .15em solid var(--accent-green); animation: typing 2s steps(38, end), blink-caret .75s step-end infinite;
-    }
-    @keyframes typing { from { width: 0 } to { width: 100% } }
-    @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--accent-green); } }
-
-    .run-btn-wrapper { display: flex; justify-content: center; }
-    button#run-btn, button#reset-btn { padding: 15px 30px; font-size: 18px; font-weight: 700; border: none; border-radius: 10px; transition: all 0.3s ease; font-family: 'Inter', sans-serif; }
-    button#run-btn { background: var(--accent-green); color: #000; box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); }
-    button#run-btn:hover { background-color: #00e67a; transform: translateY(-3px) scale(1.02); box-shadow: 0 0 25px rgba(0, 255, 136, 0.6); }
-    
-    button#reset-btn.safe-button { background-image: linear-gradient(45deg, #00ff88, #00e67a); color: #000; box-shadow: 0 0 20px rgba(0, 255, 136, 0.4); }
-    button#reset-btn.safe-button:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(0, 255, 136, 0.7); }
-    button#reset-btn.danger-button { background-image: linear-gradient(45deg, #ff4757, #e03f4f); color: #fff; box-shadow: 0 0 20px rgba(255, 71, 87, 0.5); }
-    button#reset-btn.danger-button:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(255, 71, 87, 0.8); }
-    
-    #results-container { margin-top: 30px; text-align: left; }
-    .loader-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 0; animation: page-transition-in 0.5s; }
-    .scanner-circle { width: 60px; height: 60px; border: 4px solid var(--border-color); border-top-color: var(--accent-green); border-radius: 50%; animation: spin 1s linear infinite, pulse 2s ease-in-out infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(0, 255, 138, 0.4); } 50% { box-shadow: 0 0 0 10px rgba(0, 255, 138, 0); } }
-    .scanner-text { margin-top: 20px; color: var(--text-secondary); font-weight: 500; letter-spacing: 1px; text-transform: uppercase; }
-    
-    .verdict-box { padding: 20px; font-size: 22px; font-weight: 700; border-radius: 12px; border: 2px solid; display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 25px; animation: pulse-border 2s infinite; }
-    .verdict-box.safe { background-color: var(--success-bg); border-color: var(--accent-green); color: var(--accent-green); box-shadow: 0 0 20px rgba(0, 255, 136, 0.3); }
-    .verdict-box.danger { background-color: var(--danger-bg); border-color: var(--accent-red); color: var(--accent-red); box-shadow: 0 0 20px rgba(255, 71, 87, 0.4); }
-    @keyframes pulse-border { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.01); } }
-    
+    #results-wrapper { margin-top: 40px; }
+    #results-container { text-align: left; }
+    .verdict-box { padding: 20px; font-size: 22px; font-weight: 700; border-radius: 12px; border: 2px solid; display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 25px; }
+    .verdict-box.safe { background-color: var(--success-bg); border-color: var(--accent-green); color: var(--accent-green); }
+    .verdict-box.danger { background-color: var(--danger-bg); border-color: var(--accent-red); color: var(--accent-red); }
     .risk-score { font-size: 16px; color: var(--text-secondary); text-align: center; margin-bottom: 25px; }
     .risk-score strong { color: var(--text-primary); font-weight: 700; font-size: 18px; }
-    
     .details-grid { display: grid; grid-template-columns: auto 1fr; gap: 12px 20px; padding: 20px 0; border-top: 1px solid var(--border-color); font-family: 'Roboto Mono', monospace; align-items: baseline; }
-    .details-grid > * { opacity: 0; animation: fade-in-up 0.5s ease forwards; }
-    @keyframes fade-in-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
     .details-grid .label { color: var(--text-secondary); text-align: right; white-space: pre; font-size: 14px; }
     .details-grid .value { color: var(--text-primary); font-size: 14px; word-break: break-all; }
     .details-grid .value.danger { color: var(--accent-red); font-weight: 700; }
     .details-grid .value.safe { color: var(--accent-green); }
-    .details-grid .value.fingerprint-hash { color: var(--accent-blue); font-size: 13px;}
-
-    .results-footer { text-align: center; padding-top: 30px; animation: fade-in-up 0.5s 0.5s ease forwards; opacity: 0; }
-    .results-separator {
-        width: 60%; margin: 0 auto 25px auto; height: 1px; 
-        background-image: linear-gradient(to right, transparent, var(--border-color), transparent);
-        display: flex; align-items: center; justify-content: center;
-    }
-    .results-separator::after {
-        font-family: 'Font Awesome 6 Free'; font-weight: 900;
-        content: '\f1e2'; /* fa-skull-crossbones */
-        font-size: 16px; color: var(--accent-green);
-        background: var(--card-color); padding: 0 15px;
-        animation: pulse-icon-safe 2s infinite ease-in-out;
-    }
-    .results-separator.danger::after { color: var(--accent-red); animation-name: pulse-icon-danger; }
-    @keyframes pulse-icon-safe { 0%, 100% { transform: scale(1); text-shadow: 0 0 5px var(--accent-green); } 50% { transform: scale(1.1); text-shadow: 0 0 15px var(--accent-green); } }
-    @keyframes pulse-icon-danger { 0%, 100% { transform: scale(1); text-shadow: 0 0 5px var(--accent-red); } 50% { transform: scale(1.1); text-shadow: 0 0 15px var(--accent-red); } }
+    .results-footer { text-align: center; padding-top: 30px; }
     
     .static-page p { color: var(--text-secondary); margin-bottom: 20px; line-height: 1.7; font-family: 'Roboto Mono', monospace; }
     .static-page h3 { color: var(--accent-blue); margin-top: 30px; margin-bottom: 10px; font-family: 'Roboto Mono', monospace; }
-    
     .contact-form .form-group { margin-bottom: 20px; }
     .contact-form input, .contact-form textarea { width: 100%; background-color: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; color: var(--text-primary); font-size: 15px; transition: all 0.2s ease; font-family: 'Roboto Mono', monospace; }
     .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--accent-blue); box-shadow: 0 0 10px rgba(0,170,255,0.5); }
@@ -166,6 +91,8 @@
     #form-response.error { color: var(--accent-red); }
 
     @media (max-width: 768px) {
+        h1, .static-page h2 { font-size: 1.8rem; }
+        .detection-grid { grid-template-columns: 1fr; }
         header { padding: 0 20px; }
         nav .nav-link, nav #theme-toggle-btn { display: none; }
         #hamburger-btn { display: block; }
@@ -173,10 +100,6 @@
         nav.is-open { right: 0; }
         nav.is-open .nav-link, nav.is-open #theme-toggle-btn, nav.is-open #close-nav-btn { display: block; font-size: 24px; }
         .container { padding: 20px; }
-        h1, .static-page h2 { font-size: 24px; }
-        .details-grid { grid-template-columns: 1fr; text-align: center; }
-        .details-grid .label { text-align: center; }
-        .details-grid .value { margin-bottom: 16px; }
     }
   </style>
 </head>
@@ -205,22 +128,38 @@
 
   <main>
     <div id="page-catcher" class="page">
-      <div class="container" id="catcher-container">
-        <div class="classified-stamp">CLASSIFIED</div>
-        <div id="intro-content">
-          <h1 data-text="Unmask Your Digital Ghost">Unmask Your Digital Ghost</h1>
-          <p class="tagline">Is your browser hiding in the shadows? Let's find out.</p>
-          <div class="run-btn-wrapper">
-            <button id="run-btn" onclick="runDetection()">Run Detection</button>
+      <div id="intro-content">
+        <h1>Identify, Expose, Dominate.</h1>
+        <p class="sub-headline">Unmask fraudulent users and eliminate threats by exposing <span>antidetect browsers</span> and <span>proxy networks</span>.</p>
+        <div class="run-btn-wrapper">
+          <button id="run-btn" onclick="runDetection()">Initiate Scan</button>
+        </div>
+      </div>
+      
+      <div id="results-wrapper" style="display: none;">
+          <div class="container" id="results-container"></div>
+      </div>
+
+      <div class="detection-showcase">
+        <h2 class="showcase-title"><i class="fa-solid fa-crosshairs"></i> Target Capabilities</h2>
+        <div class="detection-grid">
+          <div class="detection-card">
+            <div class="fa-icon"><i class="fa-solid fa-user-secret"></i></div>
+            <h3>Antidetect Browsers</h3>
+            <ul><li>AdsPower</li><li>GoLogin</li><li>Multilogin</li><li>Incogniton</li><li>And more...</li></ul>
+          </div>
+          <div class="detection-card">
+            <div class="fa-icon"><i class="fa-solid fa-network-wired"></i></div>
+            <h3>Proxy & VPN Networks</h3>
+            <ul><li>Oxylabs</li><li>Bright Data</li><li>IPRoyal</li><li>Datacenter/Residential</li><li>TOR Exit Nodes</li></ul>
           </div>
         </div>
-        <div id="results-container"></div>
       </div>
     </div>
     
     <div id="page-faq" class="page">
         <div class="container static-page">
-          <h2 data-text="Frequently Asked Questions">Frequently Asked Questions</h2>
+          <h2>Frequently Asked Questions</h2>
           <h3>What is this tool?</h3><p>SpectraScan analyzes your browser's fingerprint for signs of manipulation. Websites use these fingerprints to track you. Our tool checks for common spoofing techniques and flags connections from known VPNs or proxies.</p>
           <h3>Why is a high risk score bad?</h3><p>A high score suggests your fingerprint is inconsistent, a common trait of antidetect browsers. While used for privacy, these browsers are often flagged as fraudulent by platforms like banks and e-commerce sites.</p>
           <h3>Is this 100% accurate?</h3><p>No tool is infallible in the cat-and-mouse game of browser security. This tool provides a strong, indicative analysis, not absolute proof.</p>
@@ -229,7 +168,7 @@
     
     <div id="page-privacy" class="page">
         <div class="container static-page">
-            <h2 data-text="Privacy Policy">Privacy Policy</h2>
+            <h2>Privacy Policy</h2>
             <p>Your privacy is paramount. Our policy is simple: we don't store your data.</p>
             <h3>IP Address Handling</h3><p>Your IP address is used *only* to perform the check with third-party databases during your session. It is never logged or stored on our servers.</p>
             <h3>Browser Fingerprint</h3><p>All fingerprinting happens in your browser. Raw data (WebGL, Canvas, etc.) is never sent to us. Your device performs the analysis locally.</p>
@@ -239,7 +178,7 @@
 
     <div id="page-contact" class="page">
       <div class="container static-page">
-        <h2 data-text="Initiate Contact">Initiate Contact</h2>
+        <h2>Initiate Contact</h2>
         <p>Your transmission will be relayed to our secure channel. Ensure your message is concise and accurate.</p>
         <form id="contact-form" class="contact-form">
           <div class="form-group"><input type="text" id="contact-name" name="name" placeholder="// Callsign (Name)" required></div>
@@ -269,16 +208,14 @@
 </div>
 
 <script>
-  /* --- NAVIGATION, THEME, ROUTER --- */
+  /* --- CORE SITE LOGIC --- */
   const hamburgerBtn = document.getElementById('hamburger-btn'); 
   const closeNavBtn = document.getElementById('close-nav-btn'); 
   const mainNav = document.getElementById('main-nav');
   hamburgerBtn.addEventListener('click', () => mainNav.classList.add('is-open'));
   closeNavBtn.addEventListener('click', () => mainNav.classList.remove('is-open'));
-  
   const themeToggleBtn = document.getElementById('theme-toggle-btn'); 
   const body = document.body; 
-  
   function applySavedTheme() { 
     const savedTheme = localStorage.getItem('theme'); 
     if (savedTheme === 'light') { 
@@ -289,7 +226,6 @@
       themeToggleBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
     } 
   }
-  
   themeToggleBtn.addEventListener('click', () => { 
     body.classList.toggle('light-mode'); 
     const isLight = body.classList.contains('light-mode');
@@ -297,9 +233,7 @@
     themeToggleBtn.innerHTML = isLight ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
     setBackgroundState('default');
   });
-  
   const pageContent = { '/': 'page-catcher', '/faq': 'page-faq', '/privacy': 'page-privacy', '/contact': 'page-contact' };
-  
   function showPageContent(pageId) {
     document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
     const pageEl = document.getElementById(pageId);
@@ -308,55 +242,32 @@
       link.classList.remove('active');
       const linkPath = link.getAttribute('href');
       const currentPath = window.location.pathname;
-      if (linkPath === currentPath || (currentPath === '/' && linkPath === '/')) {
-        link.classList.add('active');
-      }
+      if (linkPath === currentPath || (currentPath === '/' && linkPath === '/')) { link.classList.add('active'); }
     });
   }
-
-  const router = () => { 
-    const path = window.location.pathname; 
-    const pageId = pageContent[path] || 'page-catcher'; 
-    showPageContent(pageId); 
-  };
-  
+  const router = () => { const path = window.location.pathname; const pageId = pageContent[path] || 'page-catcher'; showPageContent(pageId); };
   document.addEventListener('click', (e) => { 
     const a = e.target.closest('a'); 
-    if (a && (a.matches('.nav-link') || a.matches('.logo-link'))) { 
-      e.preventDefault(); 
-      history.pushState(null, '', a.href); 
-      mainNav.classList.remove('is-open'); 
-      router(); 
-    }
+    if (a && (a.matches('.nav-link') || a.matches('.logo-link'))) { e.preventDefault(); history.pushState(null, '', a.href); mainNav.classList.remove('is-open'); router(); }
   });
-  
   window.addEventListener('popstate', router);
-  
-  document.addEventListener('DOMContentLoaded', () => { 
-    applySavedTheme(); 
-    router();
-    if (document.getElementById('contact-form')) {
-        initializeContactForm();
-    }
-  });
+  document.addEventListener('DOMContentLoaded', () => { applySavedTheme(); router(); if (document.getElementById('contact-form')) { initializeContactForm(); } });
 
   /* --- CATCHER SCRIPT --- */
-  function resetCatcher() { 
-      const intro = document.getElementById('intro-content');
-      if (intro) intro.style.display = 'block';
-      document.getElementById('results-container').innerHTML = ''; 
+  function showIntro() {
+      document.getElementById('intro-content').style.display = 'block';
+      document.getElementById('detection-showcase').style.display = 'block';
+      document.getElementById('results-wrapper').style.display = 'none';
+      document.getElementById('results-container').innerHTML = '';
       setBackgroundState('default');
-      const stamp = document.querySelector('.classified-stamp');
-      if(stamp) {
-        stamp.classList.remove('safe', 'danger');
-        stamp.textContent = "CLASSIFIED";
-      }
   }
 
   window.runDetection = async function() {
-    const intro = document.getElementById('intro-content');
-    if (intro) intro.style.display = 'none';
+    document.getElementById('intro-content').style.display = 'none';
+    document.getElementById('detection-showcase').style.display = 'none';
+    const resultsWrapper = document.getElementById('results-wrapper');
     const resultsEl = document.getElementById('results-container');
+    resultsWrapper.style.display = 'block';
     resultsEl.innerHTML = `<div class="loader-wrapper"><div class="scanner-circle"></div><p class="scanner-text">INTERROGATING BROWSER...</p></div>`;
     const minDelay = new Promise(resolve => setTimeout(resolve, 2000));
     
@@ -370,19 +281,17 @@
         try {
             const resp = await fetch('/api/ip-check', { cache: 'no-store' });
             const ipData = await resp.json();
-            if (ipData.error) throw new Error("IP API Error");
             riskFactors.push({ label: 'IP Address', value: ipData.ip, isBad: false, alwaysShow: true });
             riskFactors.push({ label: 'VPN/Proxy', value: ipData.status, isBad: ipData.isProxy, alwaysShow: true });
             if (ipData.isProxy) riskScore += 3;
             if (ipData.status.includes('TOR')) riskScore += 5;
         } catch (e) {
             riskScore += 1;
-            riskFactors.push({ label: 'IP/VPN Check', value: "Error during lookup", isBad: true, alwaysShow: true });
+            riskFactors.push({ label: 'IP/VPN Check', value: "Error", isBad: true, alwaysShow: true });
         }
 
         const ua = navigator.userAgent;
         const majorChromeVersion = (ua.match(/Chrome\/(\d+)/) || [])[1];
-        
         if (navigator.brave && await navigator.brave.isBrave()) {
             riskScore += 3;
             identifiedBrowserLabel = 'Brave';
@@ -393,9 +302,7 @@
              riskScore += 2;
              identifiedBrowserLabel = 'Opera';
         }
-        if (identifiedBrowserLabel) {
-            riskFactors.push({ label: 'Browser', value: identifiedBrowserLabel, isBad: true });
-        }
+        if (identifiedBrowserLabel) { riskFactors.push({ label: 'Browser', value: identifiedBrowserLabel, isBad: true }); }
 
         if (!ua.includes("Chrome") || majorChromeVersion !== TARGET_CHROME_VERSION) { heuristicsScore += 4; }
         if (navigator.webdriver) { heuristicsScore += 4; }
@@ -405,11 +312,7 @@
         const currentRes = `${window.screen.width}x${window.screen.height}`;
         if (majorChromeVersion === TARGET_CHROME_VERSION && !proResolutions.includes(currentRes)) { heuristicsScore += 2; }
         riskScore += heuristicsScore;
-        
-        if (!identifiedBrowserLabel && heuristicsScore >= 4) {
-            riskFactors.push({ label: 'Browser', value: 'Antidetect', isBad: true });
-        }
-        
+        if (!identifiedBrowserLabel && heuristicsScore >= 4) { riskFactors.push({ label: 'Browser', value: 'Antidetect', isBad: true }); }
         const canvasHash1 = getCanvasEntropy();
         await new Promise(resolve => setTimeout(resolve, 30));
         const canvasHash2 = getCanvasEntropy();
@@ -426,7 +329,6 @@
         let thumbmarkFingerprint = 'N/A';
         try { thumbmarkFingerprint = await ThumbmarkJS.getFingerprint(); } catch (err) {}
         riskFactors.push({ label: 'FP Hash', value: thumbmarkFingerprint, isBad: false, isHash: true, alwaysShow: true });
-        
         const isBadBrowser = riskScore >= 3;
         const verdict = isBadBrowser ? "High Risk Profile Detected" : "Profile Appears Normal";
         setBackgroundState(isBadBrowser ? 'danger' : 'safe');
@@ -446,19 +348,17 @@
         }).join('');
         
         resultsHTML += `<div class="details-grid">${displayableRiskFactors.length > 0 ? detailsGridHTML : '<div style="grid-column: 1 / -1; text-align: center; color: var(--accent-green);">All checks passed.</div>' }</div>`;
-        resultsHTML += `<div class="results-footer"><div class="results-separator ${isBadBrowser ? 'danger' : ''}"></div><div class="run-btn-wrapper"><button id="reset-btn" onclick="resetCatcher()">Run Another Test</button></div></div>`;
+        resultsHTML += `<div class="results-footer"><button id="reset-btn" onclick="showIntro()">Scan Another Profile</button></div>`;
         
-        return {html: resultsHTML, bad: isBadBrowser};
+        const fragment = document.createRange().createContextualFragment(resultsHTML);
+        return {html: fragment, bad: isBadBrowser};
     })();
     
     const [result] = await Promise.all([detectionPromise, minDelay]);
-    
-    resultsEl.innerHTML = result.html;
-    
+    resultsEl.innerHTML = '';
+    resultsEl.appendChild(result.html);
     const resetButton = document.getElementById('reset-btn');
-    if (resetButton) {
-        resetButton.classList.add(result.bad ? 'danger-button' : 'safe-button');
-    }
+    if (resetButton) { resetButton.classList.add(result.bad ? 'danger-button' : 'safe-button'); }
   }
   
   function getCanvasEntropy() {try {const c=document.createElement('canvas'); const ctx=c.getContext('2d'); ctx.fillStyle="rgb(255,255,255)"; ctx.fillRect(0,0,c.width,c.height); c.width=200;c.height=50;ctx.textBaseline="top";ctx.font="14px 'Arial'";ctx.fillText("BrowserFP",2,2);return hashString(c.toDataURL())}catch{return null}}
@@ -473,7 +373,6 @@
     const captchaInput = document.getElementById('captcha-input');
     const submitBtn = document.getElementById('submit-btn');
     const formResponse = document.getElementById('form-response');
-
     let num1, num2, answer;
 
     function generateCaptcha() {
@@ -517,9 +416,7 @@
                 formResponse.textContent = `SUCCESS: Your ticket ID is ${result.ticketId}`;
                 formResponse.className = 'success';
                 form.reset();
-            } else { 
-                throw new Error(result.message || 'Server rejected the transmission.'); 
-            }
+            } else { throw new Error(result.message || 'Server rejected the transmission.'); }
         } catch (error) {
             formResponse.textContent = `TRANSMISSION FAILED: ${error.message}`;
             formResponse.className = 'error';
@@ -537,24 +434,14 @@
   const canvas = document.getElementById('matrix-bg');
   const ctx = canvas.getContext('2d');
   let backgroundInterval;
-
-  const setupCanvas = () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    setBackgroundState('default');
-  };
-
+  const setupCanvas = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; setBackgroundState('default'); };
   const drawMatrix = (color, speed, charSet) => {
-    const characters = charSet;
-    const fontSize = 14;
-    const columns = canvas.width / fontSize;
+    const characters = charSet; const fontSize = 14; const columns = canvas.width / fontSize;
     const drops = Array(Math.floor(columns)).fill(1);
     const bg = body.classList.contains('light-mode') ? 'rgba(244, 244, 248, 0.05)' : 'rgba(13, 13, 18, 0.05)';
     return setInterval(() => {
-        ctx.fillStyle = bg;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = color;
-        ctx.font = fontSize + 'px Roboto Mono';
+        ctx.fillStyle = bg; ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = color; ctx.font = fontSize + 'px Roboto Mono';
         for (let i = 0; i < drops.length; i++) {
             const text = characters[Math.floor(Math.random() * characters.length)];
             ctx.fillText(text, i * fontSize, drops[i] * fontSize);
@@ -563,63 +450,39 @@
         }
     }, speed);
   }
-  
   let gridOffset = 0;
   const drawBlueGrid = () => {
     const gridColor = body.classList.contains('light-mode') ? 'rgba(0, 170, 255, 0.2)' : 'rgba(0, 170, 255, 0.15)';
     return setInterval(() => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.strokeStyle = gridColor;
-        ctx.lineWidth = 1;
+        ctx.strokeStyle = gridColor; ctx.lineWidth = 1;
         gridOffset = (gridOffset + 0.3) % 40;
-        for (let x = -gridOffset; x < canvas.width; x += 40) {
-            ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
-        }
-        for (let y = -gridOffset; y < canvas.height; y += 40) {
-            ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
-        }
+        for (let x = -gridOffset; x < canvas.width; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke(); }
+        for (let y = -gridOffset; y < canvas.height; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke(); }
     }, 50);
   }
-
   function setBackgroundState(state) {
       const watermark = document.getElementById('background-watermark');
       const classifiedStamp = document.querySelector('.classified-stamp');
       body.classList.remove('safe-mode', 'danger-mode');
       clearInterval(backgroundInterval);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
       const isLight = body.classList.contains('light-mode');
-
       if (state === 'danger') {
           backgroundInterval = drawMatrix(isLight ? 'rgba(255, 71, 87, 0.4)' : 'rgba(255, 71, 87, 0.7)', 25, '01');
-          watermark.setAttribute('data-text', 'COMPROMISED');
-          body.classList.add('danger-mode');
-          if (classifiedStamp) {
-              classifiedStamp.textContent = "COMPROMISED";
-              classifiedStamp.classList.add('danger');
-              classifiedStamp.classList.remove('safe');
-          }
+          watermark.setAttribute('data-text', 'COMPROMISED'); body.classList.add('danger-mode');
+          if (classifiedStamp) { classifiedStamp.textContent = "COMPROMISED"; classifiedStamp.classList.add('danger'); classifiedStamp.classList.remove('safe'); }
       } else if (state === 'safe') {
           backgroundInterval = isLight ? drawMatrix('rgba(0, 0, 0, 0.1)', 50, '01') : drawBlueGrid();
-          watermark.setAttribute('data-text', 'UNCLASSIFIED');
-          body.classList.add('safe-mode');
-          if (classifiedStamp) {
-              classifiedStamp.textContent = "UNCLASSIFIED";
-              classifiedStamp.classList.add('safe');
-              classifiedStamp.classList.remove('danger');
-          }
-      } else { // default
+          watermark.setAttribute('data-text', 'UNCLASSIFIED'); body.classList.add('safe-mode');
+          if (classifiedStamp) { classifiedStamp.textContent = "UNCLASSIFIED"; classifiedStamp.classList.add('safe'); classifiedStamp.classList.remove('danger'); }
+      } else {
           backgroundInterval = isLight ? drawMatrix('rgba(0, 0, 0, 0.1)', 50, '01') : drawMatrix('rgba(0, 255, 136, 0.7)', 40, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
           watermark.setAttribute('data-text', '');
-          if(classifiedStamp) {
-              classifiedStamp.textContent = "CLASSIFIED";
-              classifiedStamp.classList.remove('safe', 'danger');
-          }
+          if(classifiedStamp) { classifiedStamp.textContent = "CLASSIFIED"; classifiedStamp.classList.remove('safe', 'danger'); }
       }
   }
-
   window.addEventListener('resize', setupCanvas);
-  document.addEventListener('DOMContentLoaded', setupCanvas);
 </script>
 
 </body>
