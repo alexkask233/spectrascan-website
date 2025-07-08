@@ -27,8 +27,9 @@
       --bg-grid-color: rgba(42, 42, 48, 0.7);
       --header-bg-color: rgba(18, 18, 23, 0.98);
       --nav-overlay-bg: rgba(18, 18, 23, 0.98);
-      --cursor-color: rgba(0, 255, 136, 0.5);
-      --cursor-dot-color: #00ff88;
+
+      /* Removed custom cursor variables */
+
       --scroll-anim-delay: 0s;
       --scroll-anim-duration: 0.8s;
       --scroll-anim-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -44,8 +45,6 @@
       --bg-grid-color: rgba(220, 224, 230, 0.8);
       --header-bg-color: #ffffff;
       --nav-overlay-bg: rgba(255, 255, 255, 0.98);
-      --cursor-color: rgba(0, 170, 255, 0.3);
-      --cursor-dot-color: #00aaff;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -60,7 +59,7 @@
       position: relative; 
       overflow-x: hidden;
       transition: background-color 0.3s ease, color 0.3s ease;
-      cursor: none;
+      /* Removed custom cursor property */
     }
     
     body::before {
@@ -86,38 +85,12 @@
       width: 100%; 
       height: 100%; 
       z-index: -2; 
-      opacity: 0.02;
+      opacity: 0.02; /* Very subtle matrix remains */
       transition: opacity 0.5s ease-in-out; 
       mix-blend-mode: screen;
     }
 
-    .cursor {
-        width: 40px;
-        height: 40px;
-        border: 2px solid var(--cursor-color);
-        border-radius: 50%;
-        position: fixed;
-        transform: translate(-50%, -50%);
-        pointer-events: none;
-        transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
-        z-index: 9999;
-    }
-    .cursor-dot {
-        width: 8px;
-        height: 8px;
-        background-color: var(--cursor-dot-color);
-        border-radius: 50%;
-        position: fixed;
-        transform: translate(-50%, -50%);
-        pointer-events: none;
-        transition: transform 0.1s ease-out;
-        z-index: 9998;
-    }
-    .cursor.hover {
-        width: 60px;
-        height: 60px;
-        background-color: var(--cursor-color);
-    }
+    /* Removed .cursor and .cursor-dot CSS */
     
     .page-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
     main { flex-grow: 1; display: flex; justify-content: center; align-items: center; padding: 60px 20px; }
@@ -321,7 +294,6 @@
     
     .run-btn-wrapper { display: flex; justify-content: center; }
     button#run-btn, button#reset-btn, button.landing-scan-btn { padding: 15px 30px; font-size: 18px; font-weight: 700; border: none; border-radius: 10px; transition: all 0.3s ease; font-family: 'Inter', sans-serif; }
-    button#run-btn, button.landing-scan-btn { background: var(--accent-green); color: #000; box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); }
     button#run-btn:hover, button.landing-scan-btn:hover { background-color: #00e67a; transform: translateY(-3px) scale(1.02); box-shadow: 0 0 25px rgba(0, 255, 136, 0.6); }
     
     button#reset-btn.safe-button { background-image: linear-gradient(45deg, #00ff88, #00e67a); color: #000; box-shadow: 0 0 20px rgba(0, 255, 136, 0.4); }
@@ -388,6 +360,7 @@
     #form-response.success { color: var(--accent-green); }
     #form-response.error { color: var(--accent-red); }
 
+    /* Scroll Animation */
     .scroll-anim {
       opacity: 0;
       transform: translateY(30px);
@@ -399,10 +372,20 @@
       opacity: 1;
       transform: translateY(0);
     }
+    /* End Scroll Animation */
+
+    /* General Responsiveness */
+    @media (max-width: 1024px) {
+        header { padding: 0 30px; }
+        main { padding: 40px 20px; }
+        .container { padding: 25px 30px; }
+        h1, .static-page h2 { font-size: 2rem; }
+        .feature-box h3 { font-size: 1.4rem; }
+        .feature-box .icon-wrapper { font-size: 3.5rem; }
+    }
 
     @media (max-width: 768px) {
-        body { cursor: auto; }
-        .cursor, .cursor-dot { display: none; }
+        /* Removed custom cursor properties, as cursor: auto is default here */
         header { padding: 0 20px; }
         nav .nav-link, nav #theme-toggle-btn { display: none; }
         #hamburger-btn { display: block; }
@@ -424,13 +407,23 @@
         .feature-box { min-width: unset; }
         .feature-box h3 { font-size: 1.3rem; }
         .feature-box .icon-wrapper { font-size: 3rem; }
+        .classified-stamp { font-size: 16px; padding: 4px 8px; top: 15px; right: 15px; }
+    }
+
+    @media (max-width: 480px) {
+        h1, .static-page h2 { font-size: 20px; }
+        .tagline { font-size: 14px; }
+        .feature-box { padding: 20px; }
+        .feature-box h3 { font-size: 1.2rem; }
+        button#run-btn, button#reset-btn, button.landing-scan-btn { padding: 12px 25px; font-size: 16px; }
+        .verdict-box { font-size: 18px; padding: 15px; }
+        .details-grid .label, .details-grid .value { font-size: 13px; }
     }
   </style>
 </head>
 <body>
 
-<div class="cursor"></div>
-<div class="cursor-dot"></div>
+<!-- Removed .cursor and .cursor-dot HTML elements -->
 
 <canvas id="matrix-bg"></canvas>
 <div id="background-watermark"></div>
@@ -481,7 +474,6 @@
       </div>
     </div>
 
-    <!-- Original Catcher Page, now renamed to Checker -->
     <div id="page-checker" class="page">
       <div class="container scroll-anim" id="checker-container">
         <div class="classified-stamp">CLASSIFIED</div>
@@ -546,7 +538,6 @@
 </div>
 
 <script>
-// --- New Professional UI/Animation Script ---
 document.addEventListener('DOMContentLoaded', () => {
 
     // 1. Scroll-Triggered Animations
@@ -563,22 +554,9 @@ document.addEventListener('DOMContentLoaded', () => {
         scrollObserver.observe(el);
     });
 
-    // 2. Custom Cursor Animation
-    const cursor = document.querySelector('.cursor');
-    const cursorDot = document.querySelector('.cursor-dot');
-    const interactiveElements = document.querySelectorAll('a, button, input, textarea, .feature-box');
-
-    window.addEventListener('mousemove', e => {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
-        cursorDot.style.left = e.clientX + 'px';
-        cursorDot.style.top = e.clientY + 'px';
-    });
-
-    interactiveElements.forEach(el => {
-        el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-        el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-    });
+    // 2. Removed Custom Cursor Animation
+    // The custom cursor CSS and HTML elements have been removed.
+    // No JS needed here for the custom cursor anymore.
 });
 </script>
 
@@ -587,11 +565,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const hamburgerBtn = document.getElementById('hamburger-btn'); 
   const closeNavBtn = document.getElementById('close-nav-btn'); 
   const mainNav = document.getElementById('main-nav');
+  const body = document.body; /* Defined globally for background state changes */
+
   hamburgerBtn.addEventListener('click', () => mainNav.classList.add('is-open'));
   closeNavBtn.addEventListener('click', () => mainNav.classList.remove('is-open'));
   
   const themeToggleBtn = document.getElementById('theme-toggle-btn'); 
-  const body = document.body; 
   
   function applySavedTheme() { 
     const savedTheme = localStorage.getItem('theme'); 
@@ -609,13 +588,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const isLight = body.classList.contains('light-mode');
     localStorage.setItem('theme', isLight ? 'light' : 'dark');
     themeToggleBtn.innerHTML = isLight ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
-    setBackgroundState('default');
+    setBackgroundState('default'); /* Re-apply background based on new theme */
   });
   
-  // Updated pageContent mapping
   const pageContent = { 
       '/': 'page-landing', 
-      '/checker': 'page-checker', // New mapping for checker
+      '/checker': 'page-checker', 
       '/faq': 'page-faq', 
       '/privacy': 'page-privacy', 
       '/contact': 'page-contact' 
@@ -625,27 +603,30 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
     const pageEl = document.getElementById(pageId);
     if(pageEl) pageEl.classList.add('active');
+
     document.querySelectorAll('.nav-link').forEach(link => {
       link.classList.remove('active');
       const linkPath = link.getAttribute('href');
       const currentPath = window.location.pathname;
       
-      // Special handling for root '/' and '/checker' link
       if (linkPath === currentPath || 
           (currentPath === '/' && linkPath === '/') || 
           (currentPath === '/checker' && linkPath === '/checker')) {
         link.classList.add('active');
       }
     });
-    // Ensure the checker page resets when navigated to
+
     if (pageId === 'page-checker') {
         resetChecker(); 
+    } else {
+        /* Ensure background is reset if navigating away from checker */
+        setBackgroundState('default'); 
     }
   }
 
   const router = () => { 
     const path = window.location.pathname; 
-    const pageId = pageContent[path] || 'page-landing'; // Default to landing page
+    const pageId = pageContent[path] || 'page-landing';
     showPageContent(pageId); 
   };
   
@@ -659,7 +640,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Function to navigate from landing page to checker
   function navigateToChecker() {
       history.pushState(null, '', '/checker');
       router();
@@ -675,16 +655,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  /* --- CHECKER SCRIPT (formerly CATCHER) --- */
-  // Renamed resetCatcher to resetChecker
+  /* --- CHECKER SCRIPT --- */
   function resetChecker() { 
       const intro = document.getElementById('intro-content');
-      // Ensure intro is part of page-checker's container
       if (intro && intro.closest('#page-checker')) intro.style.display = 'block';
       const resultsContainer = document.getElementById('results-container');
       if (resultsContainer && resultsContainer.closest('#page-checker')) resultsContainer.innerHTML = ''; 
-      setBackgroundState('default'); // Reset background to default for the checker page
-      const stamp = document.querySelector('#page-checker .classified-stamp'); // Target stamp specifically for checker page
+      setBackgroundState('default');
+      const stamp = document.querySelector('#page-checker .classified-stamp');
       if(stamp) {
         stamp.classList.remove('safe', 'danger');
         stamp.textContent = "CLASSIFIED";
@@ -693,26 +671,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.runDetection = async function() {
     const intro = document.getElementById('intro-content');
-    if (intro && intro.closest('#page-checker')) intro.style.display = 'none'; // Ensure it's the checker's intro
+    if (intro && intro.closest('#page-checker')) intro.style.display = 'none';
     const resultsEl = document.getElementById('results-container');
     resultsEl.innerHTML = `<div class="loader-wrapper"><div class="scanner-circle"></div><p class="scanner-text">INTERROGATING BROWSER...</p></div>`;
     const minDelay = new Promise(resolve => setTimeout(resolve, 2000));
     
-    // START: Refactored Browser Detection Logic
     let riskScore = 0;
     const riskFactors = [];
-    // Flags to capture specific browser-related findings
     const browserFlags = {
         brave: false,
         tor: false,
         opera: false,
-        heuristicsSpoofing: false, // General spoofing signs (e.g., webdriver, weird UA, resolutions)
+        heuristicsSpoofing: false,
         canvasRandomization: false,
         webglEmulation: false
     };
     const TARGET_CHROME_VERSION = "138"; 
 
-    // --- IP Check ---
+    /* IP Check */
     try {
         const resp = await fetch('/api/ip-check', { cache: 'no-store' });
         const ipData = await resp.json();
@@ -720,30 +696,30 @@ document.addEventListener('DOMContentLoaded', () => {
         riskFactors.push({ label: 'IP Address', value: ipData.ip, isBad: false, alwaysShow: true });
         riskFactors.push({ label: 'VPN/Proxy', value: ipData.status, isBad: ipData.isProxy, alwaysShow: true });
         if (ipData.isProxy) riskScore += 3;
-        if (ipData.status.includes('TOR')) riskScore += 5; // TOR adds significant risk
+        if (ipData.status.includes('TOR')) riskScore += 5;
     } catch (e) {
-        riskScore += 1; // Minor penalty for failed IP lookup
+        riskScore += 1;
         riskFactors.push({ label: 'IP/VPN Check', value: "Error during lookup", isBad: true, alwaysShow: true });
     }
 
-    // --- Browser Specific Detections ---
+    /* Browser Specific Detections */
     const ua = navigator.userAgent;
     const majorChromeVersion = (ua.match(/Chrome\/(\d+)/) || [])[1];
     
     if (navigator.brave && await navigator.brave.isBrave()) {
-        riskScore += 3; // Brave adds risk
+        riskScore += 3;
         browserFlags.brave = true;
     }
-    if (getCanvasEntropy() === 2001009873) { // Known Tor Browser canvas entropy
-        riskScore += 5; // Tor adds significant risk
+    if (getCanvasEntropy() === 2001009873) { /* Known Tor Browser canvas entropy */
+        riskScore += 5;
         browserFlags.tor = true;
     }
     if (typeof window.opr !== 'undefined' || ua.includes("OPR")) {
-        riskScore += 2; // Opera adds slight risk
+        riskScore += 2;
         browserFlags.opera = true;
     }
 
-    // --- Heuristics-based Spoofing Detection ---
+    /* Heuristics-based Spoofing Detection */
     let currentHeuristicsScore = 0;
     if (!ua.includes("Chrome") || majorChromeVersion !== TARGET_CHROME_VERSION) { currentHeuristicsScore += 4; }
     if (navigator.webdriver) { currentHeuristicsScore += 4; }
@@ -754,31 +730,31 @@ document.addEventListener('DOMContentLoaded', () => {
     if (majorChromeVersion === TARGET_CHROME_VERSION && !proResolutions.includes(currentRes)) { currentHeuristicsScore += 2; }
     
     riskScore += currentHeuristicsScore;
-    if (currentHeuristicsScore >= 4) { // If heuristics indicate strong spoofing
+    if (currentHeuristicsScore >= 4) {
         browserFlags.heuristicsSpoofing = true;
     }
     
-    // --- Canvas Fingerprint Randomization ---
+    /* Canvas Fingerprint Randomization */
     const canvasHash1 = getCanvasEntropy();
-    await new Promise(resolve => setTimeout(resolve, 30)); // Small delay to check for randomization
+    await new Promise(resolve => setTimeout(resolve, 30));
     const canvasHash2 = getCanvasEntropy();
     if (canvasHash1 !== canvasHash2) {
         riskScore += 2;
         browserFlags.canvasRandomization = true;
     }
 
-    // --- WebGL Emulation ---
+    /* WebGL Emulation */
     const renderer = getWebGLInfo().renderer.toLowerCase();
     if (renderer.includes("swiftshader") || renderer.includes("llvmpipe")) {
         riskScore += 3;
         browserFlags.webglEmulation = true;
     }
 
-    // --- Determine overall verdict based on total riskScore ---
+    /* Determine overall verdict based on total riskScore */
     const isBadBrowserOverall = riskScore >= 3; 
     setBackgroundState(isBadBrowserOverall ? 'danger' : 'safe');
     
-    // --- Construct the 'Browser' risk factor message based on specific flags and overall verdict ---
+    /* Construct the 'Browser' risk factor message */
     let browserLabelValue = 'Normal';
     let browserLabelIsBad = false;
 
@@ -794,7 +770,6 @@ document.addEventListener('DOMContentLoaded', () => {
             browserLabelValue += ' (Antidetect Tendencies)';
             browserLabelIsBad = true;
         } else {
-            // If Brave is detected but overall risk is low, don't mark as bad in value class
             browserLabelIsBad = false; 
         }
     } else if (browserFlags.opera) {
@@ -806,15 +781,10 @@ document.addEventListener('DOMContentLoaded', () => {
             browserLabelIsBad = false;
         }
     } else if (isBadBrowserOverall) {
-        // If overall risk is high due to other factors (e.g., IP/VPN),
-        // but no specific privacy browser or strong fingerprint spoofing was detected,
-        // then the browser itself is part of a "Suspicious Profile".
         browserLabelValue = 'Suspicious Profile (Antidetect Characteristics)';
         browserLabelIsBad = true;
     }
-    // Add the 'Browser' risk factor to the display list
     riskFactors.push({ label: 'Browser', value: browserLabelValue, isBad: browserLabelIsBad, alwaysShow: true });
-    // END: Refactored Browser Detection Logic
 
     const verdict = isBadBrowserOverall ? "High Risk Profile Detected" : "Profile Appears Normal";
     
@@ -948,28 +918,68 @@ document.addEventListener('DOMContentLoaded', () => {
     }, speed);
   }
   
-  let gridOffset = 0;
-  const drawBlueGrid = () => {
-    const gridColor = body.classList.contains('light-mode') ? 'rgba(0, 170, 255, 0.2)' : 'rgba(0, 170, 255, 0.15)';
+  let scanLineOffset = 0;
+  let scanDirection = 1; // 1 for horizontal, 0 for vertical
+  const drawScanningLines = (color, speed) => {
+    const isLight = body.classList.contains('light-mode');
+    const baseColor = isLight ? 'rgba(0, 170, 255, 0.2)' : 'rgba(0, 255, 136, 0.15)'; // Accent blue for light, green for dark
+    const secondaryColor = isLight ? 'rgba(0, 170, 255, 0.05)' : 'rgba(0, 255, 136, 0.05)';
+    const fadeColor = body.classList.contains('light-mode') ? 'rgba(244, 244, 248, 0.08)' : 'rgba(13, 13, 18, 0.08)';
+
     return setInterval(() => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.strokeStyle = gridColor;
+        ctx.fillStyle = fadeColor; // Faintly clear old frames to create trails
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.strokeStyle = baseColor;
         ctx.lineWidth = 1;
-        gridOffset = (gridOffset + 0.3) % 40;
-        for (let x = -gridOffset; x < canvas.width; x += 40) {
-            ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+
+        const scanSpeed = 1.5; // Pixels per frame
+        const scanWidth = 100; // Width of the "scan" area
+
+        if (scanDirection === 1) { // Horizontal scan
+            scanLineOffset = (scanLineOffset + scanSpeed);
+            if (scanLineOffset > canvas.width + scanWidth) scanLineOffset = -scanWidth; // Reset position
+
+            // Draw multiple lines within the scan area
+            for (let i = 0; i < canvas.height; i += 20) {
+                const lineX = scanLineOffset + (Math.sin(i * 0.1 + scanLineOffset * 0.01) * 10); // Subtle wavy effect
+                ctx.beginPath();
+                ctx.moveTo(lineX, i);
+                ctx.lineTo(lineX + 50, i); // Shorter lines in horizontal direction
+                ctx.stroke();
+
+                // Add a slightly dimmer trailing line
+                ctx.strokeStyle = secondaryColor;
+                ctx.beginPath();
+                ctx.moveTo(lineX - 10, i);
+                ctx.lineTo(lineX + 40, i);
+                ctx.stroke();
+            }
+        } else { // Vertical scan (alternative, not currently used but good to have)
+            scanLineOffset = (scanLineOffset + scanSpeed);
+            if (scanLineOffset > canvas.height + scanWidth) scanLineOffset = -scanWidth;
+
+            for (let i = 0; i < canvas.width; i += 20) {
+                const lineY = scanLineOffset + (Math.sin(i * 0.1 + scanLineOffset * 0.01) * 10);
+                ctx.beginPath();
+                ctx.moveTo(i, lineY);
+                ctx.lineTo(i, lineY + 50);
+                ctx.stroke();
+
+                ctx.strokeStyle = secondaryColor;
+                ctx.beginPath();
+                ctx.moveTo(i, lineY - 10);
+                ctx.lineTo(i, lineY + 40);
+                ctx.stroke();
+            }
         }
-        for (let y = -gridOffset; y < canvas.height; y += 40) {
-            ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
-        }
-    }, 50);
+    }, speed);
   }
 
   function setBackgroundState(state) {
       const watermark = document.getElementById('background-watermark');
-      // Target the classified stamp based on the active page
       const currentPath = window.location.pathname;
-      const currentPageId = pageContent[currentPath] || 'page-landing'; // Get the actual ID of the active page div
+      const currentPageId = pageContent[currentPath] || 'page-landing';
       const currentPageElement = document.getElementById(currentPageId);
       const classifiedStamp = currentPageElement ? currentPageElement.querySelector('.classified-stamp') : null;
 
@@ -989,7 +999,7 @@ document.addEventListener('DOMContentLoaded', () => {
               classifiedStamp.classList.remove('safe');
           }
       } else if (state === 'safe') {
-          backgroundInterval = isLight ? drawMatrix('rgba(0, 0, 0, 0.1)', 50, '01') : drawBlueGrid();
+          backgroundInterval = drawScanningLines(isLight ? 'rgba(0, 170, 255, 0.2)' : 'rgba(0, 255, 136, 0.15)', 50);
           watermark.setAttribute('data-text', 'UNCLASSIFIED');
           body.classList.add('safe-mode');
           if (classifiedStamp) {
@@ -997,8 +1007,8 @@ document.addEventListener('DOMContentLoaded', () => {
               classifiedStamp.classList.add('safe');
               classifiedStamp.classList.remove('danger');
           }
-      } else { // default
-          backgroundInterval = isLight ? drawMatrix('rgba(0, 0, 0, 0.1)', 50, '01') : drawMatrix('rgba(0, 255, 136, 0.7)', 40, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
+      } else { /* default */
+          backgroundInterval = drawScanningLines(isLight ? 'rgba(0, 170, 255, 0.2)' : 'rgba(0, 255, 136, 0.15)', 50); /* Use scanning lines for default */
           watermark.setAttribute('data-text', '');
           if(classifiedStamp) {
               classifiedStamp.textContent = "CLASSIFIED";
