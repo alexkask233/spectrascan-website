@@ -81,18 +81,20 @@
         font-size: 2.2rem; font-weight: 700; margin-bottom: 10px; text-align: center; color: var(--text-primary);
         position: relative; animation: text-shadow-flicker 4s linear infinite;
     }
-    /* New style for the landing page body text - more standard paragraph */
-    .landing-page-description {
-        color: var(--text-secondary);
-        font-size: 1rem;
-        line-height: 1.8;
-        margin: 25px auto 40px auto; /* More vertical space */
-        max-width: 600px;
-        text-align: center;
-    }
-    .landing-page-description strong {
-        color: var(--accent-green);
+    /* Flicker for feature box titles */
+    .feature-box h3 {
+        font-size: 1.5rem;
         font-weight: 700;
+        margin-bottom: 15px;
+        color: var(--text-primary);
+        position: relative;
+        animation: text-shadow-flicker-small 3s linear infinite; /* Slightly different flicker for smaller titles */
+    }
+    @keyframes text-shadow-flicker-small {
+        0%, 100% { text-shadow: 1px 1px 0 var(--accent-green), -1px -1px 0 var(--accent-red); }
+        25% { text-shadow: -1px 1px 0 var(--accent-green), 1px -1px 0 var(--accent-red); }
+        50% { text-shadow: 1px -1px 0 var(--accent-green), -1px 1px 0 var(--accent-red); }
+        75% { text-shadow: -1px -1px 0 var(--accent-green), 1px 1px 0 var(--accent-red); }
     }
 
 
@@ -108,9 +110,9 @@
       font-family: 'Roboto Mono', monospace; white-space: nowrap; overflow: hidden;
       border-right: .15em solid var(--accent-green); animation: typing 2s steps(38, end), blink-caret .75s step-end infinite;
     }
-    /* Adjust typing animation to only run once for the landing page tagline */
+    /* Adjust typing animation to only run once and allow wrapping for landing page tagline */
     #page-landing .tagline {
-        animation: typing 2s steps(38, end) forwards, blink-caret .75s step-end infinite;
+        animation: typing 2s steps(38, end) forwards; /* Removed infinite blink-caret for cleaner look */
         white-space: normal; /* Allow wrapping */
         overflow: visible; /* Prevent cutting off text if it wraps */
         border-right: none; /* Remove blinking caret on landing page tagline after typing */
@@ -118,6 +120,54 @@
     @keyframes typing { from { width: 0 } to { width: 100% } }
     @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: var(--accent-green); } }
 
+    /* New styles for landing page feature boxes */
+    .feature-boxes-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-top: 40px;
+        margin-bottom: 40px; /* Space before the button */
+        justify-content: center;
+    }
+
+    .feature-box {
+        flex: 1; /* Allow boxes to grow and shrink */
+        min-width: 280px; /* Minimum width before wrapping */
+        background-color: var(--card-color);
+        padding: 30px;
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .feature-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        border-color: var(--accent-green); /* Subtle hover glow */
+    }
+
+    .feature-box .icon-wrapper {
+        margin-bottom: 20px;
+        color: var(--accent-green);
+        font-size: 4rem; /* Large icons */
+        line-height: 1;
+        transition: color 0.3s ease;
+    }
+
+    .feature-box p {
+        color: var(--text-secondary);
+        font-size: 0.95rem;
+        line-height: 1.7;
+    }
+
+    .feature-box .highlight-text {
+        color: var(--accent-blue); /* Distinct color for highlighted names */
+        font-weight: 600;
+        transition: color 0.3s ease;
+    }
+    
     .run-btn-wrapper { display: flex; justify-content: center; }
     button#run-btn, button#reset-btn, button.landing-scan-btn { padding: 15px 30px; font-size: 18px; font-weight: 700; border: none; border-radius: 10px; transition: all 0.3s ease; font-family: 'Inter', sans-serif; }
     button#run-btn, button.landing-scan-btn { background: var(--accent-green); color: #000; box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); }
@@ -199,7 +249,10 @@
         .details-grid { grid-template-columns: 1fr; text-align: center; }
         .details-grid .label { text-align: center; }
         .details-grid .value { margin-bottom: 16px; }
-        .landing-page-description { font-size: 0.9rem; }
+        .feature-boxes-grid { flex-direction: column; } /* Stack boxes on small screens */
+        .feature-box { min-width: unset; } /* Reset min-width for stacking */
+        .feature-box h3 { font-size: 1.3rem; }
+        .feature-box .icon-wrapper { font-size: 3rem; }
     }
   </style>
 </head>
@@ -218,8 +271,8 @@
     <button id="hamburger-btn" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
     <nav id="main-nav">
         <button id="close-nav-btn" aria-label="Close menu"><i class="fa-solid fa-times"></i></button>
-        <a href="/" class="nav-link">Home</a> <!-- New Home link -->
-        <a href="/checker" class="nav-link">Checker</a> <!-- Catcher renamed to Checker -->
+        <a href="/" class="nav-link">Home</a>
+        <a href="/checker" class="nav-link">Checker</a>
         <a href="/faq" class="nav-link">FAQ</a>
         <a href="/privacy" class="nav-link">Privacy</a>
         <a href="/contact" class="nav-link">Contact</a>
@@ -234,10 +287,20 @@
         <div class="classified-stamp">CLASSIFIED</div>
         <h1 data-text="SpectraScan: Digital Guardian">SpectraScan: Your Guardian Against Digital Disguises</h1>
         <p class="tagline">Unmasking the Shadows. Protecting Your Digital Integrity.</p>
-        <p class="landing-page-description">
-            At SpectraScan, we specialize in advanced digital fingerprinting and anomaly detection to safeguard your online presence. Our cutting-edge technology identifies and exposes sophisticated attempts to spoof browser identities and mask true origins.
-            We accurately detect a wide array of anti-detect browsers, including industry-standard tools like <strong>Dolphin Anty</strong>, <strong>GoLogin</strong>, <strong>AdsPower</strong>, <strong>Multilogin</strong>, <strong>Incogniton</strong>, and many others. Beyond browser manipulation, SpectraScan is adept at pinpointing connections originating from <strong>proxies</strong>, <strong>VPNs</strong>, and specialized networks such as <strong>Oxylabs residential proxies</strong> and various <strong>datacenter proxies</strong>. Our mission is to provide unparalleled transparency and security in an increasingly complex digital landscape.
-        </p>
+        
+        <div class="feature-boxes-grid">
+          <div class="feature-box">
+            <div class="icon-wrapper"><i class="fa-solid fa-fingerprint"></i></div>
+            <h3 data-text="Advanced Analysis">Advanced Digital Fingerprint Analysis</h3>
+            <p>SpectraScan delivers cutting-edge digital fingerprinting and anomaly detection. We meticulously analyze your browser's unique characteristics to expose sophisticated attempts at identity spoofing and origin masking, ensuring unparalleled transparency.</p>
+          </div>
+          <div class="feature-box">
+            <div class="icon-wrapper"><i class="fa-solid fa-crosshairs"></i></div>
+            <h3 data-text="Threat Coverage">Comprehensive Threat Coverage</h3>
+            <p>We pinpoint major anti-detect browsers like <span class="highlight-text">Dolphin Anty</span>, <span class="highlight-text">GoLogin</span>, <span class="highlight-text">AdsPower</span>, <span class="highlight-text">Multilogin</span>, and <span class="highlight-text">Incogniton</span>. Our detection also covers <span class="highlight-text">Oxylabs residential</span>, <span class="highlight-text">datacenter proxies</span>, and general <span class="highlight-text">VPNs</span>, ensuring comprehensive security.</p>
+          </div>
+        </div>
+
         <div class="run-btn-wrapper">
           <button class="landing-scan-btn" onclick="navigateToChecker()">Scan Fingerprint Now</button>
         </div>
@@ -411,7 +474,7 @@
       if (intro && intro.closest('#page-checker')) intro.style.display = 'block';
       const resultsContainer = document.getElementById('results-container');
       if (resultsContainer && resultsContainer.closest('#page-checker')) resultsContainer.innerHTML = ''; 
-      setBackgroundState('default');
+      setBackgroundState('default'); // Reset background to default for the checker page
       const stamp = document.querySelector('#page-checker .classified-stamp'); // Target stamp specifically for checker page
       if(stamp) {
         stamp.classList.remove('safe', 'danger');
