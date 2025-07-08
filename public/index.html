@@ -185,7 +185,6 @@
         <a href="/" class="nav-link">Catcher</a>
         <a href="/faq" class="nav-link">FAQ</a>
         <a href="/privacy" class="nav-link">Privacy</a>
-        <a href="/contact" class="nav-link">Contact</a>
         <button id="theme-toggle-btn" title="Toggle theme"><i class="fa-solid fa-moon"></i></button>
     </nav>
   </header>
@@ -330,113 +329,94 @@
     const detectionPromise = (async () => {
         let riskScore = 0;
         const riskFactors = [];
+        const TARGET_CHROME_VERSION = "138"; // Per user request
 
         // --- Server-Side IP Check ---
         try {
             const resp = await fetch('/api/ip-check', { cache: 'no-store' });
             const ipData = await resp.json();
             if (ipData.error) throw new Error("IP API Error");
-            riskFactors.push({ label: 'IP Address', value: ipData.ip, isBad: false });
-            if (ipData.isProxy) {
-                riskScore += 3; // High penalty for using a proxy/VPN/Tor
-                riskFactors.push({ label: 'VPN/Proxy Status', value: ipData.status, isBad: true });
-            } else {
-                riskFactors.push({ label: 'VPN/Proxy Status', value: ipData.status, isBad: false });
-            }
+            riskFactors.push({ label: 'IP Address', value: ipData.ip, isBad: false, alwaysShow: true });
+            riskFactors.push({ label: 'VPN/Proxy', value: ipData.status, isBad: ipData.isProxy, alwaysShow: true });
+            if (ipData.isProxy) riskScore += 3;
         } catch (e) {
             riskScore += 1;
-            riskFactors.push({ label: 'IP Address', value: "Error", isBad: true });
-            riskFactors.push({ label: 'VPN/Proxy Status', value: "Could not check", isBad: true });
+            riskFactors.push({ label: 'IP/VPN Check', value: "Error during lookup", isBad: true, alwaysShow: true });
         }
 
         // --- Client-Side Checks ---
 
-        // 1. Automation flags (WebDriver)
+        // 1. Strict Browser Version Check
+        const ua = navigator.userAgent;
+        const majorChromeVersion = (ua.match(/Chrome\/(\d+)/) || [])[1];
+        if (!ua.includes("Chrome") || majorChromeVersion !== TARGET_CHROME_VERSION) {
+            riskScore += 4; // Instant high penalty
+            const versionDisplay = majorChromeVersion ? `Chrome ${majorChromeVersion}` : 'Not Chrome';
+            riskFactors.push({ label: 'Version', value: `${versionDisplay} (Mismatch)`, isBad: true });
+        }
+
+        // 2. Automation flags (WebDriver)
         if (navigator.webdriver) {
-            riskScore += 4; // Very high penalty
+            riskScore += 4;
             riskFactors.push({ label: 'Automation', value: 'WebDriver Active', isBad: true });
-        } else {
-            riskFactors.push({ label: 'Automation', value: 'Not Detected', isBad: false });
         }
-
-        // 2. Brave browser detection
-        try {
-            if (navigator.brave && await navigator.brave.isBrave()) {
-                riskScore += 2;
-                riskFactors.push({ label: 'Brave Shield', value: 'Detected', isBad: true });
-            }
-        } catch (e) { /* ignore */ }
         
-        // 3. Plugin count heuristic (user request)
-        const pluginCount = navigator.plugins ? navigator.plugins.length : 0;
-        if (pluginCount === 5) {
+        // 3. Plugin count heuristic
+        if (navigator.plugins && navigator.plugins.length === 5) {
             riskScore += 1;
-            riskFactors.push({ label: 'Plugins', value: `${pluginCount} (Common antidetect value)`, isBad: true });
+            riskFactors.push({ label: 'Plugins', value: '5 (Suspicious count)', isBad: true });
         }
-
-        // 4. Screen resolution heuristic (user request)
+        
+        // 4. Screen resolution heuristic
         const commonResolutions = ['1920x1080', '1366x768', '1536x864', '2560x1440', '1280x720', '3840x2160', '1600x900', '1440x900'];
         const currentRes = `${window.screen.width}x${window.screen.height}`;
         if (!commonResolutions.includes(currentRes)) {
             riskScore += 1;
             riskFactors.push({ label: 'Screen', value: `${currentRes} (Uncommon)`, isBad: true });
-        } else {
-             riskFactors.push({ label: 'Screen', value: currentRes, isBad: false });
         }
 
-        // 5. Outdated browser version check (user request)
-        const ua = navigator.userAgent;
-        const chromeVersionInUA = (ua.match(/Chrome\/(\d+)/) || [])[1];
-        const LATEST_CHROME_VERSION = 126; // NOTE: This value may need to be updated periodically.
-        if (chromeVersionInUA && parseInt(chromeVersionInUA, 10) < LATEST_CHROME_VERSION) {
-             riskScore += 1;
-             riskFactors.push({ label: 'Browser Version', value: `Chrome ${chromeVersionInUA} (Outdated)`, isBad: true });
-        }
-
-        // 6. Canvas fingerprint randomization
+        // 5. Canvas fingerprint randomization
         const canvasHash1 = getCanvasEntropy();
         await new Promise(resolve => setTimeout(resolve, 30));
         const canvasHash2 = getCanvasEntropy();
         if (canvasHash1 !== canvasHash2) {
             riskScore += 2;
-            riskFactors.push({ label: 'Canvas', value: 'Spoofing Detected (Randomized)', isBad: true });
-        } else {
-            riskFactors.push({ label: 'Canvas', value: 'Consistent', isBad: false });
+            riskFactors.push({ label: 'Canvas', value: 'Randomized', isBad: true });
         }
 
-        // 7. Generic WebGL renderer (bots/VMs)
-        const gl = getWebGLInfo();
-        const renderer = gl.renderer.toLowerCase();
-        if (renderer.includes("swiftshader") || renderer.includes("llvmpipe") || renderer.includes("software rasterizer")) {
+        // 6. Generic WebGL renderer (bots/VMs)
+        const renderer = getWebGLInfo().renderer.toLowerCase();
+        if (renderer.includes("swiftshader") || renderer.includes("llvmpipe")) {
              riskScore += 3;
-             riskFactors.push({ label: 'WebGL Renderer', value: "Software/VM based", isBad: true });
-        } else {
-             riskFactors.push({ label: 'WebGL Renderer', value: "Hardware Accelerated", isBad: false });
+             riskFactors.push({ label: 'WebGL', value: "Software Emulated", isBad: true });
         }
 
+        // Always add FP hash
+        let thumbmarkFingerprint = 'N/A';
+        try { thumbmarkFingerprint = await ThumbmarkJS.getFingerprint(); } catch (err) {}
+        riskFactors.push({ label: 'FP Hash', value: thumbmarkFingerprint, isBad: false, isHash: true, alwaysShow: true });
+
+        // --- Build Results ---
         const isBadBrowser = riskScore >= 4;
         setBackgroundState(isBadBrowser ? 'danger' : 'safe');
         
-        let thumbmarkFingerprint = 'N/A';
-        try { thumbmarkFingerprint = await ThumbmarkJS.getFingerprint(); } catch (err) {}
-        riskFactors.push({ label: 'FP Hash', value: thumbmarkFingerprint, isBad: false, isHash: true });
-
-        // --- Build Results HTML ---
         let resultsHTML = `<div class="verdict-box ${isBadBrowser ? 'danger' : 'safe'}"><i class="fa-solid ${isBadBrowser ? 'fa-user-secret' : 'fa-user-check'} fa-lg"></i><span>${isBadBrowser ? "High Risk Profile Detected" : "Profile Appears Normal"}</span></div>`;
         resultsHTML += `<div class="risk-score">Threat Score: <strong>${riskScore}</strong></div>`;
         
-        let detailsGridHTML = riskFactors.map(factor => {
+        const displayableRiskFactors = riskFactors.filter(factor => factor.isBad || factor.alwaysShow);
+
+        let detailsGridHTML = displayableRiskFactors.map((factor, index) => {
             let valueClass = 'value';
-            if(factor.isBad) valueClass += ' danger';
-            else if(!factor.isHash) valueClass += ' safe';
-            if(factor.isHash) valueClass += ' fingerprint-hash';
+            if (factor.isBad) valueClass += ' danger';
+            else if (!factor.isHash) valueClass += ' safe';
+            if (factor.isHash) valueClass += ' fingerprint-hash';
             
-            let labelHTML = `<div class="label" style="animation-delay: ${riskFactors.indexOf(factor) * 0.05}s">${factor.label}:</div>`;
-            let valueHTML = `<div class="${valueClass}" style="animation-delay: ${riskFactors.indexOf(factor) * 0.05}s">${factor.value}</div>`;
+            let labelHTML = `<div class="label" style="animation-delay: ${index * 0.05}s">${factor.label}:</div>`;
+            let valueHTML = `<div class="${valueClass}" style="animation-delay: ${index * 0.05}s">${factor.value}</div>`;
             return labelHTML + valueHTML;
         }).join('');
         
-        resultsHTML += `<div class="details-grid">${detailsGridHTML}</div>`;
+        resultsHTML += `<div class="details-grid">${detailsGridHTML.length > 0 ? detailsGridHTML : '<div style="grid-column: 1 / -1; text-align: center; color: var(--accent-green);">All checks passed.</div>'}</div>`;
         resultsHTML += `<div class="results-footer"><div class="results-separator ${isBadBrowser ? 'danger' : ''}"></div><div class="run-btn-wrapper"><button id="reset-btn" onclick="resetCatcher()">Run Another Test</button></div></div>`;
         
         return {html: resultsHTML, bad: isBadBrowser};
@@ -452,9 +432,9 @@
     }
   }
   
-  function getCanvasEntropy() {try {const canvas=document.createElement('canvas');const ctx=canvas.getContext('2d');ctx.textBaseline="top";ctx.font="14px 'Arial'";ctx.fillText("BrowserFingerprinting",2,2);return hashString(canvas.toDataURL())}catch{return null}}
-  function hashString(str){let hash=0;for(let i=0;i<str.length;i++){hash=((hash<<5)-hash)+str.charCodeAt(i);hash|=0}return hash}
-  function getWebGLInfo(){try{const canvas=document.createElement('canvas');const gl=canvas.getContext('webgl')||canvas.getContext('experimental-webgl');if(!gl){return{vendor:"unknown",renderer:"unknown"}}const dbg=gl.getExtension('WEBGL_debug_renderer_info');return{vendor:gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL),renderer:gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)}}catch{return{vendor:"unknown",renderer:"unknown"}}}
+  function getCanvasEntropy() {try {const c=document.createElement('canvas');const ctx=c.getContext('2d');ctx.textBaseline="top";ctx.font="14px 'Arial'";ctx.fillText("BrowserFP",2,2);return hashString(c.toDataURL())}catch{return null}}
+  function hashString(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0}return h}
+  function getWebGLInfo(){try{const c=document.createElement('canvas');const gl=c.getContext('webgl')||c.getContext('experimental-webgl');if(!gl){return{vendor:"N/A",renderer:"N/A"}}const dbg=gl.getExtension('WEBGL_debug_renderer_info');return{vendor:gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL),renderer:gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)}}catch{return{vendor:"N/A",renderer:"N/A"}}}
 
   /* --- DYNAMIC BACKGROUND SCRIPT (NO CHANGES) --- */
   const canvas = document.getElementById('matrix-bg');
