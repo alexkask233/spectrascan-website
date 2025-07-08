@@ -451,6 +451,30 @@
         animation-delay: 1.2s;
     }
 
+    .detected-target-nordvpn {
+        /* REPLACE THIS URL WITH YOUR NORDVPN LOGO IMAGE */
+        background-image: url('https://via.placeholder.com/180x50/333/ff00ff?text=NORDVPN'); /* Placeholder */
+        width: 28vw;
+        height: 7.7vw; /* 180/50 = 3.6 */
+        top: 50%;
+        left: 5%;
+        transform: translateY(-50%) rotate(5deg); /* Center vertically */
+        --rotate-deg: 5deg;
+        animation-delay: 0.8s;
+    }
+
+    .detected-target-protonvpn {
+        /* REPLACE THIS URL WITH YOUR PROTONVPN LOGO IMAGE */
+        background-image: url('https://via.placeholder.com/190x50/333/00ffff?text=PROTONVPN'); /* Placeholder */
+        width: 29vw;
+        height: 7.6vw; /* 190/50 = 3.8 */
+        top: 25%;
+        right: 0%;
+        transform: translateY(-50%) rotate(-8deg); /* Center vertically */
+        --rotate-deg: -8deg;
+        animation-delay: 1.5s;
+    }
+
     @keyframes glitch-flicker {
         0%, 100% { opacity: 0.08; transform: rotate(var(--rotate-deg, 0deg)) scale(1); }
         50% { opacity: 0.05; transform: rotate(var(--rotate-deg, 0deg)) scale(0.99); filter: grayscale(100%) brightness(40%) contrast(200%) blur(0.5px); }
@@ -464,6 +488,29 @@
     }
     /* End Background Detected Targets */
 
+    /* Mouse Follower Effect */
+    .mouse-follower {
+        position: fixed;
+        width: 150px; /* Size of the blur effect */
+        height: 150px;
+        background-color: var(--accent-green); /* Color of the glow */
+        border-radius: 50%;
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        mix-blend-mode: overlay; /* How it blends with content below */
+        filter: blur(80px); /* The blur radius */
+        opacity: 0.1; /* Initial opacity */
+        transition: opacity 0.2s ease-out;
+        z-index: 1; /* Below content, above canvas */
+        will-change: transform, opacity;
+    }
+    body.light-mode .mouse-follower {
+        background-color: var(--accent-blue);
+        mix-blend-mode: multiply;
+        opacity: 0.15;
+    }
+    /* End Mouse Follower Effect */
+
     /* General Responsiveness */
     @media (max-width: 1024px) {
         header { padding: 0 30px; }
@@ -473,9 +520,12 @@
         .feature-box h3 { font-size: 1.4rem; }
         .feature-box .icon-wrapper { font-size: 3.5rem; }
 
-        /* Background targets adjustments */
         .detected-target-iproyal { width: 35vw; height: 11.6vw; top: 10%; left: 3%; }
         .detected-target-adspower { width: 40vw; height: 10vw; bottom: 8%; right: 5%; }
+        .detected-target-nordvpn { width: 38vw; height: 10.5vw; top: 50%; left: 3%; }
+        .detected-target-protonvpn { width: 40vw; height: 10.5vw; top: 25%; right: 3%; }
+
+        .mouse-follower { width: 100px; height: 100px; filter: blur(60px); }
     }
 
     @media (max-width: 768px) {
@@ -502,9 +552,12 @@
         .feature-box .icon-wrapper { font-size: 3rem; }
         .classified-stamp { font-size: 16px; padding: 4px 8px; top: 15px; right: 15px; }
 
-        /* Background targets adjustments for smaller screens */
         .detected-target-iproyal { width: 45vw; height: 15vw; top: 15%; left: 0%; }
         .detected-target-adspower { width: 55vw; height: 13.75vw; bottom: 5%; right: 0%; }
+        .detected-target-nordvpn { width: 50vw; height: 13.8vw; top: 50%; left: 0%; }
+        .detected-target-protonvpn { width: 55vw; height: 14.5vw; top: 25%; right: 0%; }
+
+        .mouse-follower { display: none; } /* Disable on mobile for performance/usability */
     }
 
     @media (max-width: 480px) {
@@ -516,9 +569,10 @@
         .verdict-box { font-size: 18px; padding: 15px; }
         .details-grid .label, .details-grid .value { font-size: 13px; }
 
-        /* Even smaller targets for very small screens */
         .detected-target-iproyal { width: 60vw; height: 20vw; top: 10%; left: -5%; }
         .detected-target-adspower { width: 70vw; height: 17.5vw; bottom: 0%; right: -5%; }
+        .detected-target-nordvpn { width: 65vw; height: 18vw; top: 50%; left: -5%; }
+        .detected-target-protonvpn { width: 70vw; height: 18.4vw; top: 25%; right: -5%; }
     }
   </style>
 </head>
@@ -553,6 +607,8 @@
       <div class="detected-targets-background">
         <div class="detected-target detected-target-iproyal"></div>
         <div class="detected-target detected-target-adspower"></div>
+        <div class="detected-target detected-target-nordvpn"></div>
+        <div class="detected-target detected-target-protonvpn"></div>
       </div>
       <!-- End New: Detected Targets Background -->
 
@@ -643,6 +699,9 @@
   </footer>
 </div>
 
+<!-- Mouse Follower Element -->
+<div class="mouse-follower"></div>
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -660,7 +719,45 @@ document.addEventListener('DOMContentLoaded', () => {
         scrollObserver.observe(el);
     });
 
-    /* No custom cursor JS needed */
+    /* --- Mouse Follower Effect --- */
+    const mouseFollower = document.querySelector('.mouse-follower');
+
+    if (mouseFollower) { /* Ensure element exists and only run on desktop */
+        let mouseX = 0;
+        let mouseY = 0;
+        let followerX = 0;
+        let followerY = 0;
+        const speed = 0.1; /* Adjust for responsiveness */
+
+        function animateFollower() {
+            followerX += (mouseX - followerX) * speed;
+            followerY += (mouseY - followerY) * speed;
+
+            mouseFollower.style.transform = `translate(${followerX}px, ${followerY}px) translate(-50%, -50%)`;
+            requestAnimationFrame(animateFollower);
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        /* Start the animation loop only on screens larger than 768px */
+        if (window.innerWidth > 768) {
+            animateFollower();
+        } else {
+            mouseFollower.style.display = 'none'; /* Hide on small screens */
+        }
+
+        /* Re-enable/disable on resize for responsiveness */
+        window.addEventListener('resize', () => {
+            if (window.innerWidth <= 768) {
+                mouseFollower.style.display = 'none';
+            } else {
+                mouseFollower.style.display = 'block';
+            }
+        });
+    }
 });
 </script>
 
@@ -788,12 +885,12 @@ document.addEventListener('DOMContentLoaded', () => {
         opera: false,
         heuristicsSpoofing: false,
         canvasRandomization: false,
-        webglEmulation: false
+        webglEmulation: false,
+        isProxyIP: false /* New flag to track if IP itself is a proxy/VPN */
     };
     const TARGET_CHROME_VERSION = "138"; 
 
     /* IP Check */
-    let isProxyIP = false; /* Flag to easily check IP status later */
     try {
         const resp = await fetch('/api/ip-check', { cache: 'no-store' });
         const ipData = await resp.json();
@@ -802,10 +899,10 @@ document.addEventListener('DOMContentLoaded', () => {
         riskFactors.push({ label: 'VPN/Proxy', value: ipData.status, isBad: ipData.isProxy, alwaysShow: true });
         if (ipData.isProxy) {
             riskScore += 3;
-            isProxyIP = true; /* Set flag */
+            browserFlags.isProxyIP = true; /* Set flag */
         }
         if (ipData.status.includes('TOR')) riskScore += 5;
-    } /* Removed the old `catch` block for brevity, ensure your actual API has a robust error handler or mock API */
+    } 
     catch (e) {
         riskScore += 1;
         riskFactors.push({ label: 'IP/VPN Check', value: "Error during lookup", isBad: true, alwaysShow: true });
@@ -867,7 +964,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let finalBrowserLabelValue = 'Normal';
     let finalBrowserLabelIsBad = false;
 
-    /* Order of checks matters: most specific/severe fingerprint issues first */
+    /* Calculate risk score contribution from browser-only factors */
+    let browserRiskContribution = 0;
+    if (browserFlags.heuristicsSpoofing) browserRiskContribution += 4;
+    if (browserFlags.canvasRandomization) browserRiskContribution += 2;
+    if (browserFlags.webglEmulation) browserRiskContribution += 3;
+    if (browserFlags.tor) browserRiskContribution += 5; /* Tor is a strong browser signal */
+    if (browserFlags.brave) browserRiskContribution += 3;
+    if (browserFlags.opera) browserRiskContribution += 2;
+
+
+    /* Order of checks for the final label: most specific/severe fingerprint issues first */
     if (browserFlags.heuristicsSpoofing || browserFlags.canvasRandomization || browserFlags.webglEmulation) {
         finalBrowserLabelValue = 'Antidetect Browser Detected';
         finalBrowserLabelIsBad = true;
@@ -876,30 +983,25 @@ document.addEventListener('DOMContentLoaded', () => {
         finalBrowserLabelIsBad = true;
     } else if (browserFlags.brave) {
         finalBrowserLabelValue = 'Brave Browser';
-        /* If Brave is detected AND overall profile is high risk (not just Brave's +3), it suggests further issues */
-        if (isBadBrowserOverall && riskScore > 3) {
+        /* If Brave is detected AND overall profile is high risk (and not just Brave's +3), it suggests further issues */
+        if (isBadBrowserOverall && riskScore > 3 && browserRiskContribution > 3) { 
              finalBrowserLabelValue += ' (Antidetect Tendencies)';
              finalBrowserLabelIsBad = true;
         }
     } else if (browserFlags.opera) {
         finalBrowserLabelValue = 'Opera Browser';
         /* If Opera is detected AND overall profile is high risk, it suggests further issues */
-        if (isBadBrowserOverall && riskScore > 2) {
+        if (isBadBrowserOverall && riskScore > 2 && browserRiskContribution > 2) {
              finalBrowserLabelValue += ' (Suspicious)';
              finalBrowserLabelIsBad = true;
         }
-    }
-
-    /* Special case: If overall score is bad, but no specific browser flags were triggered,
-       and the primary reason for "badness" is the IP. */
-    let riskScoreFromBrowserOnly = riskScore;
-    if (isProxyIP) {
-        riskScoreFromBrowserOnly -= 3; /* Subtract IP contribution */
-    }
-
-    /* If overall is bad, but browser's *own* contribution is low, and we haven't flagged the browser yet */
-    if (isBadBrowserOverall && riskScoreFromBrowserOnly < 3 && !finalBrowserLabelIsBad) {
+    } else if (isBadBrowserOverall && browserFlags.isProxyIP && browserRiskContribution < 3) {
+        /* This is the key fix: If overall is bad, and IP is proxy, AND browser's own fingerprint contribution is low */
         finalBrowserLabelValue = 'Suspicious Profile (IP Related)';
+        finalBrowserLabelIsBad = true;
+    } else if (isBadBrowserOverall && browserRiskContribution >= 3) {
+        /* If overall is bad, and browser itself contributed significantly (but not hit specific flags above) */
+        finalBrowserLabelValue = 'Suspicious Profile (Antidetect Characteristics)';
         finalBrowserLabelIsBad = true;
     }
 
