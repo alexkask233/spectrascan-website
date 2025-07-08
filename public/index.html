@@ -14,34 +14,45 @@
 
   <style>
     :root {
-      --bg-color: #0d0d12; --card-color: rgba(22, 22, 28, 0.9); --border-color: #33333a; --text-primary: #f0f0f0; --text-secondary: #a9a9b3; --accent-green: #00ff88; --accent-red: #ff4757; --accent-blue: #00aaff; --success-bg: rgba(0, 255, 136, 0.1); --danger-bg: rgba(255, 71, 87, 0.1);
+      --bg-color-dark: #0A0A0C; --bg-color-gray: #1a1a1d; --card-color: rgba(30, 30, 36, 0.9); --border-color: #33333a; --text-primary: #f0f0f0; --text-secondary: #a9a9b3; --accent-green: #00ff88; --accent-red: #ff4757; --accent-blue: #00aaff; --success-bg: rgba(0, 255, 136, 0.1); --danger-bg: rgba(255, 71, 87, 0.1);
     }
-    body.light-mode {
-      --bg-color: #f4f4f8; --card-color: #ffffff; --border-color: #e0e0e6; --text-primary: #121217; --text-secondary: #66666e; --success-bg: rgba(0, 200, 110, 0.1); --danger-bg: rgba(255, 71, 87, 0.1);
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
     html { height: 100%; }
-    body { height: 100%; background-color: var(--bg-color); color: var(--text-primary); font-family: 'Inter', sans-serif; line-height: 1.6; position: relative; }
-    #matrix-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; transition: opacity 0.5s ease-in-out; }
+    body { background-color: var(--bg-color-gray); color: var(--text-primary); font-family: 'Inter', sans-serif; line-height: 1.6; position: relative; transition: background-color 0.5s ease; }
+    body.scanner-page-active { background-color: var(--bg-color-dark); }
+    #matrix-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; display: none; }
+    body.scanner-page-active #matrix-bg { display: block; }
+    #background-watermark {
+        content: attr(data-text); position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-15deg); font-size: 15vw; font-family: 'Roboto Mono', monospace; font-weight: 700; opacity: 0; pointer-events: none; z-index: -1; transition: opacity 0.5s ease;
+    }
+    body.scanner-page-active.danger #background-watermark {
+        color: var(--accent-red); text-shadow: 0 0 10px rgba(255, 0, 0, 0.5); opacity: 0.1; animation: watermark-flicker 2s infinite alternate;
+    }
+    body.scanner-page-active.safe #background-watermark {
+        color: var(--accent-blue); text-shadow: 0 0 10px rgba(0, 170, 255, 0.5); opacity: 0.05; animation: watermark-flicker 4s infinite alternate;
+    }
+    @keyframes watermark-flicker { 0%, 90% { opacity: 0.1; } 95% { opacity: 0.05; } 100% { opacity: 0.12; } }
     .page-wrapper { display: flex; flex-direction: column; min-height: 100vh; }
     main { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px 20px; }
     .page { display: none; width: 100%; max-width: 800px; }
     .page.active { display: block; animation: page-transition-in 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
     @keyframes page-transition-in { from { opacity: 0; transform: translateY(20px) scale(0.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
-    header { background-color: rgba(18, 18, 23, 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); padding: 0 40px; display: flex; justify-content: space-between; align-items: center; height: 70px; position: sticky; top: 0; z-index: 100; transition: background-color 0.3s ease, border-color 0.3s ease; }
+    header { background-color: rgba(18, 18, 23, 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-color); padding: 0 40px; display: flex; justify-content: space-between; align-items: center; height: 70px; position: sticky; top: 0; z-index: 100; }
     .logo-link { text-decoration: none; }
     .logo { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 10px; color: var(--text-primary); }
     .logo .fa-shield-halved { color: var(--accent-green); }
     nav { display: flex; align-items: center; gap: 30px; }
     nav .nav-link { color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s ease; }
     nav .nav-link:hover, nav .nav-link.active { color: var(--text-primary); }
-    #theme-toggle-btn { background: none; border: none; color: var(--text-secondary); font-size: 20px; cursor: pointer; transition: color 0.2s ease, transform 0.2s ease; }
+    #theme-toggle-btn { display: none; } /* Hide theme toggle for now */
     #hamburger-btn, #close-nav-btn { display: none; background: none; border: none; font-size: 24px; color: var(--text-primary); cursor: pointer; }
     #close-nav-btn { position: absolute; top: 20px; right: 20px; }
-    footer { text-align: center; padding: 20px; color: var(--text-secondary); font-size: 14px; background-color: transparent; border-top: 1px solid var(--border-color); font-family: 'Roboto Mono', monospace; transition: background-color 0.3s ease, border-color 0.3s ease; }
-    footer .footer-icons { margin-top: 10px; display: flex; justify-content: center; gap: 20px; font-size: 18px; color: var(--accent-green); }
-    .container { background-color: var(--card-color); padding: 30px 40px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease, border-color 0.3s ease; position: relative; overflow: hidden; }
-    h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; text-align: center; color: var(--text-primary); position: relative; }
+    footer { text-align: center; padding: 20px; color: var(--text-secondary); font-size: 14px; background-color: var(--card-color); border-top: 1px solid var(--border-color); font-family: 'Roboto Mono', monospace; }
+    .container { background-color: var(--card-color); padding: 30px 40px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); position: relative; overflow: hidden; }
+    h1, .static-page h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; text-align: center; color: var(--text-primary); }
+    #page-landing h1 { animation: text-shadow-flicker 4s linear infinite; }
+    @keyframes text-shadow-flicker { 0%, 100% { text-shadow: 2px 2px 0 var(--accent-green), -2px -2px 0 var(--accent-red); } 25% { text-shadow: -2px 2px 0 var(--accent-green), 2px -2px 0 var(--accent-red); } 50% { text-shadow: 2px -2px 0 var(--accent-green), -2px 2px 0 var(--accent-red); } 75% { text-shadow: -2px -2px 0 var(--accent-green), 2px 2px 0 var(--accent-red); } }
+    .static-page h2 { animation: pulse-blue-shadow 4s infinite alternate; }
+    @keyframes pulse-blue-shadow { from { text-shadow: 0 0 5px var(--accent-blue); } to { text-shadow: 0 0 20px var(--accent-blue); } }
     .sub-headline { font-family: 'Roboto Mono', monospace; font-size: 16px; color: var(--text-secondary); text-align: center; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; }
     .sub-headline span { color: var(--accent-green); text-shadow: 0 0 5px rgba(0,255,136,0.5); }
     .run-btn-wrapper { margin-top: 40px; text-align:center; }
@@ -59,6 +70,9 @@
     .detection-card ul { list-style: none; padding: 0; }
     .detection-card ul li { font-family: 'Roboto Mono', monospace; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.8; }
     #results-wrapper { width: 100%; max-width: 700px; }
+    #results-container .classified-stamp { position: absolute; top: 25px; right: 25px; transform: rotate(10deg); border: 3px solid; padding: 5px 10px; font-family: 'Roboto Mono', monospace; font-weight: 700; font-size: 18px; user-select: none; }
+    #results-container .classified-stamp.safe { border-color: var(--accent-blue); color: var(--accent-blue); }
+    #results-container .classified-stamp.danger { border-color: var(--accent-red); color: var(--accent-red); }
     .verdict-box { padding: 20px; font-size: 22px; font-weight: 700; border-radius: 12px; border: 2px solid; display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 25px; animation: pulse-border 2s infinite; }
     .verdict-box.safe { background-color: var(--success-bg); border-color: var(--accent-green); color: var(--accent-green); }
     .verdict-box.danger { background-color: var(--danger-bg); border-color: var(--accent-red); color: var(--accent-red); }
@@ -78,22 +92,20 @@
     button#reset-btn.safe-button:hover { color: #000; background: var(--accent-green); }
     .loader-wrapper { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 0; overflow: hidden; }
     .glitch-text { color: var(--accent-red); font-family: 'Roboto Mono', monospace; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 2px; position: relative; }
-    .glitch-text::before, .glitch-text::after { content: 'ANALYZING SIGNATURE...'; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); overflow: hidden; }
+    .glitch-text::before, .glitch-text::after { content: 'INTERROGATING SIGNATURE...'; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--card-color); overflow: hidden; }
     .glitch-text::before { left: 2px; text-shadow: -2px 0 var(--accent-red); clip: rect(44px, 450px, 56px, 0); animation: glitch-anim 2s infinite linear alternate-reverse; }
     .glitch-text::after { left: -2px; text-shadow: -2px 0 var(--accent-blue), 2px 2px var(--accent-green); clip: rect(86px, 450px, 100px, 0); animation: glitch-anim2 3s infinite linear alternate-reverse; }
     @keyframes glitch-anim { from { clip: rect(5px, 9999px, 82px, 0); } to { clip: rect(78px, 9999px, 8px, 0); } }
     @keyframes glitch-anim2 { from { clip: rect(57px, 9999px, 34px, 0); } to { clip: rect(27px, 9999px, 100px, 0); } }
     .scanner-bar { width: 100%; height: 4px; background-color: var(--accent-green); margin-top: 30px; position: relative; box-shadow: 0 0 10px var(--accent-green); animation: scan-animation 2s linear infinite; }
     @keyframes scan-animation { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
-    
-    .static-page h2 { font-size: 1.8rem; }
     .static-page p { color: var(--text-secondary); margin-bottom: 20px; line-height: 1.7; font-family: 'Roboto Mono', monospace; }
     .static-page h3 { color: var(--accent-blue); margin-top: 30px; margin-bottom: 10px; font-family: 'Roboto Mono', monospace; }
     .contact-form .form-group { margin-bottom: 20px; }
-    .contact-form input, .contact-form textarea { width: 100%; background-color: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; color: var(--text-primary); font-size: 15px; transition: all 0.2s ease; font-family: 'Roboto Mono', monospace; }
+    .contact-form input, .contact-form textarea { width: 100%; background-color: #0d0d12; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; color: var(--text-primary); font-size: 15px; transition: all 0.2s ease; font-family: 'Roboto Mono', monospace; }
     .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--accent-blue); box-shadow: 0 0 10px rgba(0,170,255,0.5); }
     .contact-form textarea { resize: vertical; min-height: 120px; }
-    .captcha-group { display: flex; align-items: center; flex-wrap: nowrap; gap: 15px; background-color: var(--bg-color); padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); }
+    .captcha-group { display: flex; align-items: center; flex-wrap: nowrap; gap: 15px; background-color: #0d0d12; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); }
     .captcha-group label { color: var(--accent-green); font-family: 'Roboto Mono', monospace; white-space: nowrap; }
     .captcha-group input { border: none !important; box-shadow: none !important; }
     .form-submit-btn { width: 100%; padding: 15px; background: var(--accent-blue); color: #fff; border: none; border-radius: 10px; font-weight: 700; font-size: 16px; box-shadow: 0 0 15px rgba(0,170,255, 0.3); transition: all 0.3s ease; }
@@ -135,12 +147,11 @@
     <button id="hamburger-btn" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
     <nav id="main-nav">
         <button id="close-nav-btn" aria-label="Close menu"><i class="fa-solid fa-times"></i></button>
-        <a href="/" class="nav-link">Catcher</a>
+        <a href="/" class="nav-link">Home</a>
         <a href="/checker" class="nav-link">Scanner</a>
         <a href="/faq" class="nav-link">FAQ</a>
         <a href="/privacy" class="nav-link">Privacy</a>
         <a href="/contact" class="nav-link">Contact</a>
-        <button id="theme-toggle-btn" title="Toggle theme"><i class="fa-solid fa-moon"></i></button>
     </nav>
   </header>
 
@@ -149,7 +160,7 @@
       <h1>Identify, Expose, Dominate.</h1>
       <p class="sub-headline">Unmask fraudulent users and eliminate threats by exposing <span>antidetect browsers</span> and <span>proxy networks</span>.</p>
       <div class="run-btn-wrapper">
-        <a href="/checker" class="run-btn-link">Initiate Scan</a>
+        <a href="/checker" class="run-btn-link">Initiate Live Scan</a>
       </div>
       <div class="detection-showcase">
         <h2 class="showcase-title"><i class="fa-solid fa-crosshairs"></i> Target Capabilities</h2>
@@ -171,7 +182,7 @@
     <div id="page-checker" class="page">
         <div id="results-wrapper">
             <div class="container" id="results-container">
-                <!-- Scan results are injected here -->
+                <div class="classified-stamp"></div>
             </div>
         </div>
     </div>
@@ -190,6 +201,7 @@
             <h2>Privacy Policy</h2>
             <p>Your privacy is paramount. Our policy is simple: we don't store your data.</p>
             <h3>IP Address Handling</h3><p>Your IP address is used *only* to perform the check with third-party databases during your session. It is never logged or stored on our servers.</p>
+            <h3>Browser Fingerprint</h3><p>All fingerprinting happens in your browser. Raw data (WebGL, Canvas, etc.) is never sent to us. Your device performs the analysis locally.</p>
             <h3>Cookies & Tracking</h3><p>This website does not use cookies for tracking. Period.</p>
         </div>
     </div>
@@ -231,47 +243,43 @@
   const mainNav = document.getElementById('main-nav');
   hamburgerBtn.addEventListener('click', () => mainNav.classList.add('is-open'));
   closeNavBtn.addEventListener('click', () => mainNav.classList.remove('is-open'));
-  const themeToggleBtn = document.getElementById('theme-toggle-btn'); 
-  const body = document.body; 
-  function applySavedTheme() { 
-    const savedTheme = localStorage.getItem('theme'); 
-    if (savedTheme === 'light') { 
-      body.classList.add('light-mode'); 
-      themeToggleBtn.innerHTML = '<i class="fa-solid fa-sun"></i>';
-    } else { 
-      body.classList.remove('light-mode'); 
-      themeToggleBtn.innerHTML = '<i class="fa-solid fa-moon"></i>';
-    } 
-  }
-  themeToggleBtn.addEventListener('click', () => { 
-    body.classList.toggle('light-mode'); 
-    const isLight = body.classList.contains('light-mode');
-    localStorage.setItem('theme', isLight ? 'light' : 'dark');
-    themeToggleBtn.innerHTML = isLight ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
-    setBackgroundState('default');
-  });
+  
   const pageContent = { '/': 'page-landing', '/checker': 'page-checker', '/faq': 'page-faq', '/privacy': 'page-privacy', '/contact': 'page-contact' };
   
   function showPageContent(pageId) {
+    document.body.classList.toggle('scanner-page-active', pageId === 'page-checker');
     document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
     const pageEl = document.getElementById(pageId);
     if(pageEl) pageEl.classList.add('active');
+    
     document.querySelectorAll('.nav-link').forEach(link => {
       link.classList.remove('active');
       const linkPath = link.getAttribute('href');
-      const currentPath = window.location.pathname;
-      const checkerRegex = /^\/checker(\/.*)?$/;
-      if (linkPath === currentPath || (linkPath === '/checker' && checkerRegex.test(currentPath)) || (linkPath === '/' && currentPath === '/')) {
-          link.classList.add('active');
+      let currentPath = window.location.pathname;
+      if (currentPath.endsWith('/')) {
+        // Match both / and /checker with their links
+        if(linkPath === currentPath) link.classList.add('active');
+      } else {
+        if (linkPath === currentPath || (linkPath === '/' && currentPath === '')) {
+             link.classList.add('active');
+        }
       }
     });
-    // Auto-run scanner when the checker page is loaded
+
     if (pageId === 'page-checker') {
         runDetection();
+    } else {
+        setBackgroundState('default');
     }
   }
 
-  const router = () => { const path = window.location.pathname; const pageId = pageContent[path] || pageContent['/']; showPageContent(pageId); };
+  const router = () => { 
+      let path = window.location.pathname;
+      // Default to landing page if root is accessed
+      if (path === '/') path = '/'; 
+      const pageId = pageContent[path] || pageContent['/'];
+      showPageContent(pageId); 
+  };
   
   document.addEventListener('click', (e) => { 
     const a = e.target.closest('a'); 
@@ -285,25 +293,25 @@
     }
   });
   window.addEventListener('popstate', router);
-  document.addEventListener('DOMContentLoaded', () => { applySavedTheme(); router(); if (document.getElementById('contact-form')) { initializeContactForm(); } });
+  document.addEventListener('DOMContentLoaded', () => { 
+    router(); 
+    if (document.getElementById('contact-form')) { initializeContactForm(); } 
+  });
 
-  /* --- CATCHER SCRIPT --- */
+  /* --- SCANNER & FINGERPRINTING LOGIC --- */
   window.runDetection = async function() {
     document.getElementById('scan-start-sound').play();
-    const resultsWrapper = document.getElementById('results-wrapper');
     const resultsEl = document.getElementById('results-container');
-    if (!resultsWrapper || !resultsEl) return;
-    resultsWrapper.style.display = 'block';
-    resultsEl.innerHTML = `<div class="loader-wrapper"><div class="glitch-text">ANALYZING SIGNATURE...</div><div class="scanner-bar"></div></div>`;
+    resultsEl.innerHTML = `<div class="loader-wrapper"><div class="glitch-text">INTERROGATING SIGNATURE...</div><div class="scanner-bar"></div></div>`;
     setBackgroundState('scanning');
 
     const minDelay = new Promise(resolve => setTimeout(resolve, 2500));
+    
     const detectionPromise = (async () => {
-        let riskScore = 0, identifiedBrowserLabel = null, heuristicsScore = 0;
+        let riskScore = 0; let identifiedBrowserLabel = null; let heuristicsScore = 0;
         const riskFactors = []; const TARGET_CHROME_VERSION = "138"; 
         try {
-            const resp = await fetch('/api/ip-check', { cache: 'no-store' });
-            const ipData = await resp.json();
+            const resp = await fetch('/api/ip-check', { cache: 'no-store' }); const ipData = await resp.json();
             riskFactors.push({ label: 'IP Address', value: ipData.ip, isBad: false, alwaysShow: true });
             riskFactors.push({ label: 'VPN/Proxy', value: ipData.status, isBad: ipData.isProxy, alwaysShow: true });
             if (ipData.isProxy) riskScore += 3; if (ipData.status.includes('TOR')) riskScore += 5;
@@ -329,24 +337,24 @@
         riskFactors.push({ label: 'FP Hash', value: thumbmarkFingerprint, isBad: false, isHash: true, alwaysShow: true });
         
         const isBadBrowser = riskScore >= 3; const verdict = isBadBrowser ? "High Risk Profile Detected" : "Profile Appears Normal";
-        let resultsHTML = `<div class="verdict-box ${isBadBrowser ? 'danger' : 'safe'}"><i class="fa-solid ${isBadBrowser ? 'fa-user-secret' : 'fa-user-check'} fa-lg"></i><span>${verdict}</span></div>`;
+        let resultsHTML = `<div class="classified-stamp"></div><div class="verdict-box ${isBadBrowser ? 'danger' : 'safe'}"><i class="fa-solid ${isBadBrowser ? 'fa-user-secret' : 'fa-user-check'} fa-lg"></i><span>${verdict}</span></div>`;
         resultsHTML += `<div class="risk-score">Threat Score: <strong>${riskScore}</strong></div>`;
         const displayableRiskFactors = riskFactors.filter(factor => factor.isBad || factor.alwaysShow);
         let detailsGrid = displayableRiskFactors.map((factor) => { let valueClass = 'value'; if (factor.isBad) valueClass += ' danger'; else if (!factor.isHash) valueClass += ' safe'; if (factor.isHash) valueClass += ' fingerprint-hash'; return `<div class="label">${factor.label}:</div><div class="${valueClass}">${factor.value}</div>`; }).join('');
-        resultsHTML += `<div class="details-grid">${detailsGrid.length > 0 ? detailsGrid : '...'}</div>`;
+        resultsHTML += `<div class="details-grid">${detailsGrid.length > 0 ? detailsGrid : ''}</div>`;
         resultsHTML += `<div class="results-footer"><button id="reset-btn">Scan Again</button></div>`;
         
-        const fragment = document.createRange().createContextualFragment(resultsHTML);
-        return {html: fragment, bad: isBadBrowser};
+        return {html: resultsHTML, bad: isBadBrowser};
     })();
     
     const [result] = await Promise.all([detectionPromise, minDelay]);
     document.getElementById('scan-complete-sound').play();
-    resultsEl.innerHTML = '';
-    resultsEl.appendChild(result.html);
+    resultsEl.innerHTML = result.html;
     setBackgroundState(result.bad ? 'danger' : 'safe');
     const resetButton = document.getElementById('reset-btn');
     if (resetButton) { resetButton.classList.add(result.bad ? 'danger-button' : 'safe-button'); resetButton.addEventListener('click', runDetection); }
+    const stampEl = resultsEl.querySelector('.classified-stamp');
+    if (stampEl) { stampEl.textContent = result.bad ? "COMPROMISED" : "UNCLASSIFIED"; stampEl.classList.add(result.bad ? 'danger' : 'safe');}
   }
   
   function getCanvasEntropy() {try {const c=document.createElement('canvas'); const ctx=c.getContext('2d'); ctx.fillStyle="rgb(255,255,255)"; ctx.fillRect(0,0,c.width,c.height); c.width=200;c.height=50;ctx.textBaseline="top";ctx.font="14px 'Arial'";ctx.fillText("BrowserFP",2,2);return hashString(c.toDataURL())}catch{return null}}
@@ -391,9 +399,9 @@
   let backgroundInterval;
   const setupCanvas = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; setBackgroundState('default'); };
   const drawMatrix = (color, speed, charSet) => {
-    const characters = charSet; const fontSize = 14; const columns = canvas.width / fontSize;
+    const characters = charSet; const fontSize = 12; const columns = canvas.width / fontSize;
     const drops = Array(Math.floor(columns)).fill(1);
-    const bg = body.classList.contains('light-mode') ? 'rgba(244, 244, 248, 0.05)' : 'rgba(13, 13, 18, 0.05)';
+    const bg = 'rgba(10, 10, 15, 0.05)';
     return setInterval(() => {
         ctx.fillStyle = bg; ctx.fillRect(0, 0, canvas.width, canvas.height);
         ctx.fillStyle = color; ctx.font = fontSize + 'px Roboto Mono';
@@ -405,28 +413,23 @@
         }
     }, speed);
   }
-  let gridOffset = 0;
-  const drawBlueGrid = () => {
-    const gridColor = body.classList.contains('light-mode') ? 'rgba(0, 170, 255, 0.2)' : 'rgba(0, 170, 255, 0.15)';
-    return setInterval(() => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.strokeStyle = gridColor; ctx.lineWidth = 1; gridOffset = (gridOffset + 0.3) % 40;
-        for (let x = -gridOffset; x < canvas.width; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke(); }
-        for (let y = -gridOffset; y < canvas.height; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke(); }
-    }, 50);
-  }
+  
   function setBackgroundState(state) {
-      clearInterval(backgroundInterval); ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const isLight = body.classList.contains('light-mode');
-      if (state === 'danger' || state === 'scanning') {
-          const color = state === 'scanning' ? 'rgba(255, 71, 87, 0.8)' : 'rgba(255, 71, 87, 0.7)';
-          backgroundInterval = drawMatrix(color, 25, '01');
-          body.classList.add('danger-mode'); body.classList.remove('safe-mode');
+      clearInterval(backgroundInterval);
+      const watermark = document.getElementById('background-watermark');
+      body.classList.remove('safe', 'danger');
+      if (state === 'scanning') {
+          backgroundInterval = drawMatrix('rgba(255, 71, 87, 0.8)', 33, '01');
+      } else if (state === 'danger') {
+          backgroundInterval = drawMatrix('rgba(255, 71, 87, 0.7)', 50, '01');
+          watermark.setAttribute('data-text', 'COMPROMISED');
+          body.classList.add('danger');
       } else if (state === 'safe') {
-          backgroundInterval = isLight ? drawMatrix('rgba(0, 0, 0, 0.1)', 50, '01') : drawBlueGrid();
-          body.classList.add('safe-mode'); body.classList.remove('danger-mode');
-      } else {
-          backgroundInterval = isLight ? drawMatrix('rgba(0, 0, 0, 0.1)', 50, '01') : drawMatrix('rgba(0, 255, 136, 0.7)', 40, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789');
-          body.classList.remove('safe-mode', 'danger-mode');
+          backgroundInterval = drawMatrix('rgba(0, 255, 136, 0.4)', 70, '01');
+          watermark.setAttribute('data-text', 'UNCLASSIFIED');
+          body.classList.add('safe');
+      } else { // default state (for non-scanner pages)
+          watermark.setAttribute('data-text', '');
       }
   }
   window.addEventListener('resize', setupCanvas);
