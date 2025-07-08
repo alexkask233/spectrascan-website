@@ -151,6 +151,20 @@
     .static-page p { color: var(--text-secondary); margin-bottom: 20px; line-height: 1.7; font-family: 'Roboto Mono', monospace; }
     .static-page h3 { color: var(--accent-blue); margin-top: 30px; margin-bottom: 10px; font-family: 'Roboto Mono', monospace; }
     
+    .contact-form .form-group { margin-bottom: 20px; }
+    .contact-form input, .contact-form textarea { width: 100%; background-color: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; color: var(--text-primary); font-size: 15px; transition: all 0.2s ease; font-family: 'Roboto Mono', monospace; }
+    .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--accent-blue); box-shadow: 0 0 10px rgba(0,170,255,0.5); }
+    .contact-form textarea { resize: vertical; min-height: 120px; }
+    .captcha-group { display: flex; align-items: center; gap: 15px; background-color: var(--bg-color); padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); }
+    .captcha-group label { color: var(--accent-green); font-family: 'Roboto Mono', monospace; }
+    .captcha-group input { border: none !important; box-shadow: none !important; }
+    .form-submit-btn { width: 100%; padding: 15px; background: var(--accent-blue); color: #fff; border: none; border-radius: 10px; font-weight: 700; font-size: 16px; box-shadow: 0 0 15px rgba(0,170,255, 0.3); transition: all 0.3s ease; }
+    .form-submit-btn:hover:not(:disabled) { background-color: #0099e6; transform: translateY(-2px); box-shadow: 0 0 25px rgba(0,170,255, 0.6); }
+    .form-submit-btn:disabled { background-color: var(--text-secondary); cursor: not-allowed; }
+    #form-response { text-align: center; margin-top: 15px; font-weight: 700; }
+    #form-response.success { color: var(--accent-green); }
+    #form-response.error { color: var(--accent-red); }
+
     @media (max-width: 768px) {
         header { padding: 0 20px; }
         nav .nav-link, nav #theme-toggle-btn { display: none; }
@@ -185,6 +199,7 @@
         <a href="/" class="nav-link">Catcher</a>
         <a href="/faq" class="nav-link">FAQ</a>
         <a href="/privacy" class="nav-link">Privacy</a>
+        <a href="/contact" class="nav-link">Contact</a>
         <button id="theme-toggle-btn" title="Toggle theme"><i class="fa-solid fa-moon"></i></button>
     </nav>
   </header>
@@ -223,6 +238,25 @@
             <h3>Cookies & Tracking</h3><p>This website does not use cookies for tracking. Period.</p>
         </div>
     </div>
+
+    <div id="page-contact" class="page">
+      <div class="container static-page">
+        <h2 data-text="Initiate Contact">Initiate Contact</h2>
+        <p>Your transmission will be relayed to our secure channel. Ensure your message is concise and accurate.</p>
+        <form id="contact-form" class="contact-form">
+          <div class="form-group"><input type="text" id="contact-name" name="name" placeholder="// Enter your callsign (Name)" required></div>
+          <div class="form-group"><input type="text" id="contact-title" name="title" placeholder="// Subject of transmission (Title)" required></div>
+          <div class="form-group"><textarea id="contact-description" name="description" placeholder="// Begin your encrypted message... (Description)" required></textarea></div>
+          <div class="form-group captcha-group">
+            <label id="captcha-label" for="captcha-input"></label>
+            <input type="text" id="captcha-input" name="captcha" placeholder="> " required autocomplete="off">
+          </div>
+          <button type="submit" id="submit-btn" class="form-submit-btn">Transmit Securely</button>
+          <div id="form-response"></div>
+        </form>
+      </div>
+    </div>
+
   </main>
   
   <footer>
@@ -236,7 +270,7 @@
 </div>
 
 <script>
-  /* --- NAVIGATION, THEME, ROUTER (NO CHANGES) --- */
+  /* --- NAVIGATION, THEME, ROUTER --- */
   const hamburgerBtn = document.getElementById('hamburger-btn'); 
   const closeNavBtn = document.getElementById('close-nav-btn'); 
   const mainNav = document.getElementById('main-nav');
@@ -265,7 +299,7 @@
     setBackgroundState('default');
   });
   
-  const pageContent = { '/': 'page-catcher', '/faq': 'page-faq', '/privacy': 'page-privacy' };
+  const pageContent = { '/': 'page-catcher', '/faq': 'page-faq', '/privacy': 'page-privacy', '/contact': 'page-contact' };
   
   function showPageContent(pageId) {
     document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
@@ -301,10 +335,13 @@
   
   document.addEventListener('DOMContentLoaded', () => { 
     applySavedTheme(); 
-    router(); 
+    router();
+    if (document.getElementById('contact-form')) {
+        initializeContactForm();
+    }
   });
 
-  /* --- CATCHER SCRIPT (FINAL VERSION) --- */
+  /* --- CATCHER SCRIPT --- */
   function resetCatcher() { 
       const intro = document.getElementById('intro-content');
       if (intro) intro.style.display = 'block';
@@ -320,10 +357,8 @@
   window.runDetection = async function() {
     const intro = document.getElementById('intro-content');
     if (intro) intro.style.display = 'none';
-
     const resultsEl = document.getElementById('results-container');
     resultsEl.innerHTML = `<div class="loader-wrapper"><div class="scanner-circle"></div><p class="scanner-text">INTERROGATING BROWSER...</p></div>`;
-    
     const minDelay = new Promise(resolve => setTimeout(resolve, 2000));
     
     const detectionPromise = (async () => {
@@ -333,7 +368,6 @@
         const riskFactors = [];
         const TARGET_CHROME_VERSION = "138"; 
 
-        // --- Server-Side IP Check ---
         try {
             const resp = await fetch('/api/ip-check', { cache: 'no-store' });
             const ipData = await resp.json();
@@ -347,11 +381,9 @@
             riskFactors.push({ label: 'IP/VPN Check', value: "Error during lookup", isBad: true, alwaysShow: true });
         }
 
-        // --- Client-Side Checks ---
         const ua = navigator.userAgent;
         const majorChromeVersion = (ua.match(/Chrome\/(\d+)/) || [])[1];
         
-        // 1. Explicit Browser Identity Checks
         if (navigator.brave && await navigator.brave.isBrave()) {
             riskScore += 3;
             identifiedBrowserLabel = 'Brave';
@@ -366,7 +398,6 @@
             riskFactors.push({ label: 'Browser', value: identifiedBrowserLabel, isBad: true });
         }
 
-        // 2. Hidden Heuristic Checks
         if (!ua.includes("Chrome") || majorChromeVersion !== TARGET_CHROME_VERSION) { heuristicsScore += 4; }
         if (navigator.webdriver) { heuristicsScore += 4; }
         if (navigator.plugins && navigator.plugins.length === 5) { heuristicsScore += 1; }
@@ -376,7 +407,10 @@
         if (majorChromeVersion === TARGET_CHROME_VERSION && !proResolutions.includes(currentRes)) { heuristicsScore += 2; }
         riskScore += heuristicsScore;
         
-        // 3. Overt Fingerprinting Checks
+        if (!identifiedBrowserLabel && heuristicsScore >= 4) {
+            riskFactors.push({ label: 'Browser', value: 'Antidetect', isBad: true });
+        }
+        
         const canvasHash1 = getCanvasEntropy();
         await new Promise(resolve => setTimeout(resolve, 30));
         const canvasHash2 = getCanvasEntropy();
@@ -390,17 +424,11 @@
              riskFactors.push({ label: 'WebGL', value: "Software Emulated", isBad: true });
         }
 
-        // --- Final Verdict and Labeling ---
-        const isBadBrowser = riskScore >= 3;
-        // If high risk BUT no specific browser was named, label it 'Antidetect'
-        if (isBadBrowser && !identifiedBrowserLabel) {
-            riskFactors.push({ label: 'Browser', value: 'Antidetect', isBad: true });
-        }
-        
         let thumbmarkFingerprint = 'N/A';
         try { thumbmarkFingerprint = await ThumbmarkJS.getFingerprint(); } catch (err) {}
         riskFactors.push({ label: 'FP Hash', value: thumbmarkFingerprint, isBad: false, isHash: true, alwaysShow: true });
-
+        
+        const isBadBrowser = riskScore >= 3;
         const verdict = isBadBrowser ? "High Risk Profile Detected" : "Profile Appears Normal";
         setBackgroundState(isBadBrowser ? 'danger' : 'safe');
         
@@ -437,8 +465,70 @@
   function getCanvasEntropy() {try {const c=document.createElement('canvas'); const ctx=c.getContext('2d'); ctx.fillStyle="rgb(255,255,255)"; ctx.fillRect(0,0,c.width,c.height); c.width=200;c.height=50;ctx.textBaseline="top";ctx.font="14px 'Arial'";ctx.fillText("BrowserFP",2,2);return hashString(c.toDataURL())}catch{return null}}
   function hashString(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0}return h}
   function getWebGLInfo(){try{const c=document.createElement('canvas');const gl=c.getContext('webgl')||c.getContext('experimental-webgl');if(!gl){return{vendor:"N/A",renderer:"N/A"}}const dbg=gl.getExtension('WEBGL_debug_renderer_info');return{vendor:gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL),renderer:gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)}}catch{return{vendor:"N/A",renderer:"N/A"}}}
+  
+  /* --- CONTACT FORM SCRIPT --- */
+  function initializeContactForm() {
+    const form = document.getElementById('contact-form');
+    if(!form) return;
+    const captchaLabel = document.getElementById('captcha-label');
+    const captchaInput = document.getElementById('captcha-input');
+    const submitBtn = document.getElementById('submit-btn');
+    const formResponse = document.getElementById('form-response');
 
-  /* --- DYNAMIC BACKGROUND SCRIPT (NO CHANGES) --- */
+    let num1, num2, answer;
+
+    function generateCaptcha() {
+        num1 = Math.floor(Math.random() * 10) + 1;
+        num2 = Math.floor(Math.random() * 10) + 1;
+        answer = num1 + num2;
+        captchaLabel.textContent = `Security Check: ${num1} + ${num2} = ?`;
+        captchaInput.value = '';
+    }
+
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        if (parseInt(captchaInput.value, 10) !== answer) {
+            formResponse.textContent = 'ERROR: Incorrect Security Code';
+            formResponse.className = 'error';
+            generateCaptcha();
+            return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'TRANSMITTING...';
+        formResponse.textContent = '';
+        const formData = {
+            name: document.getElementById('contact-name').value,
+            title: document.getElementById('contact-title').value,
+            description: document.getElementById('contact-description').value,
+        };
+
+        try {
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            if (response.ok) {
+                formResponse.textContent = 'TRANSMISSION SUCCESSFUL';
+                formResponse.className = 'success';
+                form.reset();
+            } else { throw new Error('Server rejected the transmission.'); }
+        } catch (error) {
+            formResponse.textContent = 'TRANSMISSION FAILED. Try again later.';
+            formResponse.className = 'error';
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Transmit Securely';
+            generateCaptcha();
+        }
+    });
+
+    generateCaptcha();
+  }
+
+  /* --- DYNAMIC BACKGROUND SCRIPT --- */
   const canvas = document.getElementById('matrix-bg');
   const ctx = canvas.getContext('2d');
   let backgroundInterval;
@@ -528,4 +618,4 @@
 </script>
 
 </body>
-</html>
+</html>```
