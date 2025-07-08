@@ -566,52 +566,52 @@
     }
 
     // --- Determine overall verdict based on total riskScore ---
-    const isBadBrowserOverall = riskScore >= 3; // Define your "high risk" threshold here
+    const isBadBrowserOverall = riskScore >= 3; 
     setBackgroundState(isBadBrowserOverall ? 'danger' : 'safe');
     
     // --- Construct the 'Browser' risk factor message based on specific flags and overall verdict ---
-    let browserLabelValue;
+    let browserLabelValue = 'Normal';
     let browserLabelIsBad = false;
 
-    if (browserFlags.heuristicsSpoofing || browserFlags.canvasRandomization || browserFlags.webglEmulation) {
-        // These are strong indicators of browser manipulation or antidetect characteristics
-        browserLabelValue = 'Antidetect Browser Detected';
-        browserLabelIsBad = true;
-    } else if (browserFlags.tor) {
-        // Tor is explicitly a high-risk browser for many detection purposes
+    // Prioritize specific browser names if detected
+    if (browserFlags.tor) {
         browserLabelValue = 'Tor Browser (High Risk)';
-        browserLabelIsBad = true;
+        browserLabelIsBad = true; // Tor is always high risk
     } else if (browserFlags.brave) {
-        // Brave has antidetect tendencies, especially if overall risk is high
+        // Brave detected. Add "Antidetect Tendencies" if overall score is high.
         if (isBadBrowserOverall) {
             browserLabelValue = 'Brave Browser (Antidetect Tendencies)';
             browserLabelIsBad = true;
         } else {
-            // If Brave is detected but overall risk is low (e.g., only Brave with no other issues)
+            // Brave detected but overall risk is low, so just name it.
             browserLabelValue = 'Brave Browser';
-            browserLabelIsBad = true; // Still mark as bad in label if Brave is present, due to its nature
+            browserLabelIsBad = false; 
         }
     } else if (browserFlags.opera) {
-        // Opera might have some privacy features; classify as suspicious if overall risk is high
+        // Opera detected. Add "Suspicious" if overall score is high.
         if (isBadBrowserOverall) {
             browserLabelValue = 'Opera Browser (Suspicious)';
             browserLabelIsBad = true;
         } else {
-            browserLabelValue = 'Opera Browser'; // Opera detected, but low overall risk
+            // Opera detected but overall risk is low, so just name it.
+            browserLabelValue = 'Opera Browser';
             browserLabelIsBad = false;
         }
-    } else {
-        // No specific browser anomalies detected
-        browserLabelValue = 'Normal';
-        browserLabelIsBad = false;
+    } 
+    
+    // Override with "Antidetect" or "Suspicious Profile" if strong spoofing signs or high overall risk
+    if (browserFlags.heuristicsSpoofing || browserFlags.canvasRandomization || browserFlags.webglEmulation) {
+        browserLabelValue = 'Antidetect Browser Detected';
+        browserLabelIsBad = true;
+    } else if (isBadBrowserOverall && !browserFlags.tor && !browserFlags.brave && !browserFlags.opera) {
+        // If overall risk is high (e.g., due to IP), but no specific privacy browser
+        // or strong fingerprint spoofing was detected, label as suspicious profile.
+        browserLabelValue = 'Suspicious Profile (Antidetect Characteristics)';
+        browserLabelIsBad = true;
     }
+
     // Add the 'Browser' risk factor to the display list
     riskFactors.push({ label: 'Browser', value: browserLabelValue, isBad: browserLabelIsBad, alwaysShow: true });
-
-    // --- Add Fingerprint Hash ---
-    let thumbmarkFingerprint = 'N/A';
-    try { thumbmarkFingerprint = await ThumbmarkJS.getFingerprint(); } catch (err) {}
-    riskFactors.push({ label: 'FP Hash', value: thumbmarkFingerprint, isBad: false, isHash: true, alwaysShow: true });
     // END: Refactored Browser Detection Logic
 
     const verdict = isBadBrowserOverall ? "High Risk Profile Detected" : "Profile Appears Normal";
