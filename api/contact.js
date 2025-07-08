@@ -1,62 +1,72 @@
-// /api/contact.js - BULLETPROOF HARD-CODED VERSION
+// api/contact.js
+// At the very top, to load variables from a .env file (if you're using Node.js locally)
+require('dotenv').config(); 
+
+// Ensure you have nodemailer installed: npm install nodemailer
 
 const nodemailer = require('nodemailer');
+const express = require('express'); // Assuming you're using Express.js
+const router = express.Router(); // Or however you're structuring your API routes
 
-module.exports = async (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+// ... (Your other imports and API setup) ...
 
-  if (req.method === 'OPTIONS') { return res.status(200).end(); }
-  if (req.method !== 'POST') { return res.status(405).json({ message: 'Method Not Allowed' }); }
+router.post('/contact', async (req, res) => {
+    // 1. Basic validation (already seems to be there)
+    const { name, email, title, description } = req.body;
+    // You might add server-side validation here to ensure fields aren't empty, etc.
+    if (!name || !email || !title || !description) {
+        return res.status(400).json({ message: 'All fields are required.' });
+    }
 
-  const { name, email, title, description } = req.body;
+    // 2. IMPORTANT: Access credentials via process.env
+    const emailHost = process.env.EMAIL_HOST;
+    const emailPort = process.env.EMAIL_PORT;
+    const emailUser = process.env.EMAIL_USER;
+    const emailPass = process.env.EMAIL_PASSWORD;
+    const receiveEmail = process.env.RECEIVE_EMAIL_ADDRESS || 'yourcompany@example.com'; // Your internal email to receive contact messages
 
-  if (!name || !email || !title || !description) {
-    return res.status(400).json({ message: 'All form fields are required.' });
-  }
+    if (!emailHost || !emailPort || !emailUser || !emailPass) {
+        console.error('SMTP credentials are not configured in environment variables!');
+        return res.status(500).json({ message: 'Server email configuration error.' });
+    }
 
-  try {
-    // --- Transporter with Hard-Coded Secrets ---
-    let transporter = nodemailer.createTransport({
-      host: "smtp.protonmail.ch",
-      port: 587,
-      secure: false, // 587 uses STARTTLS
-      auth: {
-        user: "support@spectrascan.org",
-        pass: "2UV1EP1FU1SWGWQS",
-      },
+    // Nodemailer transport configuration
+    const transporter = nodemailer.createTransport({
+        host: emailHost,
+        port: parseInt(emailPort, 10), // Ensure port is an integer
+        secure: emailPort == 465 ? true : false, // true for port 465 (SSL/TLS), false for other ports (like 587)
+                                                 // For port 587, 'secure: false' uses STARTTLS which upgrades to secure connection
+        auth: {
+            user: emailUser,
+            pass: emailPass
+        },
+        // It's often good practice to set this for production, but might need false for self-signed certs
+        // For production, you should get proper certificates.
+        tls: {
+            rejectUnauthorized: false // Be careful with this in production. Set to true if you have valid SSL certs.
+        }
     });
 
-    // --- Generate Ticket ID & Prepare Emails ---
-    const ticketId = `SCS-${Date.now().toString().slice(-6)}`;
-    
-    const adminMail = {
-      from: `"SpectraScan System" <support@spectrascan.org>`,
-      to: 'support@spectrascan.org',
-      subject: `New Ticket [${ticketId}]: ${title}`,
-      text: `New message from ${name} (${email}):\n\n${description}`
+    const mailOptions = {
+        from: emailUser, // The sender address from your SMTP login
+        to: receiveEmail, // The email address that will receive the contact form submissions
+        subject: `SpectraScan Contact: ${title} from ${name}`,
+        html: `
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Subject:</strong> ${title}</p>
+            <p><strong>Message:</strong></p>
+            <p>${description}</p>
+        `
     };
 
-    const userMail = {
-      from: `"SpectraScan Support" <support@spectrascan.org>`,
-      to: email,
-      subject: `Your SpectraScan Ticket [${ticketId}]`,
-      text: `Hello ${name},\n\nThank you for contacting us. We have received your message and a support ticket has been created.\n\nYour Ticket ID is: ${ticketId}\n\nOur team will review your message and get back to you shortly.\n\nBest regards,\nThe SpectraScan Team`
-    };
-    
-    // --- Send Emails ---
-    await transporter.sendMail(adminMail);
-    await transporter.sendMail(userMail);
-    
-    // If successful, send a valid JSON success response
-    return res.status(200).json({ message: 'Transmission Successful', ticketId: ticketId });
+    try {
+        await transporter.sendMail(mailOptions);
+        res.status(200).json({ message: 'Your transmission was received. We will respond shortly.', ticketId: `SS-Contact-${Date.now()}` });
+    } catch (error) {
+        console.error('TRANSMISSION FAILED:', error);
+        res.status(500).json({ message: 'Transmission failed. Please verify your data and try again later.' });
+    }
+});
 
-  } catch (error) {
-    // --- GENERIC ERROR CATCH ---
-    // If anything fails (connection, auth, etc.), log the REAL error on the server...
-    console.error('An error occurred in the contact API:', error);
-    // ...but send a clean, valid JSON error response to the front-end.
-    return res.status(500).json({ message: 'A server error occurred during transmission. Please check server logs.' });
-  }
-};
+module.exports = router; // Export the router if this is a modular file
