@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@thumbmarkjs/thumbmarkjs/dist/thumbmark.umd.js"></script>
 
   <style>
@@ -155,15 +156,19 @@
     .contact-form input, .contact-form textarea { width: 100%; background-color: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; color: var(--text-primary); font-size: 15px; transition: all 0.2s ease; font-family: 'Roboto Mono', monospace; }
     .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--accent-blue); box-shadow: 0 0 10px rgba(0,170,255,0.5); }
     .contact-form textarea { resize: vertical; min-height: 120px; }
-    .captcha-group { display: flex; align-items: center; gap: 15px; background-color: var(--bg-color); padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); }
-    .captcha-group label { color: var(--accent-green); font-family: 'Roboto Mono', monospace; }
-    .captcha-group input { border: none !important; box-shadow: none !important; }
     .form-submit-btn { width: 100%; padding: 15px; background: var(--accent-blue); color: #fff; border: none; border-radius: 10px; font-weight: 700; font-size: 16px; box-shadow: 0 0 15px rgba(0,170,255, 0.3); transition: all 0.3s ease; }
     .form-submit-btn:hover:not(:disabled) { background-color: #0099e6; transform: translateY(-2px); box-shadow: 0 0 25px rgba(0,170,255, 0.6); }
     .form-submit-btn:disabled { background-color: var(--text-secondary); cursor: not-allowed; }
     #form-response { text-align: center; margin-top: 15px; font-weight: 700; }
     #form-response.success { color: var(--accent-green); }
     #form-response.error { color: var(--accent-red); }
+    
+    .g-recaptcha {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
 
     @media (max-width: 768px) {
         header { padding: 0 20px; }
@@ -244,13 +249,11 @@
         <h2 data-text="Initiate Contact">Initiate Contact</h2>
         <p>Your transmission will be relayed to our secure channel. Ensure your message is concise and accurate.</p>
         <form id="contact-form" class="contact-form">
-          <div class="form-group"><input type="text" id="contact-name" name="name" placeholder="// Enter your callsign (Name)" required></div>
-          <div class="form-group"><input type="text" id="contact-title" name="title" placeholder="// Subject of transmission (Title)" required></div>
-          <div class="form-group"><textarea id="contact-description" name="description" placeholder="// Begin your encrypted message... (Description)" required></textarea></div>
-          <div class="form-group captcha-group">
-            <label id="captcha-label" for="captcha-input"></label>
-            <input type="text" id="captcha-input" name="captcha" placeholder="> " required autocomplete="off">
-          </div>
+          <div class="form-group"><input type="text" id="contact-name" name="name" placeholder="// Callsign (Name)" required></div>
+          <div class="form-group"><input type="email" id="contact-email" name="email" placeholder="// Secure email for reply" required></div>
+          <div class="form-group"><input type="text" id="contact-title" name="title" placeholder="// Subject of transmission" required></div>
+          <div class="form-group"><textarea id="contact-description" name="description" placeholder="// Encrypted message..." required></textarea></div>
+          <div class="g-recaptcha" data-sitekey="6LcL2XsrAAAAAAwuZ_BGhayQkOhEfhBhzhEZYRlC" data-theme="dark"></div>
           <button type="submit" id="submit-btn" class="form-submit-btn">Transmit Securely</button>
           <div id="form-response"></div>
         </form>
@@ -470,37 +473,29 @@
   function initializeContactForm() {
     const form = document.getElementById('contact-form');
     if(!form) return;
-    const captchaLabel = document.getElementById('captcha-label');
-    const captchaInput = document.getElementById('captcha-input');
     const submitBtn = document.getElementById('submit-btn');
     const formResponse = document.getElementById('form-response');
 
-    let num1, num2, answer;
-
-    function generateCaptcha() {
-        num1 = Math.floor(Math.random() * 10) + 1;
-        num2 = Math.floor(Math.random() * 10) + 1;
-        answer = num1 + num2;
-        captchaLabel.textContent = `Security Check: ${num1} + ${num2} = ?`;
-        captchaInput.value = '';
-    }
-
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
-        if (parseInt(captchaInput.value, 10) !== answer) {
-            formResponse.textContent = 'ERROR: Incorrect Security Code';
+        
+        const recaptchaToken = grecaptcha.getResponse();
+        if (!recaptchaToken) {
+            formResponse.textContent = 'ERROR: Please complete the security check.';
             formResponse.className = 'error';
-            generateCaptcha();
             return;
         }
 
         submitBtn.disabled = true;
         submitBtn.textContent = 'TRANSMITTING...';
         formResponse.textContent = '';
+        
         const formData = {
             name: document.getElementById('contact-name').value,
+            email: document.getElementById('contact-email').value,
             title: document.getElementById('contact-title').value,
             description: document.getElementById('contact-description').value,
+            recaptchaToken: recaptchaToken
         };
 
         try {
@@ -509,23 +504,24 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
             });
+            const result = await response.json();
 
             if (response.ok) {
-                formResponse.textContent = 'TRANSMISSION SUCCESSFUL';
+                formResponse.textContent = `SUCCESS: Your ticket ID is ${result.ticketId}`;
                 formResponse.className = 'success';
                 form.reset();
-            } else { throw new Error('Server rejected the transmission.'); }
+            } else { 
+                throw new Error(result.message || 'Server rejected the transmission.'); 
+            }
         } catch (error) {
-            formResponse.textContent = 'TRANSMISSION FAILED. Try again later.';
+            formResponse.textContent = `TRANSMISSION FAILED: ${error.message}`;
             formResponse.className = 'error';
         } finally {
             submitBtn.disabled = false;
             submitBtn.textContent = 'Transmit Securely';
-            generateCaptcha();
+            grecaptcha.reset();
         }
     });
-
-    generateCaptcha();
   }
 
   /* --- DYNAMIC BACKGROUND SCRIPT --- */
@@ -618,4 +614,4 @@
 </script>
 
 </body>
-</html>```
+</html>
