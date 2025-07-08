@@ -1,7 +1,7 @@
 // /api/contact.js
 
 const nodemailer = require('nodemailer');
-const fetch = require('node-fetch'); // Make sure node-fetch is in package.json
+const fetch = require('node-fetch');
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -17,7 +17,7 @@ module.exports = async (req, res) => {
     return res.status(400).json({ message: 'All fields are required.' });
   }
 
-  // --- 1. Verify reCAPTCHA token ---
+  // --- Verify reCAPTCHA token (v2 logic) ---
   try {
     const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
         method: 'POST',
@@ -26,8 +26,8 @@ module.exports = async (req, res) => {
     });
     const recaptchaData = await response.json();
     
-    // Check for success AND a good score (v3 feature)
-    if (!recaptchaData.success || recaptchaData.score < 0.5) {
+    // For v2, we only need to check for success.
+    if (!recaptchaData.success) {
       return res.status(400).json({ message: 'Bot verification failed.' });
     }
   } catch(e) {
@@ -35,7 +35,7 @@ module.exports = async (req, res) => {
       return res.status(500).json({ message: 'Could not verify security token.'});
   }
 
-  // --- 2. Setup Nodemailer Transporter ---
+  // --- Setup Nodemailer Transporter ---
   if (!process.env.EMAIL_HOST || !process.env.EMAIL_USER || !process.env.EMAIL_PASSWORD) {
       console.error("FATAL: Email environment variables not configured.");
       return res.status(500).json({ message: 'Server email configuration is incomplete.' });
@@ -45,7 +45,7 @@ module.exports = async (req, res) => {
     auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASSWORD },
   });
 
-  // --- 3. Generate Ticket ID & Prepare Emails ---
+  // --- Generate Ticket ID & Prepare Emails ---
   const ticketId = `SCS-${Date.now().toString().slice(-6)}`;
   
   const adminMail = {
@@ -53,18 +53,18 @@ module.exports = async (req, res) => {
     to: 'support@spectrascan.org',
     subject: `New Ticket [${ticketId}]: ${title}`,
     text: `New message from ${name} (${email}):\n\n${description}`,
-    html: `...` // HTML unchanged
+    html: `...` // Unchanged
   };
 
   const userMail = {
     from: `"SpectraScan Support" <${process.env.EMAIL_USER}>`,
     to: email,
     subject: `Your SpectraScan Ticket [${ticketId}]`,
-    text: `...`, // HTML unchanged
-    html: `...` // HTML unchanged
+    text: `...`, // Unchanged
+    html: `...` // Unchanged
   };
   
-  // --- 4. Send Emails ---
+  // --- Send Emails ---
   try {
     await transporter.sendMail(adminMail);
     await transporter.sendMail(userMail);

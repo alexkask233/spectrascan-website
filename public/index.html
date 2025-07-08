@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   
-  <script src="https://www.google.com/recaptcha/api.js?render=6LcL2XsrAAAAAAwuZ_BGhayQkOhEfhBhzhEZYRlC"></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@thumbmarkjs/thumbmarkjs/dist/thumbmark.umd.js"></script>
 
   <style>
@@ -156,13 +156,13 @@
     .contact-form input, .contact-form textarea { width: 100%; background-color: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; color: var(--text-primary); font-size: 15px; transition: all 0.2s ease; font-family: 'Roboto Mono', monospace; }
     .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--accent-blue); box-shadow: 0 0 10px rgba(0,170,255,0.5); }
     .contact-form textarea { resize: vertical; min-height: 120px; }
-    .form-submit-btn { width: 100%; margin-top: 20px; padding: 15px; background: var(--accent-blue); color: #fff; border: none; border-radius: 10px; font-weight: 700; font-size: 16px; box-shadow: 0 0 15px rgba(0,170,255, 0.3); transition: all 0.3s ease; }
+    .form-submit-btn { width: 100%; padding: 15px; background: var(--accent-blue); color: #fff; border: none; border-radius: 10px; font-weight: 700; font-size: 16px; box-shadow: 0 0 15px rgba(0,170,255, 0.3); transition: all 0.3s ease; }
     .form-submit-btn:hover:not(:disabled) { background-color: #0099e6; transform: translateY(-2px); box-shadow: 0 0 25px rgba(0,170,255, 0.6); }
     .form-submit-btn:disabled { background-color: var(--text-secondary); cursor: not-allowed; }
     #form-response { text-align: center; margin-top: 15px; font-weight: 700; }
     #form-response.success { color: var(--accent-green); }
     #form-response.error { color: var(--accent-red); }
-    .grecaptcha-badge { visibility: hidden; }
+    .g-recaptcha { display: flex; justify-content: center; margin-bottom: 20px; }
 
     @media (max-width: 768px) {
         header { padding: 0 20px; }
@@ -245,6 +245,7 @@
           <div class="form-group"><input type="email" id="contact-email" name="email" placeholder="// Secure email for reply" required></div>
           <div class="form-group"><input type="text" id="contact-title" name="title" placeholder="// Subject of transmission" required></div>
           <div class="form-group"><textarea id="contact-description" name="description" placeholder="// Encrypted message..." required></textarea></div>
+          <div class="g-recaptcha" data-sitekey="6LdO33srAAAAAHDUx_CIkBSjNfxQ2xuCyZa_emiE" data-theme="dark"></div>
           <button type="submit" id="submit-btn" class="form-submit-btn">Transmit Securely</button>
           <div id="form-response"></div>
         </form>
@@ -460,58 +461,58 @@
   function hashString(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0}return h}
   function getWebGLInfo(){try{const c=document.createElement('canvas');const gl=c.getContext('webgl')||c.getContext('experimental-webgl');if(!gl){return{vendor:"N/A",renderer:"N/A"}}const dbg=gl.getExtension('WEBGL_debug_renderer_info');return{vendor:gl.getParameter(dbg.UNMASKED_VENDOR_WEBGL),renderer:gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL)}}catch{return{vendor:"N/A",renderer:"N/A"}}}
   
-  /* --- CONTACT FORM SCRIPT (RECAPTCHA V3) --- */
+  /* --- CONTACT FORM SCRIPT --- */
   function initializeContactForm() {
     const form = document.getElementById('contact-form');
     if(!form) return;
     const submitBtn = document.getElementById('submit-btn');
     const formResponse = document.getElementById('form-response');
-    const recaptchaSiteKey = "6LcL2XsrAAAAAAwuZ_BGhayQkOhEfhBhzhEZYRlC";
 
-    form.addEventListener('submit', function(e) {
+    form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
+        const recaptchaToken = grecaptcha.getResponse();
+        if (!recaptchaToken) {
+            formResponse.textContent = 'ERROR: Please complete the security check.';
+            formResponse.className = 'error';
+            return;
+        }
+
         submitBtn.disabled = true;
-        submitBtn.textContent = 'VALIDATING...';
+        submitBtn.textContent = 'TRANSMITTING...';
         formResponse.textContent = '';
+        
+        const formData = {
+            name: document.getElementById('contact-name').value,
+            email: document.getElementById('contact-email').value,
+            title: document.getElementById('contact-title').value,
+            description: document.getElementById('contact-description').value,
+            recaptchaToken: recaptchaToken
+        };
 
-        grecaptcha.ready(function() {
-          grecaptcha.execute(recaptchaSiteKey, {action: 'contact'}).then(async function(token) {
-              
-              submitBtn.textContent = 'TRANSMITTING...';
+        try {
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+            const result = await response.json();
 
-              const formData = {
-                  name: document.getElementById('contact-name').value,
-                  email: document.getElementById('contact-email').value,
-                  title: document.getElementById('contact-title').value,
-                  description: document.getElementById('contact-description').value,
-                  recaptchaToken: token
-              };
-
-              try {
-                  const response = await fetch('/api/contact', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify(formData)
-                  });
-                  const result = await response.json();
-
-                  if (response.ok) {
-                      formResponse.textContent = `SUCCESS: Your ticket ID is ${result.ticketId}`;
-                      formResponse.className = 'success';
-                      form.reset();
-                  } else { 
-                      throw new Error(result.message || 'Server rejected the transmission.'); 
-                  }
-              } catch (error) {
-                  formResponse.textContent = `TRANSMISSION FAILED: ${error.message}`;
-                  formResponse.className = 'error';
-              } finally {
-                  submitBtn.disabled = false;
-                  submitBtn.textContent = 'Transmit Securely';
-              }
-          });
-        });
+            if (response.ok) {
+                formResponse.textContent = `SUCCESS: Your ticket ID is ${result.ticketId}`;
+                formResponse.className = 'success';
+                form.reset();
+            } else { 
+                throw new Error(result.message || 'Server rejected the transmission.'); 
+            }
+        } catch (error) {
+            formResponse.textContent = `TRANSMISSION FAILED: ${error.message}`;
+            formResponse.className = 'error';
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Transmit Securely';
+            grecaptcha.reset();
+        }
     });
   }
 
