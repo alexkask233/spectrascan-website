@@ -813,6 +813,8 @@ document.addEventListener('DOMContentLoaded', () => {
   
   /* === EMAIL FRAUD CHECKER SCRIPT (UPDATED TO FIX CORS) === */
   
+    /* === EMAIL FRAUD CHECKER SCRIPT (SECURE API) === */
+
   function resetEmailFraudChecker() {
     const intro = document.getElementById('email-fraud-intro');
     if (intro) intro.style.display = 'block';
@@ -827,19 +829,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(stamp) stamp.textContent = "INTEL";
   }
 
-  // This global function will be called by the API response.
-  function ipqsCallback(data) {
-    const resultsEl = document.getElementById('email-fraud-results');
-    if (data.success === true) {
-        displayFraudScore(data.fraud_score);
-    } else {
-        const errorMessage = data.message || 'Could not retrieve score.';
-        resultsEl.innerHTML = `<p style="color: var(--accent-red); text-align: center; font-weight: bold; margin-top: 20px;">Error: ${errorMessage}</p>
-        <div class="results-footer" style="opacity:1"><button id="reset-email-btn" onclick="resetEmailFraudChecker()" class="danger-button">Try Again</button></div>`;
-    }
-  }
-
-  function checkEmailFraud() {
+  async function checkEmailFraud() {
     const emailInput = document.getElementById('email-fraud-input');
     const email = emailInput.value.trim();
     const introEl = document.getElementById('email-fraud-intro');
@@ -853,26 +843,22 @@ document.addEventListener('DOMContentLoaded', () => {
     if (introEl) introEl.style.display = 'none';
     resultsEl.innerHTML = `<div class="loader-wrapper"><div class="scanner-circle"></div><p class="scanner-text">ANALYZING EMAIL REPUTATION...</p></div>`;
     
-    // IMPORTANT: Your API key is visible here.
-    const apiKey = 'rZibu8QUtBAuAG0qWXvKRfmj5AkeJa1Z';
-    
-    // Dynamically create a script tag to make the API call (JSONP method)
-    const script = document.createElement('script');
-    script.src = `https://www.ipqualityscore.com/api/json/email/${apiKey}/${encodeURIComponent(email)}?callback=ipqsCallback`;
+    // Call YOUR OWN secure API endpoint.
+    const url = `/api/email-check?email=${encodeURIComponent(email)}`;
 
-    // Handle potential errors like network failures or if the script is blocked
-    script.onerror = function() {
-        resultsEl.innerHTML = `<p style="color: var(--accent-red); text-align: center; font-weight: bold; margin-top: 20px;">Error: Failed to connect to the API server.</p>
+    try {
+        const response = await fetch(url, {cache: "no-store"});
+        const data = await response.json();
+        
+        if (data.success === true) {
+            displayFraudScore(data.fraud_score);
+        } else {
+            throw new Error(data.message || 'Could not retrieve score.');
+        }
+    } catch (error) {
+        resultsEl.innerHTML = `<p style="color: var(--accent-red); text-align: center; font-weight: bold; margin-top: 20px;">Error: ${error.message}</p>
         <div class="results-footer" style="opacity:1"><button id="reset-email-btn" onclick="resetEmailFraudChecker()" class="danger-button">Try Again</button></div>`;
-    };
-
-    // Add the script to the page to trigger the request
-    document.body.appendChild(script);
-
-    // Clean up the script tag from the document after it has been loaded
-    script.onload = () => {
-        document.body.removeChild(script);
-    };
+    }
   }
 
   function displayFraudScore(score) {

@@ -10,6 +10,10 @@
       "destination": "/api/contact.js"
     },
     {
+      "source": "/api/email-check",
+      "destination": "/api/email-check.js"
+    },
+    {
       "source": "/((?!api/|_next/|.*\\..*).*)",
       "destination": "/index.html"
     }
