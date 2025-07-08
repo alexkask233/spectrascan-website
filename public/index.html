@@ -10,7 +10,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@thumbmarkjs/thumbmarkjs/dist/thumbmark.umd.js"></script>
 
   <style>
@@ -156,13 +155,15 @@
     .contact-form input, .contact-form textarea { width: 100%; background-color: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px; color: var(--text-primary); font-size: 15px; transition: all 0.2s ease; font-family: 'Roboto Mono', monospace; }
     .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--accent-blue); box-shadow: 0 0 10px rgba(0,170,255,0.5); }
     .contact-form textarea { resize: vertical; min-height: 120px; }
+    .captcha-group { display: flex; align-items: center; flex-wrap: nowrap; gap: 15px; background-color: var(--bg-color); padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); }
+    .captcha-group label { color: var(--accent-green); font-family: 'Roboto Mono', monospace; white-space: nowrap; }
+    .captcha-group input { border: none !important; box-shadow: none !important; }
     .form-submit-btn { width: 100%; padding: 15px; background: var(--accent-blue); color: #fff; border: none; border-radius: 10px; font-weight: 700; font-size: 16px; box-shadow: 0 0 15px rgba(0,170,255, 0.3); transition: all 0.3s ease; }
     .form-submit-btn:hover:not(:disabled) { background-color: #0099e6; transform: translateY(-2px); box-shadow: 0 0 25px rgba(0,170,255, 0.6); }
     .form-submit-btn:disabled { background-color: var(--text-secondary); cursor: not-allowed; }
     #form-response { text-align: center; margin-top: 15px; font-weight: 700; }
     #form-response.success { color: var(--accent-green); }
     #form-response.error { color: var(--accent-red); }
-    .g-recaptcha { display: flex; justify-content: center; margin-bottom: 20px; }
 
     @media (max-width: 768px) {
         header { padding: 0 20px; }
@@ -245,7 +246,10 @@
           <div class="form-group"><input type="email" id="contact-email" name="email" placeholder="// Secure email for reply" required></div>
           <div class="form-group"><input type="text" id="contact-title" name="title" placeholder="// Subject of transmission" required></div>
           <div class="form-group"><textarea id="contact-description" name="description" placeholder="// Encrypted message..." required></textarea></div>
-          <div class="g-recaptcha" data-sitekey="6LfG43srAAAAABzRwVxtOJkOhLr-g_cZ-lp9QtfQ" data-theme="dark"></div>
+          <div class="form-group captcha-group">
+            <label id="captcha-label" for="captcha-input"></label>
+            <input type="text" id="captcha-input" name="captcha" placeholder="> " required autocomplete="off">
+          </div>
           <button type="submit" id="submit-btn" class="form-submit-btn">Transmit Securely</button>
           <div id="form-response"></div>
         </form>
@@ -465,16 +469,28 @@
   function initializeContactForm() {
     const form = document.getElementById('contact-form');
     if(!form) return;
+    const captchaLabel = document.getElementById('captcha-label');
+    const captchaInput = document.getElementById('captcha-input');
     const submitBtn = document.getElementById('submit-btn');
     const formResponse = document.getElementById('form-response');
+
+    let num1, num2, answer;
+
+    function generateCaptcha() {
+        num1 = Math.floor(Math.random() * 10) + 1;
+        num2 = Math.floor(Math.random() * 10) + 1;
+        answer = num1 + num2;
+        captchaLabel.textContent = `Calculate: ${num1} + ${num2} =`;
+        captchaInput.value = '';
+    }
 
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
-        const recaptchaToken = grecaptcha.getResponse();
-        if (!recaptchaToken) {
-            formResponse.textContent = 'ERROR: Please complete the security check.';
+        if (parseInt(captchaInput.value, 10) !== answer) {
+            formResponse.textContent = 'ERROR: Incorrect Security Code';
             formResponse.className = 'error';
+            generateCaptcha();
             return;
         }
 
@@ -486,8 +502,7 @@
             name: document.getElementById('contact-name').value,
             email: document.getElementById('contact-email').value,
             title: document.getElementById('contact-title').value,
-            description: document.getElementById('contact-description').value,
-            recaptchaToken: recaptchaToken
+            description: document.getElementById('contact-description').value
         };
 
         try {
@@ -511,9 +526,11 @@
         } finally {
             submitBtn.disabled = false;
             submitBtn.textContent = 'Transmit Securely';
-            grecaptcha.reset();
+            generateCaptcha();
         }
     });
+
+    generateCaptcha();
   }
 
   /* --- DYNAMIC BACKGROUND SCRIPT --- */
