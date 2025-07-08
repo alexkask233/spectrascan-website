@@ -1,18 +1,22 @@
-// Forcing a fresh build - v2
-
 // A simple Node.js fetch implementation is required for Vercel Serverless Functions
 const fetch = require('node-fetch');
 
 // This is your new serverless function
 export default async function handler(req, res) {
-  // Your hardcoded API key is now safe on the server
-  const apiKey = process.env.IPQS_API_KEY;
+  // Bypassing Vercel's environment variables and hardcoding the key.
+  // This is still secure because this file runs on the server, not in the browser.
+  const apiKey = 'rZibu8QUtBAuAG0qWXvKRfmj5AkeJa1Z';
   
   // Get the email from the query parameter (e.g., /api/email-check?email=test@example.com)
   const { email } = req.query;
 
   if (!email) {
     return res.status(400).json({ success: false, message: 'Email parameter is required.' });
+  }
+
+  // Check if the API key is present before making the call
+  if (!apiKey) {
+      return res.status(500).json({ success: false, message: 'Server configuration error: API key is missing.' });
   }
 
   const apiUrl = `https://www.ipqualityscore.com/api/json/email/${apiKey}/${encodeURIComponent(email)}`;
