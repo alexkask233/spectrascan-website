@@ -396,7 +396,8 @@
         riskFactors.push({ label: 'FP Hash', value: thumbmarkFingerprint, isBad: false, isHash: true, alwaysShow: true });
 
         // --- Build Results ---
-        const isBadBrowser = riskScore >= 4;
+        //  ******  THE FIX IS HERE ******
+        const isBadBrowser = riskScore >= 3;
         setBackgroundState(isBadBrowser ? 'danger' : 'safe');
         
         let resultsHTML = `<div class="verdict-box ${isBadBrowser ? 'danger' : 'safe'}"><i class="fa-solid ${isBadBrowser ? 'fa-user-secret' : 'fa-user-check'} fa-lg"></i><span>${isBadBrowser ? "High Risk Profile Detected" : "Profile Appears Normal"}</span></div>`;
@@ -420,7 +421,7 @@
             return labelHTML + valueHTML;
         }).join('');
         
-        resultsHTML += `<div class="details-grid">${detailsGridHTML.length > 0 ? detailsGridHTML : '<div style="grid-column: 1 / -1; text-align: center; color: var(--accent-green);">All checks passed.</div>'}</div>`;
+        resultsHTML += `<div class="details-grid">${displayableRiskFactors.length > 0 ? detailsGridHTML : '<div style="grid-column: 1 / -1; text-align: center; color: var(--accent-green);">All checks passed.</div>'}</div>`;
         resultsHTML += `<div class="results-footer"><div class="results-separator ${isBadBrowser ? 'danger' : ''}"></div><div class="run-btn-wrapper"><button id="reset-btn" onclick="resetCatcher()">Run Another Test</button></div></div>`;
         
         return {html: resultsHTML, bad: isBadBrowser};
@@ -530,4 +531,4 @@
 </script>
 
 </body>
-</html>
+</html>```
