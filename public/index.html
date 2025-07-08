@@ -430,47 +430,40 @@
 
     /* Specific positioning and size for each target */
     .detected-target-iproyal {
-        /* REPLACE THIS URL WITH YOUR IPROYAL LOGO IMAGE */
-        background-image: url('https://via.placeholder.com/150x50/333/00ff88?text=IPROYAL'); /* Placeholder */
-        width: 25vw; /* Responsive width */
-        height: 8.3vw; /* Maintain aspect ratio (150/50 = 3) */
+        background-image: url('https://i.imgur.com/Hpq0kXx.png'); /* INTEGRATED */
+        width: 25vw;
+        height: 8.3vw;
         top: 15%;
         left: 5%;
         --rotate-deg: -10deg;
         animation-delay: 0.5s;
     }
-
     .detected-target-adspower {
-        /* REPLACE THIS URL WITH YOUR ADSPOWER LOGO IMAGE */
         background-image: url('https://via.placeholder.com/200x50/333/00aaff?text=ADSPOWER'); /* Placeholder */
-        width: 30vw; /* Responsive width */
-        height: 7.5vw; /* Maintain aspect ratio (200/50 = 4) */
+        width: 30vw;
+        height: 7.5vw;
         bottom: 10%;
         right: 10%;
         --rotate-deg: 15deg;
         animation-delay: 1.2s;
     }
-
     .detected-target-nordvpn {
-        /* REPLACE THIS URL WITH YOUR NORDVPN LOGO IMAGE */
-        background-image: url('https://via.placeholder.com/180x50/333/ff00ff?text=NORDVPN'); /* Placeholder */
+        background-image: url('https://i.imgur.com/YiVqy4D.png'); /* INTEGRATED */
         width: 28vw;
-        height: 7.7vw; /* 180/50 = 3.6 */
+        height: 7.7vw;
         top: 50%;
         left: 5%;
-        transform: translateY(-50%) rotate(5deg); /* Center vertically */
+        transform: translateY(-50%) rotate(5deg);
         --rotate-deg: 5deg;
         animation-delay: 0.8s;
     }
-
     .detected-target-protonvpn {
-        /* REPLACE THIS URL WITH YOUR PROTONVPN LOGO IMAGE */
         background-image: url('https://via.placeholder.com/190x50/333/00ffff?text=PROTONVPN'); /* Placeholder */
         width: 29vw;
-        height: 7.6vw; /* 190/50 = 3.8 */
+        height: 7.6vw;
         top: 25%;
         right: 0%;
-        transform: translateY(-50%) rotate(-8deg); /* Center vertically */
+        transform: translateY(-50%) rotate(-8deg);
         --rotate-deg: -8deg;
         animation-delay: 1.5s;
     }
@@ -491,15 +484,15 @@
     /* Mouse Follower Effect */
     .mouse-follower {
         position: fixed;
-        width: 150px; /* Size of the blur effect */
+        width: 150px;
         height: 150px;
-        background-color: var(--accent-green); /* Color of the glow */
+        background-color: var(--accent-green);
         border-radius: 50%;
         pointer-events: none;
         transform: translate(-50%, -50%);
-        mix-blend-mode: overlay; /* How it blends with content below */
-        filter: blur(80px); /* The blur radius */
-        opacity: 0.1; /* Initial opacity */
+        mix-blend-mode: overlay;
+        filter: blur(80px);
+        opacity: 0.1;
         transition: opacity 0.2s ease-out;
         z-index: 1; /* Below content, above canvas */
         will-change: transform, opacity;
@@ -557,7 +550,7 @@
         .detected-target-nordvpn { width: 50vw; height: 13.8vw; top: 50%; left: 0%; }
         .detected-target-protonvpn { width: 55vw; height: 14.5vw; top: 25%; right: 0%; }
 
-        .mouse-follower { display: none; } /* Disable on mobile for performance/usability */
+        .mouse-follower { display: none; }
     }
 
     @media (max-width: 480px) {
@@ -580,6 +573,7 @@
 
 <canvas id="matrix-bg"></canvas>
 <div id="background-watermark"></div>
+<div class="mouse-follower"></div>
 
 <div class="page-wrapper">
   <header class="scroll-anim">
@@ -603,14 +597,14 @@
 
   <main>
     <div id="page-landing" class="page">
-      <!-- New: Detected Targets Background -->
+      <!-- Detected Targets Background -->
       <div class="detected-targets-background">
         <div class="detected-target detected-target-iproyal"></div>
         <div class="detected-target detected-target-adspower"></div>
         <div class="detected-target detected-target-nordvpn"></div>
         <div class="detected-target detected-target-protonvpn"></div>
       </div>
-      <!-- End New: Detected Targets Background -->
+      <!-- End Detected Targets Background -->
 
       <div class="container scroll-anim">
         <div class="classified-stamp">CLASSIFIED</div>
@@ -698,9 +692,6 @@
     </div>
   </footer>
 </div>
-
-<!-- Mouse Follower Element -->
-<div class="mouse-follower"></div>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -886,7 +877,7 @@ document.addEventListener('DOMContentLoaded', () => {
         heuristicsSpoofing: false,
         canvasRandomization: false,
         webglEmulation: false,
-        isProxyIP: false /* New flag to track if IP itself is a proxy/VPN */
+        isProxyIP: false
     };
     const TARGET_CHROME_VERSION = "138"; 
 
@@ -899,11 +890,10 @@ document.addEventListener('DOMContentLoaded', () => {
         riskFactors.push({ label: 'VPN/Proxy', value: ipData.status, isBad: ipData.isProxy, alwaysShow: true });
         if (ipData.isProxy) {
             riskScore += 3;
-            browserFlags.isProxyIP = true; /* Set flag */
+            browserFlags.isProxyIP = true;
         }
         if (ipData.status.includes('TOR')) riskScore += 5;
-    } 
-    catch (e) {
+    } catch (e) {
         riskScore += 1;
         riskFactors.push({ label: 'IP/VPN Check', value: "Error during lookup", isBad: true, alwaysShow: true });
     }
@@ -960,7 +950,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const isBadBrowserOverall = riskScore >= 3; 
     setBackgroundState(isBadBrowserOverall ? 'danger' : 'safe');
     
-    /* Construct the 'Browser' risk factor message based on refined logic */
+    /* Construct the 'Browser' risk factor message with CORRECTED logic */
     let finalBrowserLabelValue = 'Normal';
     let finalBrowserLabelIsBad = false;
 
@@ -969,10 +959,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (browserFlags.heuristicsSpoofing) browserRiskContribution += 4;
     if (browserFlags.canvasRandomization) browserRiskContribution += 2;
     if (browserFlags.webglEmulation) browserRiskContribution += 3;
-    if (browserFlags.tor) browserRiskContribution += 5; /* Tor is a strong browser signal */
+    if (browserFlags.tor) browserRiskContribution += 5;
     if (browserFlags.brave) browserRiskContribution += 3;
     if (browserFlags.opera) browserRiskContribution += 2;
-
 
     /* Order of checks for the final label: most specific/severe fingerprint issues first */
     if (browserFlags.heuristicsSpoofing || browserFlags.canvasRandomization || browserFlags.webglEmulation) {
@@ -983,29 +972,24 @@ document.addEventListener('DOMContentLoaded', () => {
         finalBrowserLabelIsBad = true;
     } else if (browserFlags.brave) {
         finalBrowserLabelValue = 'Brave Browser';
-        /* If Brave is detected AND overall profile is high risk (and not just Brave's +3), it suggests further issues */
-        if (isBadBrowserOverall && riskScore > 3 && browserRiskContribution > 3) { 
+        if (isBadBrowserOverall && riskScore > 3 && browserRiskContribution > 3) {
              finalBrowserLabelValue += ' (Antidetect Tendencies)';
              finalBrowserLabelIsBad = true;
         }
     } else if (browserFlags.opera) {
         finalBrowserLabelValue = 'Opera Browser';
-        /* If Opera is detected AND overall profile is high risk, it suggests further issues */
         if (isBadBrowserOverall && riskScore > 2 && browserRiskContribution > 2) {
              finalBrowserLabelValue += ' (Suspicious)';
              finalBrowserLabelIsBad = true;
         }
     } else if (isBadBrowserOverall && browserFlags.isProxyIP && browserRiskContribution < 3) {
-        /* This is the key fix: If overall is bad, and IP is proxy, AND browser's own fingerprint contribution is low */
         finalBrowserLabelValue = 'Suspicious Profile (IP Related)';
         finalBrowserLabelIsBad = true;
     } else if (isBadBrowserOverall && browserRiskContribution >= 3) {
-        /* If overall is bad, and browser itself contributed significantly (but not hit specific flags above) */
         finalBrowserLabelValue = 'Suspicious Profile (Antidetect Characteristics)';
         finalBrowserLabelIsBad = true;
     }
 
-    /* Add the constructed browser risk factor to the display list */
     riskFactors.push({ label: 'Browser', value: finalBrowserLabelValue, isBad: finalBrowserLabelIsBad, alwaysShow: true });
 
     const verdict = isBadBrowserOverall ? "High Risk Profile Detected" : "Profile Appears Normal";
@@ -1139,7 +1123,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let scanLineOffset = 0;
   let scanDirection = 1; /* 1 for horizontal, 0 for vertical */
-  const drawScanningLinesFrame = (color, speed) => {
+  const drawScanningLinesFrame = () => {
     const isLight = body.classList.contains('light-mode');
     const baseColor = isLight ? 'rgba(0, 170, 255, 0.2)' : 'rgba(0, 255, 136, 0.15)'; /* Accent blue for light, green for dark */
     const secondaryColor = isLight ? 'rgba(0, 170, 255, 0.05)' : 'rgba(0, 255, 136, 0.05)';
@@ -1158,7 +1142,6 @@ document.addEventListener('DOMContentLoaded', () => {
         scanLineOffset = (scanLineOffset + scanSpeed);
         if (scanLineOffset > canvas.width + scanWidth) scanLineOffset = -scanWidth; /* Reset position */
 
-        /* Draw multiple lines within the scan area */
         for (let i = 0; i < canvas.height; i += 20) {
             const lineX = scanLineOffset + (Math.sin(i * 0.1 + scanLineOffset * 0.01) * 10); /* Subtle wavy effect */
             ctx.beginPath();
@@ -1166,7 +1149,6 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.lineTo(lineX + 50, i); /* Shorter lines in horizontal direction */
             ctx.stroke();
 
-            /* Add a slightly dimmer trailing line */
             ctx.strokeStyle = secondaryColor;
             ctx.beginPath();
             ctx.moveTo(lineX - 10, i);
@@ -1191,7 +1173,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.stroke();
         }
     }
-    animationFrameId = requestAnimationFrame(() => drawScanningLinesFrame(color, speed));
+    animationFrameId = requestAnimationFrame(drawScanningLinesFrame);
   };
 
   function setBackgroundState(state) {
@@ -1232,7 +1214,7 @@ document.addEventListener('DOMContentLoaded', () => {
               classifiedStamp.classList.remove('safe');
           }
       } else if (state === 'safe') {
-          animationFrameId = requestAnimationFrame(() => drawScanningLinesFrame(isLight ? 'rgba(0, 170, 255, 0.2)' : 'rgba(0, 255, 136, 0.15)', 50));
+          animationFrameId = requestAnimationFrame(drawScanningLinesFrame);
           watermark.setAttribute('data-text', 'UNCLASSIFIED');
           body.classList.add('safe-mode');
           if (classifiedStamp) {
@@ -1241,7 +1223,7 @@ document.addEventListener('DOMContentLoaded', () => {
               classifiedStamp.classList.remove('danger');
           }
       } else { /* default */
-          animationFrameId = requestAnimationFrame(() => drawScanningLinesFrame(isLight ? 'rgba(0, 170, 255, 0.2)' : 'rgba(0, 255, 136, 0.15)', 50));
+          animationFrameId = requestAnimationFrame(drawScanningLinesFrame);
           watermark.setAttribute('data-text', '');
           if(classifiedStamp) {
               classifiedStamp.textContent = "CLASSIFIED";
