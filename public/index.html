@@ -41,12 +41,12 @@
     footer { text-align: center; padding: 20px; color: var(--text-secondary); font-size: 14px; background-color: transparent; border-top: 1px solid var(--border-color); font-family: 'Roboto Mono', monospace; transition: background-color 0.3s ease, border-color 0.3s ease; }
     footer .footer-icons { margin-top: 10px; display: flex; justify-content: center; gap: 20px; font-size: 18px; color: var(--accent-green); }
     .container { background-color: var(--card-color); padding: 30px 40px; border-radius: 16px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); transition: background-color 0.3s ease, border-color 0.3s ease; position: relative; overflow: hidden; }
-    h1, .static-page h2 { font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; text-align: center; color: var(--text-primary); position: relative; }
+    h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; text-align: center; color: var(--text-primary); position: relative; }
     .sub-headline { font-family: 'Roboto Mono', monospace; font-size: 16px; color: var(--text-secondary); text-align: center; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto; }
     .sub-headline span { color: var(--accent-green); text-shadow: 0 0 5px rgba(0,255,136,0.5); }
     .run-btn-wrapper { margin-top: 40px; text-align:center; }
-    button#run-btn, button#reset-btn { background: var(--accent-green); color: #000; box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); padding: 15px 35px; font-size: 18px; font-weight: 700; border: none; border-radius: 10px; animation: pulse-glow 2s infinite alternate; cursor:pointer; font-family: 'Inter', sans-serif; transition: all 0.3s ease; }
-    button#run-btn:hover { background-color: #00e67a; transform: translateY(-3px) scale(1.02); box-shadow: 0 0 25px rgba(0, 255, 136, 0.6); animation-play-state: paused; }
+    .run-btn-link { background: var(--accent-green); color: #000; box-shadow: 0 0 15px rgba(0, 255, 136, 0.3); padding: 15px 35px; font-size: 18px; font-weight: 700; border-radius: 10px; animation: pulse-glow 2s infinite alternate; cursor:pointer; font-family: 'Inter', sans-serif; transition: all 0.3s ease; text-decoration: none; }
+    .run-btn-link:hover { background-color: #00e67a; transform: translateY(-3px) scale(1.02); box-shadow: 0 0 25px rgba(0, 255, 136, 0.6); animation-play-state: paused; }
     @keyframes pulse-glow { from { box-shadow: 0 0 10px rgba(0, 255, 136, 0.3); } to { box-shadow: 0 0 25px rgba(0, 255, 136, 0.7); } }
     .detection-showcase { padding: 50px 0; border-top: 1px solid var(--border-color); margin-top: 50px; }
     .showcase-title { text-align: center; font-family: 'Roboto Mono', monospace; font-size: 1.5rem; color: var(--text-primary); margin-bottom: 30px; }
@@ -58,8 +58,7 @@
     .detection-card h3 { font-family: 'Inter', sans-serif; font-size: 1.2rem; color: var(--text-primary); margin-bottom: 15px; }
     .detection-card ul { list-style: none; padding: 0; }
     .detection-card ul li { font-family: 'Roboto Mono', monospace; color: var(--text-secondary); font-size: 0.9rem; line-height: 1.8; }
-    #results-wrapper { margin-top: 40px; width: 100%; }
-    #results-container { text-align: left; }
+    #results-wrapper { width: 100%; max-width: 700px; }
     .verdict-box { padding: 20px; font-size: 22px; font-weight: 700; border-radius: 12px; border: 2px solid; display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 25px; animation: pulse-border 2s infinite; }
     .verdict-box.safe { background-color: var(--success-bg); border-color: var(--accent-green); color: var(--accent-green); }
     .verdict-box.danger { background-color: var(--danger-bg); border-color: var(--accent-red); color: var(--accent-red); }
@@ -72,7 +71,8 @@
     .details-grid .value.danger { color: var(--accent-red); font-weight: 700; }
     .details-grid .value.safe { color: var(--accent-green); }
     .results-footer { text-align: center; padding-top: 30px; }
-    button#reset-btn { background-color: transparent; border: 2px solid var(--accent-red); color: var(--accent-red); }
+    button#reset-btn { font-family: 'Inter', sans-serif; cursor:pointer; padding: 15px 35px; font-size: 18px; font-weight: 700; border-radius: 10px; background-color: transparent; transition: all 0.3s ease; }
+    button#reset-btn { border: 2px solid var(--accent-red); color: var(--accent-red); }
     button#reset-btn.safe-button { border-color: var(--accent-green); color: var(--accent-green); }
     button#reset-btn:hover { color: #000; background: var(--accent-red); }
     button#reset-btn.safe-button:hover { color: #000; background: var(--accent-green); }
@@ -135,7 +135,8 @@
     <button id="hamburger-btn" aria-label="Open menu"><i class="fa-solid fa-bars"></i></button>
     <nav id="main-nav">
         <button id="close-nav-btn" aria-label="Close menu"><i class="fa-solid fa-times"></i></button>
-        <a href="/" class="nav-link active">Catcher</a>
+        <a href="/" class="nav-link">Catcher</a>
+        <a href="/checker" class="nav-link">Scanner</a>
         <a href="/faq" class="nav-link">FAQ</a>
         <a href="/privacy" class="nav-link">Privacy</a>
         <a href="/contact" class="nav-link">Contact</a>
@@ -144,19 +145,12 @@
   </header>
 
   <main>
-    <div id="page-catcher" class="page active">
-      <div id="intro-content">
-        <h1>Identify, Expose, Dominate.</h1>
-        <p class="sub-headline">Unmask fraudulent users and eliminate threats by exposing <span>antidetect browsers</span> and <span>proxy networks</span>.</p>
-        <div class="run-btn-wrapper">
-          <button id="run-btn" onclick="runDetection()">Initiate Scan</button>
-        </div>
+    <div id="page-landing" class="page">
+      <h1>Identify, Expose, Dominate.</h1>
+      <p class="sub-headline">Unmask fraudulent users and eliminate threats by exposing <span>antidetect browsers</span> and <span>proxy networks</span>.</p>
+      <div class="run-btn-wrapper">
+        <a href="/checker" class="run-btn-link">Initiate Scan</a>
       </div>
-      
-      <div id="results-wrapper" style="display: none;">
-          <div class="container" id="results-container"></div>
-      </div>
-
       <div class="detection-showcase">
         <h2 class="showcase-title"><i class="fa-solid fa-crosshairs"></i> Target Capabilities</h2>
         <div class="detection-grid">
@@ -173,6 +167,14 @@
         </div>
       </div>
     </div>
+
+    <div id="page-checker" class="page">
+        <div id="results-wrapper">
+            <div class="container" id="results-container">
+                <!-- Scan results are injected here -->
+            </div>
+        </div>
+    </div>
     
     <div id="page-faq" class="page">
         <div class="container static-page">
@@ -188,7 +190,6 @@
             <h2>Privacy Policy</h2>
             <p>Your privacy is paramount. Our policy is simple: we don't store your data.</p>
             <h3>IP Address Handling</h3><p>Your IP address is used *only* to perform the check with third-party databases during your session. It is never logged or stored on our servers.</p>
-            <h3>Browser Fingerprint</h3><p>All fingerprinting happens in your browser. Raw data (WebGL, Canvas, etc.) is never sent to us. Your device performs the analysis locally.</p>
             <h3>Cookies & Tracking</h3><p>This website does not use cookies for tracking. Period.</p>
         </div>
     </div>
@@ -249,7 +250,8 @@
     themeToggleBtn.innerHTML = isLight ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
     setBackgroundState('default');
   });
-  const pageContent = { '/': 'page-catcher', '/faq': 'page-faq', '/privacy': 'page-privacy', '/contact': 'page-contact' };
+  const pageContent = { '/': 'page-landing', '/checker': 'page-checker', '/faq': 'page-faq', '/privacy': 'page-privacy', '/contact': 'page-contact' };
+  
   function showPageContent(pageId) {
     document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
     const pageEl = document.getElementById(pageId);
@@ -258,104 +260,81 @@
       link.classList.remove('active');
       const linkPath = link.getAttribute('href');
       const currentPath = window.location.pathname;
-      if (linkPath === currentPath || (currentPath === '/' && linkPath === '/')) { link.classList.add('active'); }
+      const checkerRegex = /^\/checker(\/.*)?$/;
+      if (linkPath === currentPath || (linkPath === '/checker' && checkerRegex.test(currentPath)) || (linkPath === '/' && currentPath === '/')) {
+          link.classList.add('active');
+      }
     });
+    // Auto-run scanner when the checker page is loaded
+    if (pageId === 'page-checker') {
+        runDetection();
+    }
   }
-  const router = () => { const path = window.location.pathname; const pageId = pageContent[path] || 'page-catcher'; showPageContent(pageId); };
+
+  const router = () => { const path = window.location.pathname; const pageId = pageContent[path] || pageContent['/']; showPageContent(pageId); };
+  
   document.addEventListener('click', (e) => { 
     const a = e.target.closest('a'); 
-    if (a && (a.matches('.nav-link') || a.matches('.logo-link'))) { e.preventDefault(); history.pushState(null, '', a.href); mainNav.classList.remove('is-open'); router(); }
+    if (a && a.href && (a.matches('.nav-link') || a.matches('.logo-link') || a.matches('.run-btn-link'))) { 
+      e.preventDefault(); 
+      if (window.location.href !== a.href) {
+        history.pushState(null, '', a.href); 
+        mainNav.classList.remove('is-open'); 
+        router();
+      } 
+    }
   });
   window.addEventListener('popstate', router);
   document.addEventListener('DOMContentLoaded', () => { applySavedTheme(); router(); if (document.getElementById('contact-form')) { initializeContactForm(); } });
 
   /* --- CATCHER SCRIPT --- */
-  function showIntro() {
-      document.getElementById('intro-content').style.display = 'block';
-      document.getElementById('detection-showcase').style.display = 'block';
-      document.getElementById('results-wrapper').style.display = 'none';
-      document.getElementById('results-container').innerHTML = ''; // Clear old results
-      setBackgroundState('default');
-  }
-
   window.runDetection = async function() {
     document.getElementById('scan-start-sound').play();
-    document.getElementById('intro-content').style.display = 'none';
-    document.getElementById('detection-showcase').style.display = 'none';
     const resultsWrapper = document.getElementById('results-wrapper');
     const resultsEl = document.getElementById('results-container');
+    if (!resultsWrapper || !resultsEl) return;
     resultsWrapper.style.display = 'block';
     resultsEl.innerHTML = `<div class="loader-wrapper"><div class="glitch-text">ANALYZING SIGNATURE...</div><div class="scanner-bar"></div></div>`;
     setBackgroundState('scanning');
 
     const minDelay = new Promise(resolve => setTimeout(resolve, 2500));
-    
     const detectionPromise = (async () => {
-        let riskScore = 0;
-        let identifiedBrowserLabel = null;
-        let heuristicsScore = 0;
-        const riskFactors = [];
-        const TARGET_CHROME_VERSION = "138"; 
-
+        let riskScore = 0, identifiedBrowserLabel = null, heuristicsScore = 0;
+        const riskFactors = []; const TARGET_CHROME_VERSION = "138"; 
         try {
             const resp = await fetch('/api/ip-check', { cache: 'no-store' });
             const ipData = await resp.json();
             riskFactors.push({ label: 'IP Address', value: ipData.ip, isBad: false, alwaysShow: true });
             riskFactors.push({ label: 'VPN/Proxy', value: ipData.status, isBad: ipData.isProxy, alwaysShow: true });
-            if (ipData.isProxy) riskScore += 3;
-            if (ipData.status.includes('TOR')) riskScore += 5;
-        } catch (e) {
-            riskScore++;
-            riskFactors.push({ label: 'IP/VPN Check', value: "Error", isBad: true, alwaysShow: true });
-        }
-
-        const ua = navigator.userAgent;
-        const majorChromeVersion = (ua.match(/Chrome\/(\d+)/) || [])[1];
-        if (navigator.brave && await navigator.brave.isBrave()) {
-            riskScore += 3;
-            identifiedBrowserLabel = 'Brave';
-        } else if (getCanvasEntropy() === 2001009873) {
-             riskScore += 5;
-             identifiedBrowserLabel = 'Tor';
-        } else if (typeof window.opr !== 'undefined' || ua.includes("OPR")) {
-             riskScore += 2;
-             identifiedBrowserLabel = 'Opera';
-        }
+            if (ipData.isProxy) riskScore += 3; if (ipData.status.includes('TOR')) riskScore += 5;
+        } catch (e) { riskScore++; riskFactors.push({ label: 'IP/VPN Check', value: "Error", isBad: true, alwaysShow: true }); }
+        const ua = navigator.userAgent, majorChromeVersion = (ua.match(/Chrome\/(\d+)/) || [])[1];
+        if (navigator.brave && await navigator.brave.isBrave()) { riskScore += 3; identifiedBrowserLabel = 'Brave'; }
+        else if (getCanvasEntropy() === 2001009873) { riskScore += 5; identifiedBrowserLabel = 'Tor'; }
+        else if (typeof window.opr !== 'undefined' || ua.includes("OPR")) { riskScore += 2; identifiedBrowserLabel = 'Opera'; }
         if (identifiedBrowserLabel) { riskFactors.push({ label: 'Browser', value: identifiedBrowserLabel, isBad: true }); }
-
         if (!ua.includes("Chrome") || majorChromeVersion !== TARGET_CHROME_VERSION) { heuristicsScore += 4; }
         if (navigator.webdriver) { heuristicsScore += 4; }
         if (navigator.plugins && navigator.plugins.length === 5) { heuristicsScore += 1; }
         if (navigator.languages && navigator.languages.length === 4) { heuristicsScore += 2; }
-        const proResolutions = ['1920x1080', '2560x1440', '3840x2160'];
-        const currentRes = `${window.screen.width}x${window.screen.height}`;
+        const proResolutions = ['1920x1080', '2560x1440', '3840x2160'], currentRes = `${window.screen.width}x${window.screen.height}`;
         if (majorChromeVersion === TARGET_CHROME_VERSION && !proResolutions.includes(currentRes)) { heuristicsScore += 2; }
         riskScore += heuristicsScore;
         if (!identifiedBrowserLabel && heuristicsScore >= 4) { riskFactors.push({ label: 'Browser', value: 'Antidetect', isBad: true }); }
-        const canvasHash1 = getCanvasEntropy();
-        await new Promise(resolve => setTimeout(resolve, 30));
-        const canvasHash2 = getCanvasEntropy();
+        const canvasHash1 = getCanvasEntropy(); await new Promise(resolve => setTimeout(resolve, 30)); const canvasHash2 = getCanvasEntropy();
         if (canvasHash1 !== canvasHash2) { riskScore += 2; riskFactors.push({ label: 'Canvas', value: 'Randomized', isBad: true }); }
         const renderer = getWebGLInfo().renderer.toLowerCase();
         if (renderer.includes("swiftshader") || renderer.includes("llvmpipe")) { riskScore += 3; riskFactors.push({ label: 'WebGL', value: "Software Emulated", isBad: true }); }
-
-        let thumbmarkFingerprint = 'N/A';
-        try { thumbmarkFingerprint = await ThumbmarkJS.getFingerprint(); } catch (err) {}
+        let thumbmarkFingerprint = 'N/A'; try { thumbmarkFingerprint = await ThumbmarkJS.getFingerprint(); } catch (err) {}
         riskFactors.push({ label: 'FP Hash', value: thumbmarkFingerprint, isBad: false, isHash: true, alwaysShow: true });
         
-        const isBadBrowser = riskScore >= 3;
-        const verdict = isBadBrowser ? "High Risk Profile Detected" : "Profile Appears Normal";
-        
+        const isBadBrowser = riskScore >= 3; const verdict = isBadBrowser ? "High Risk Profile Detected" : "Profile Appears Normal";
         let resultsHTML = `<div class="verdict-box ${isBadBrowser ? 'danger' : 'safe'}"><i class="fa-solid ${isBadBrowser ? 'fa-user-secret' : 'fa-user-check'} fa-lg"></i><span>${verdict}</span></div>`;
         resultsHTML += `<div class="risk-score">Threat Score: <strong>${riskScore}</strong></div>`;
         const displayableRiskFactors = riskFactors.filter(factor => factor.isBad || factor.alwaysShow);
-        let detailsGrid = displayableRiskFactors.map((factor) => {
-            let valueClass = 'value'; if (factor.isBad) valueClass += ' danger'; else if (!factor.isHash) valueClass += ' safe'; if (factor.isHash) valueClass += ' fingerprint-hash';
-            let labelHTML = `<div class="label">${factor.label}:</div>`; let valueHTML = `<div class="${valueClass}">${factor.value}</div>`;
-            return labelHTML + valueHTML;
-        }).join('');
-        resultsHTML += `<div class="details-grid">${displayableRiskFactors.length > 0 ? detailsGrid : '...'}</div>`;
-        resultsHTML += `<div class="results-footer"><button id="reset-btn">Scan Another Profile</button></div>`;
+        let detailsGrid = displayableRiskFactors.map((factor) => { let valueClass = 'value'; if (factor.isBad) valueClass += ' danger'; else if (!factor.isHash) valueClass += ' safe'; if (factor.isHash) valueClass += ' fingerprint-hash'; return `<div class="label">${factor.label}:</div><div class="${valueClass}">${factor.value}</div>`; }).join('');
+        resultsHTML += `<div class="details-grid">${detailsGrid.length > 0 ? detailsGrid : '...'}</div>`;
+        resultsHTML += `<div class="results-footer"><button id="reset-btn">Scan Again</button></div>`;
         
         const fragment = document.createRange().createContextualFragment(resultsHTML);
         return {html: fragment, bad: isBadBrowser};
@@ -367,10 +346,7 @@
     resultsEl.appendChild(result.html);
     setBackgroundState(result.bad ? 'danger' : 'safe');
     const resetButton = document.getElementById('reset-btn');
-    if (resetButton) { 
-        resetButton.classList.add(result.bad ? 'danger-button' : 'safe-button');
-        resetButton.addEventListener('click', showIntro); // Re-attach listener here
-    }
+    if (resetButton) { resetButton.classList.add(result.bad ? 'danger-button' : 'safe-button'); resetButton.addEventListener('click', runDetection); }
   }
   
   function getCanvasEntropy() {try {const c=document.createElement('canvas'); const ctx=c.getContext('2d'); ctx.fillStyle="rgb(255,255,255)"; ctx.fillRect(0,0,c.width,c.height); c.width=200;c.height=50;ctx.textBaseline="top";ctx.font="14px 'Arial'";ctx.fillText("BrowserFP",2,2);return hashString(c.toDataURL())}catch{return null}}
