@@ -304,7 +304,7 @@
     router(); 
   });
 
-  /* --- CATCHER SCRIPT (REVISED) --- */
+  /* --- CATCHER SCRIPT (FINAL VERSION) --- */
   function resetCatcher() { 
       const intro = document.getElementById('intro-content');
       if (intro) intro.style.display = 'block';
@@ -328,8 +328,8 @@
     
     const detectionPromise = (async () => {
         let riskScore = 0;
-        let antidetectScore = 0;
-        let browserTypeIdentified = false;
+        let identifiedBrowserLabel = null;
+        let heuristicsScore = 0;
         const riskFactors = [];
         const TARGET_CHROME_VERSION = "138"; 
 
@@ -341,10 +341,7 @@
             riskFactors.push({ label: 'IP Address', value: ipData.ip, isBad: false, alwaysShow: true });
             riskFactors.push({ label: 'VPN/Proxy', value: ipData.status, isBad: ipData.isProxy, alwaysShow: true });
             if (ipData.isProxy) riskScore += 3;
-            if (ipData.status.includes('TOR')) {
-                riskScore += 5; 
-                riskFactors.push({ label: 'Anonymizer', value: 'Tor Network', isBad: true });
-            }
+            if (ipData.status.includes('TOR')) riskScore += 5;
         } catch (e) {
             riskScore += 1;
             riskFactors.push({ label: 'IP/VPN Check', value: "Error during lookup", isBad: true, alwaysShow: true });
@@ -354,40 +351,32 @@
         const ua = navigator.userAgent;
         const majorChromeVersion = (ua.match(/Chrome\/(\d+)/) || [])[1];
         
-        // 1. EXPLICIT BROWSER CHECKS
+        // 1. Explicit Browser Identity Checks
         if (navigator.brave && await navigator.brave.isBrave()) {
             riskScore += 3;
-            riskFactors.push({ label: 'Browser', value: 'Brave', isBad: true });
-            browserTypeIdentified = true;
-        }
-        else if (getCanvasEntropy() === 2001009873) {
+            identifiedBrowserLabel = 'Brave';
+        } else if (getCanvasEntropy() === 2001009873) {
              riskScore += 5;
-             riskFactors.push({ label: 'Browser', value: 'Tor', isBad: true });
-             browserTypeIdentified = true;
-        }
-        else if (typeof window.opr !== 'undefined' || ua.includes("OPR")) {
+             identifiedBrowserLabel = 'Tor';
+        } else if (typeof window.opr !== 'undefined' || ua.includes("OPR")) {
              riskScore += 2;
-             riskFactors.push({ label: 'Browser', value: 'Opera', isBad: true });
-             browserTypeIdentified = true;
+             identifiedBrowserLabel = 'Opera';
+        }
+        if (identifiedBrowserLabel) {
+            riskFactors.push({ label: 'Browser', value: identifiedBrowserLabel, isBad: true });
         }
 
-        // 2. ANTIDETECT HEURISTIC CHECKS
-        if (!ua.includes("Chrome") || majorChromeVersion !== TARGET_CHROME_VERSION) { antidetectScore += 4; }
-        if (navigator.webdriver) { antidetectScore += 4; }
-        if (navigator.plugins && navigator.plugins.length === 5) { antidetectScore += 1; }
-        if (navigator.languages && navigator.languages.length === 4) { antidetectScore += 2; }
+        // 2. Hidden Heuristic Checks
+        if (!ua.includes("Chrome") || majorChromeVersion !== TARGET_CHROME_VERSION) { heuristicsScore += 4; }
+        if (navigator.webdriver) { heuristicsScore += 4; }
+        if (navigator.plugins && navigator.plugins.length === 5) { heuristicsScore += 1; }
+        if (navigator.languages && navigator.languages.length === 4) { heuristicsScore += 2; }
         const proResolutions = ['1920x1080', '2560x1440', '3840x2160'];
         const currentRes = `${window.screen.width}x${window.screen.height}`;
-        if (majorChromeVersion === TARGET_CHROME_VERSION && !proResolutions.includes(currentRes)) { antidetectScore += 2; }
+        if (majorChromeVersion === TARGET_CHROME_VERSION && !proResolutions.includes(currentRes)) { heuristicsScore += 2; }
+        riskScore += heuristicsScore;
         
-        if (!browserTypeIdentified && antidetectScore >= 4) {
-             riskScore += antidetectScore;
-             riskFactors.push({ label: 'Browser', value: 'Antidetect', isBad: true });
-        } else {
-             riskScore += antidetectScore;
-        }
-        
-        // 3. FINGERPRINTING CHECKS
+        // 3. Overt Fingerprinting Checks
         const canvasHash1 = getCanvasEntropy();
         await new Promise(resolve => setTimeout(resolve, 30));
         const canvasHash2 = getCanvasEntropy();
@@ -401,12 +390,17 @@
              riskFactors.push({ label: 'WebGL', value: "Software Emulated", isBad: true });
         }
 
-        // --- Build Final Report ---
+        // --- Final Verdict and Labeling ---
+        const isBadBrowser = riskScore >= 3;
+        // If high risk BUT no specific browser was named, label it 'Antidetect'
+        if (isBadBrowser && !identifiedBrowserLabel) {
+            riskFactors.push({ label: 'Browser', value: 'Antidetect', isBad: true });
+        }
+        
         let thumbmarkFingerprint = 'N/A';
         try { thumbmarkFingerprint = await ThumbmarkJS.getFingerprint(); } catch (err) {}
         riskFactors.push({ label: 'FP Hash', value: thumbmarkFingerprint, isBad: false, isHash: true, alwaysShow: true });
-        
-        const isBadBrowser = riskScore >= 3;
+
         const verdict = isBadBrowser ? "High Risk Profile Detected" : "Profile Appears Normal";
         setBackgroundState(isBadBrowser ? 'danger' : 'safe');
         
@@ -414,19 +408,17 @@
         resultsHTML += `<div class="risk-score">Threat Score: <strong>${riskScore}</strong></div>`;
         
         const displayableRiskFactors = riskFactors.filter(factor => factor.isBad || factor.alwaysShow);
-
         let detailsGridHTML = displayableRiskFactors.map((factor, index) => {
             let valueClass = 'value';
             if (factor.isBad) valueClass += ' danger';
             else if (!factor.isHash) valueClass += ' safe';
             if (factor.isHash) valueClass += ' fingerprint-hash';
-            
             let labelHTML = `<div class="label" style="animation-delay: ${index * 0.05}s">${factor.label}:</div>`;
             let valueHTML = `<div class="${valueClass}" style="animation-delay: ${index * 0.05}s">${factor.value}</div>`;
             return labelHTML + valueHTML;
         }).join('');
         
-        resultsHTML += `<div class="details-grid">${displayableRiskFactors.length > 0 ? detailsGridHTML : '<div style="grid-column: 1 / -1; text-align: center; color: var(--accent-green);">All checks passed.</div>'}</div>`;
+        resultsHTML += `<div class="details-grid">${detailsGridHTML}</div>`;
         resultsHTML += `<div class="results-footer"><div class="results-separator ${isBadBrowser ? 'danger' : ''}"></div><div class="run-btn-wrapper"><button id="reset-btn" onclick="resetCatcher()">Run Another Test</button></div></div>`;
         
         return {html: resultsHTML, bad: isBadBrowser};
