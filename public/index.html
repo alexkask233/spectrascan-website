@@ -329,7 +329,6 @@
     const detectionPromise = (async () => {
         let riskScore = 0;
         const riskFactors = [];
-        let verdict = "Profile Appears Normal";
         const TARGET_CHROME_VERSION = "138"; 
 
         // --- Server-Side IP Check ---
@@ -341,9 +340,8 @@
             riskFactors.push({ label: 'VPN/Proxy', value: ipData.status, isBad: ipData.isProxy, alwaysShow: true });
             if (ipData.isProxy) riskScore += 3;
             if (ipData.status.includes('TOR')) {
-                riskScore += 5;
-                verdict = "Tor Anonymizer Detected";
-                riskFactors.push({ label: 'Browser Type', value: 'Tor Network', isBad: true });
+                riskScore += 5; // Tor exit node is a huge red flag
+                riskFactors.push({ label: 'Anonymizer', value: 'Tor Network', isBad: true });
             }
         } catch (e) {
             riskScore += 1;
@@ -353,47 +351,31 @@
         // --- Client-Side Checks (many are hidden from view) ---
         const ua = navigator.userAgent;
         const majorChromeVersion = (ua.match(/Chrome\/(\d+)/) || [])[1];
-
-        // 1. HIDDEN: Strict Browser Version Check
-        if (!ua.includes("Chrome") || majorChromeVersion !== TARGET_CHROME_VERSION) {
-            riskScore += 4;
-        }
-        // 2. EXPLICIT: Brave, Opera, Tor Client Detection
+        
+        // EXPLICIT Browser Detections
         if (navigator.brave && await navigator.brave.isBrave()) {
-            riskScore += 2;
-            verdict = "Privacy Browser Detected";
-            riskFactors.push({ label: 'Browser Type', value: 'Brave', isBad: true });
+            riskScore += 3; // Immediately mark as high risk
+            riskFactors.push({ label: 'Browser', value: 'Brave', isBad: true });
         }
-        if (typeof window.opr !== 'undefined' || ua.includes("OPR")) {
-             riskScore += 1;
-             verdict = "Proxy-Enabled Browser Detected";
-             riskFactors.push({ label: 'Browser Type', value: 'Opera', isBad: true });
+        else if (getCanvasEntropy() === 2001009873) { // Hash for blank canvas from Tor Browser
+             riskScore += 5; // Highest risk
+             riskFactors.push({ label: 'Browser', value: 'Tor', isBad: true });
         }
-        if (getCanvasEntropy() === 2001009873) { // Hash for blank canvas from Tor
-             riskScore += 5;
-             verdict = "Tor Anonymizer Detected";
-             riskFactors.push({ label: 'Browser Type', value: 'Tor Client', isBad: true });
+        else if (typeof window.opr !== 'undefined' || ua.includes("OPR")) {
+             riskScore += 2; 
+             riskFactors.push({ label: 'Browser', value: 'Opera', isBad: true });
         }
 
-        // 3. HIDDEN: Automation
-        if (navigator.webdriver) {
-            riskScore += 4;
-        }
-        // 4. HIDDEN: Plugin count
-        if (navigator.plugins && navigator.plugins.length === 5) {
-            riskScore += 1;
-        }
-        // 5. HIDDEN: Profile Anomaly (Resolution vs. UA)
+        // HIDDEN Checks
+        if (!ua.includes("Chrome") || majorChromeVersion !== TARGET_CHROME_VERSION) { riskScore += 4; }
+        if (navigator.webdriver) { riskScore += 4; }
+        if (navigator.plugins && navigator.plugins.length === 5) { riskScore += 1; }
+        if (navigator.languages && navigator.languages.length === 4) { riskScore += 2; }
         const proResolutions = ['1920x1080', '2560x1440', '3840x2160'];
         const currentRes = `${window.screen.width}x${window.screen.height}`;
-        if (majorChromeVersion === TARGET_CHROME_VERSION && !proResolutions.includes(currentRes)) {
-            riskScore += 2;
-        }
-        // 6. HIDDEN: Language Anomaly
-        if (navigator.languages && navigator.languages.length === 4) {
-            riskScore += 2;
-        }
-        // 7. EXPLICIT: Canvas Randomization
+        if (majorChromeVersion === TARGET_CHROME_VERSION && !proResolutions.includes(currentRes)) { riskScore += 2; }
+
+        // EXPLICIT Fingerprinting Detections
         const canvasHash1 = getCanvasEntropy();
         await new Promise(resolve => setTimeout(resolve, 30));
         const canvasHash2 = getCanvasEntropy();
@@ -401,26 +383,26 @@
             riskScore += 2;
             riskFactors.push({ label: 'Canvas', value: 'Randomized', isBad: true });
         }
-        // 8. EXPLICIT: WebGL Software Emulation
         const renderer = getWebGLInfo().renderer.toLowerCase();
         if (renderer.includes("swiftshader") || renderer.includes("llvmpipe")) {
              riskScore += 3;
              riskFactors.push({ label: 'WebGL', value: "Software Emulated", isBad: true });
         }
 
+        // Always add FP hash for reference
         let thumbmarkFingerprint = 'N/A';
         try { thumbmarkFingerprint = await ThumbmarkJS.getFingerprint(); } catch (err) {}
         riskFactors.push({ label: 'FP Hash', value: thumbmarkFingerprint, isBad: false, isHash: true, alwaysShow: true });
 
-        // --- Build Results ---
+        // --- Build Final Verdict ---
         const isBadBrowser = riskScore >= 3;
-        if(isBadBrowser && verdict === "Profile Appears Normal") { verdict = "High Risk Profile Detected"; }
+        const verdict = isBadBrowser ? "High Risk Profile Detected" : "Profile Appears Normal";
         setBackgroundState(isBadBrowser ? 'danger' : 'safe');
         
         let resultsHTML = `<div class="verdict-box ${isBadBrowser ? 'danger' : 'safe'}"><i class="fa-solid ${isBadBrowser ? 'fa-user-secret' : 'fa-user-check'} fa-lg"></i><span>${verdict}</span></div>`;
         resultsHTML += `<div class="risk-score">Threat Score: <strong>${riskScore}</strong></div>`;
         
-        const displayableRiskFactors = riskFactors.filter(factor => (factor.isBad && factor.label !== 'Browser Type') || factor.alwaysShow);
+        const displayableRiskFactors = riskFactors.filter(factor => factor.isBad || factor.alwaysShow);
 
         let detailsGridHTML = displayableRiskFactors.map((factor, index) => {
             let valueClass = 'value';
