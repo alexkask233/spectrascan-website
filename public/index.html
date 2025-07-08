@@ -328,6 +328,8 @@
     
     const detectionPromise = (async () => {
         let riskScore = 0;
+        let antidetectScore = 0;
+        let browserTypeIdentified = false;
         const riskFactors = [];
         const TARGET_CHROME_VERSION = "138"; 
 
@@ -340,7 +342,7 @@
             riskFactors.push({ label: 'VPN/Proxy', value: ipData.status, isBad: ipData.isProxy, alwaysShow: true });
             if (ipData.isProxy) riskScore += 3;
             if (ipData.status.includes('TOR')) {
-                riskScore += 5; // Tor exit node is a huge red flag
+                riskScore += 5; 
                 riskFactors.push({ label: 'Anonymizer', value: 'Tor Network', isBad: true });
             }
         } catch (e) {
@@ -348,34 +350,44 @@
             riskFactors.push({ label: 'IP/VPN Check', value: "Error during lookup", isBad: true, alwaysShow: true });
         }
 
-        // --- Client-Side Checks (many are hidden from view) ---
+        // --- Client-Side Checks ---
         const ua = navigator.userAgent;
         const majorChromeVersion = (ua.match(/Chrome\/(\d+)/) || [])[1];
         
-        // EXPLICIT Browser Detections
+        // 1. EXPLICIT BROWSER CHECKS
         if (navigator.brave && await navigator.brave.isBrave()) {
-            riskScore += 3; // Immediately mark as high risk
+            riskScore += 3;
             riskFactors.push({ label: 'Browser', value: 'Brave', isBad: true });
+            browserTypeIdentified = true;
         }
-        else if (getCanvasEntropy() === 2001009873) { // Hash for blank canvas from Tor Browser
-             riskScore += 5; // Highest risk
+        else if (getCanvasEntropy() === 2001009873) {
+             riskScore += 5;
              riskFactors.push({ label: 'Browser', value: 'Tor', isBad: true });
+             browserTypeIdentified = true;
         }
         else if (typeof window.opr !== 'undefined' || ua.includes("OPR")) {
-             riskScore += 2; 
+             riskScore += 2;
              riskFactors.push({ label: 'Browser', value: 'Opera', isBad: true });
+             browserTypeIdentified = true;
         }
 
-        // HIDDEN Checks
-        if (!ua.includes("Chrome") || majorChromeVersion !== TARGET_CHROME_VERSION) { riskScore += 4; }
-        if (navigator.webdriver) { riskScore += 4; }
-        if (navigator.plugins && navigator.plugins.length === 5) { riskScore += 1; }
-        if (navigator.languages && navigator.languages.length === 4) { riskScore += 2; }
+        // 2. ANTIDETECT HEURISTIC CHECKS
+        if (!ua.includes("Chrome") || majorChromeVersion !== TARGET_CHROME_VERSION) { antidetectScore += 4; }
+        if (navigator.webdriver) { antidetectScore += 4; }
+        if (navigator.plugins && navigator.plugins.length === 5) { antidetectScore += 1; }
+        if (navigator.languages && navigator.languages.length === 4) { antidetectScore += 2; }
         const proResolutions = ['1920x1080', '2560x1440', '3840x2160'];
         const currentRes = `${window.screen.width}x${window.screen.height}`;
-        if (majorChromeVersion === TARGET_CHROME_VERSION && !proResolutions.includes(currentRes)) { riskScore += 2; }
-
-        // EXPLICIT Fingerprinting Detections
+        if (majorChromeVersion === TARGET_CHROME_VERSION && !proResolutions.includes(currentRes)) { antidetectScore += 2; }
+        
+        if (!browserTypeIdentified && antidetectScore >= 4) {
+             riskScore += antidetectScore;
+             riskFactors.push({ label: 'Browser', value: 'Antidetect', isBad: true });
+        } else {
+             riskScore += antidetectScore;
+        }
+        
+        // 3. FINGERPRINTING CHECKS
         const canvasHash1 = getCanvasEntropy();
         await new Promise(resolve => setTimeout(resolve, 30));
         const canvasHash2 = getCanvasEntropy();
@@ -389,12 +401,11 @@
              riskFactors.push({ label: 'WebGL', value: "Software Emulated", isBad: true });
         }
 
-        // Always add FP hash for reference
+        // --- Build Final Report ---
         let thumbmarkFingerprint = 'N/A';
         try { thumbmarkFingerprint = await ThumbmarkJS.getFingerprint(); } catch (err) {}
         riskFactors.push({ label: 'FP Hash', value: thumbmarkFingerprint, isBad: false, isHash: true, alwaysShow: true });
-
-        // --- Build Final Verdict ---
+        
         const isBadBrowser = riskScore >= 3;
         const verdict = isBadBrowser ? "High Risk Profile Detected" : "Profile Appears Normal";
         setBackgroundState(isBadBrowser ? 'danger' : 'safe');
